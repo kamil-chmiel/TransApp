@@ -1,5 +1,6 @@
 package com.example.kamil.transapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
             public void myMethod(String workerType) {
                     switch (workerType) {
                         case "Menago":
-                            setContentView(R.layout.activity_manager);
+                            startActivity(new Intent(LoginActivity.this,ManagerActivity.class));
                             break;
                         case "Mag":
                             setContentView(R.layout.activity_warehouse_worker);
@@ -48,9 +49,5 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-    public void OnAddUser(View view) {
-        setContentView(R.layout.activity_add_user);
-    }
 
 }

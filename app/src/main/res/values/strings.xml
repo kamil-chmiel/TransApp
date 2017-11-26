@@ -2,6 +2,4 @@
     <string name="app_name">TransApp</string>
     <string name="title_activity_manager">ManagerActivity</string>
     <string name="title_activity_cleaner">Cleaner</string>
-    <string name="title_activity_manager2">Manager2Activity</string>
-    <string name="title_activity_twoja_stara">TwojaStara</string>
 </resources>

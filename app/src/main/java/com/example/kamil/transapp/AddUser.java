@@ -1,15 +1,13 @@
 package com.example.kamil.transapp;
 
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-interface RegistrationStatus {
-    void myMethod(boolean result, String workerType);
-}
 
-public class AddUser extends AppCompatActivity {
+
+public class AddUser extends ManagerActivity {
 
     EditText username, password, workerType;
 

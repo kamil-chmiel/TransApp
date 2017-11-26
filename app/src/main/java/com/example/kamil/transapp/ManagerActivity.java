@@ -1,23 +1,27 @@
 package com.example.kamil.transapp;
 
-import android.app.AlertDialog;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+
 
 /**
  * Created by Kamil on 26.11.2017.
  */
 
-public class ManagerActivity extends AppCompatActivity {
+public class ManagerActivity extends LoginActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
 
+
+    }
+
+    public void OnAddUser(View view){
+            startActivity(new Intent(ManagerActivity.this,AddUser.class));
     }
 
 

@@ -104,9 +104,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                String post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"
+                String post_data = URLEncoder.encode("user_name", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"
                         + URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8") +"&"
-                        + URLEncoder.encode("workerType", "UTF-8")+"="+URLEncoder.encode(worker_type,"UTF-8");
+                        + URLEncoder.encode("worker_type", "UTF-8")+"="+URLEncoder.encode(worker_type,"UTF-8");
 
                 bufferedWriter.write(post_data);
 
@@ -156,7 +156,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         {
             if(result.equals("error")) {
 
-                alertDialog.setMessage("Wrong login or password.");
+                alertDialog.setMessage("Wrong username or password. ");
                 alertDialog.show();
             }
             else
