@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-   >
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"
@@ -143,13 +143,13 @@
     <LinearLayout
         android:id="@+id/layout_tasks"
         android:layout_width="match_parent"
-        android:layout_height="239dp"
+        android:layout_height="225dp"
         android:orientation="vertical">
 
         <ListView
             android:id="@+id/tasks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="225dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -182,13 +182,13 @@
                 android:id="@+id/chooseWorker"
                 android:layout_width="fill_parent"
                 android:layout_height="33dp"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="42dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.016"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="42dp" />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -209,7 +209,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.818"
+                app:layout_constraintVertical_bias="0.659"
                 app:srcCompat="@drawable/add_button" />
 
             <TextView
