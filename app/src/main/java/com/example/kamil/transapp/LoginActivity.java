@@ -3,10 +3,11 @@ package com.example.kamil.transapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Menu;
 import android.widget.EditText;
-import android.widget.TextView;
 
+interface ConnectionChecker {
+    public void myMethod(boolean result, String workerType);
+}
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,15 +31,30 @@ public class LoginActivity extends AppCompatActivity {
 
         String type = "login";
 
-        BackgroundWorker bgWorker = new BackgroundWorker(this);
+        BackgroundWorker bgWorker = new BackgroundWorker(this, new ConnectionChecker() {
+            @Override
+            public void myMethod(boolean result, String workerType) {
+                if(result)
+                {
+
+                    switch (workerType) {
+                        case "Menago":
+                            setContentView(R.layout.activity_manager);
+                            break;
+                        case "Mag":
+                            setContentView(R.layout.activity_manager);
+                            break;
+                        case "Kiero":
+                            setContentView(R.layout.activity_driver);
+                            break;
+                    }
+                }
+
+            }
+        });
         bgWorker.execute(type, username, password);
 
-        setContentView(R.layout.activity_manager2);
-
     }
-
-
-
 
 
 }

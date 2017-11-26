@@ -3,6 +3,7 @@ package com.example.kamil.transapp;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,13 +21,17 @@ import java.net.URLEncoder;
  * Created by Kamil on 25.11.2017.
  */
 
+
+
 public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
+    private ConnectionChecker mListener;
     Context context;
     AlertDialog alertDialog;
 
-    BackgroundWorker (Context ctx){
+    BackgroundWorker (Context ctx, ConnectionChecker mListener){
         context = ctx;
+        this.mListener = mListener;
     }
 
     @Override
@@ -61,14 +66,14 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
                 String result="";
-                String line;
+                String line="";
 
 
                 while((line = bufferedReader.readLine()) != null)
                 {
                     result += line;
                 }
-
+                result = result.replaceAll("\\s", "");
                 bufferedReader.close();
                 inputStream.close();
                 httpURLConnection.disconnect();
@@ -96,13 +101,23 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String result) {
 
-        //if(result.substring(3,8).equals("Wrong")) {
-            alertDialog.setMessage("\n" + result);
+        if(result.equals("error")) {
+
+            alertDialog.setMessage("Wrong login or password.");
             alertDialog.show();
-        //}
+        }
+        else
+        {
+            if (mListener != null)
+                mListener.myMethod(true, result);
+        }
 
 
+    }
 
+    private boolean myMethod(boolean value) {
+        //handle value
+        return value;
     }
 
     @Override
