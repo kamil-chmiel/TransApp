@@ -33,6 +33,9 @@ public class LoginActivity extends AppCompatActivity {
         BackgroundWorker bgWorker = new BackgroundWorker(this);
         bgWorker.execute(type, username, password);
 
+        //well let's test if this works Kamil
+        //blablab
+
 
 
     }
