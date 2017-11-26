@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 
 interface ConnectionChecker {
-    public void myMethod(boolean result, String workerType);
+    void myMethod(boolean result, String workerType);
 }
 
 public class LoginActivity extends AppCompatActivity {
