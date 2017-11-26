@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.kamil.transapp.Manager2Activity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"
@@ -203,9 +204,10 @@
                 android:layout_height="68dp"
                 android:clickable="true"
                 android:focusable="auto"
+                android:onClick="OnAddUser"
                 app:backgroundTint="#00FF00"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.355"
+                app:layout_constraintHorizontal_bias="0.492"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

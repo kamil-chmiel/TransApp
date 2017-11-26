@@ -5,10 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-interface ConnectionChecker {
-    void myMethod(boolean result, String workerType);
-}
-
 public class LoginActivity extends AppCompatActivity {
 
     EditText UsernameET, PasswordET;
@@ -31,12 +27,9 @@ public class LoginActivity extends AppCompatActivity {
 
         String type = "login";
 
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new ConnectionChecker() {
+        BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
             @Override
-            public void myMethod(boolean result, String workerType) {
-                if(result)
-                {
-
+            public void myMethod(String workerType) {
                     switch (workerType) {
                         case "Menago":
                             setContentView(R.layout.activity_manager);
@@ -45,10 +38,9 @@ public class LoginActivity extends AppCompatActivity {
                             setContentView(R.layout.activity_warehouse_worker);
                             break;
                         case "Kiero":
-                            setContentView(R.layout.activity_driver);
+                            setContentView(R.layout.activity_manager);
                             break;
                     }
-                }
 
             }
         });
@@ -56,5 +48,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+    public void OnAddUser(View view) {
+        setContentView(R.layout.activity_add_user);
+    }
 
 }

@@ -3,7 +3,6 @@ package com.example.kamil.transapp;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,11 +24,12 @@ import java.net.URLEncoder;
 
 public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
-    private ConnectionChecker mListener;
+    private ResultCheck mListener;
     Context context;
     AlertDialog alertDialog;
+    String type;
 
-    BackgroundWorker (Context ctx, ConnectionChecker mListener){
+    BackgroundWorker (Context ctx, ResultCheck mListener){
         context = ctx;
         this.mListener = mListener;
     }
@@ -37,8 +37,10 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... params) {
 
-        String type = params[0];
+
         String login_url = "http://limitlessgames.pl/login.php"; // standard address localhost
+        String addUser_url = "http://limitlessgames.pl/register.php";
+        type = params[0];
 
         if(type.equals("login")) {
             try {
@@ -86,6 +88,55 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 e.printStackTrace();
             }
         }
+        else if(type.equals("register"))
+        {
+            try {
+                String user_name = params[1];
+                String password = params[2];
+                String worker_type = params[3];
+                URL url = new URL(addUser_url);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                String post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"
+                        + URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8") +"&"
+                        + URLEncoder.encode("workerType", "UTF-8")+"="+URLEncoder.encode(worker_type,"UTF-8");
+
+                bufferedWriter.write(post_data);
+
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                String result="";
+                String line="";
+
+
+                while((line = bufferedReader.readLine()) != null)
+                {
+                    result += line;
+                }
+                result = result.replaceAll("\\s", "");
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return result;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
 
         return null;
     }
@@ -101,15 +152,33 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String result) {
 
-        if(result.equals("error")) {
-
-            alertDialog.setMessage("Wrong login or password.");
-            alertDialog.show();
-        }
-        else
+        if(type.equals("login"))
         {
-            if (mListener != null)
-                mListener.myMethod(true, result);
+            if(result.equals("error")) {
+
+                alertDialog.setMessage("Wrong login or password.");
+                alertDialog.show();
+            }
+            else
+            {
+                if (mListener != null)
+                    mListener.myMethod(result);
+            }
+        }
+        else if(type.equals("register"))
+        {
+            if(result.equals("error"))
+            {
+                alertDialog.setMessage("Register unsuccessful");
+                alertDialog.show();
+            }
+            else
+            {
+                alertDialog.setMessage("Register successful");
+                alertDialog.show();
+                if (mListener != null)
+                    mListener.myMethod(result);
+            }
         }
 
 
