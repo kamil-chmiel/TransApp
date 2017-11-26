@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                             setContentView(R.layout.activity_manager);
                             break;
                         case "Mag":
-                            setContentView(R.layout.activity_manager);
+                            setContentView(R.layout.activity_warehouse_worker);
                             break;
                         case "Kiero":
                             setContentView(R.layout.activity_driver);
