@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         BackgroundWorker bgWorker = new BackgroundWorker(this);
         bgWorker.execute(type, username, password);
 
-
+        setContentView(R.layout.activity_manager2);
 
     }
 
