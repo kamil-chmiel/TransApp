@@ -31,7 +31,9 @@ public class AddUser extends ManagerActivity {
         BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
             @Override
             public void myMethod(String result) {
-
+                username.setText("");
+                password.setText("");
+                workerType.setText("");
             }
         });
 
