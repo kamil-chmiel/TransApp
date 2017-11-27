@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.kamil.transapp.WarehouseworkerActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"
@@ -97,7 +98,7 @@
             android:id="@+id/show_account_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hereisaccounttype"
+            android:text="Warehouse Worker"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"

@@ -8,11 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-/**
- * Created by Kamil on 26.11.2017.
- */
 
-public class ManagerActivity extends LoginActivity {
+public class DriverActivity extends LoginActivity {
 
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -27,20 +24,13 @@ public class ManagerActivity extends LoginActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manager);
+        setContentView(R.layout.activity_driver);
 
         listView = (ListView) findViewById(R.id.tasks);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
     }
 
-    public void OnAddUser(View view){
-            startActivity(new Intent(ManagerActivity.this,AddUser.class));
-    }
-
-    public void OnRemoveUser(View view){
-        startActivity(new Intent(ManagerActivity.this,RemoveUser.class));
-    }
 
 
 }
