@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.kamil.transapp.DriverActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"
@@ -96,7 +97,7 @@
             android:id="@+id/show_account_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hereisaccounttype"
+            android:text="Driver"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -137,18 +138,20 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.485" />
+
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/layout_tasks"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="271dp"
         android:orientation="vertical">
 
         <ListView
             android:id="@+id/tasks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="270dp" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -36,10 +36,10 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(LoginActivity.this,ManagerActivity.class));
                             break;
                         case "Mag":
-                            setContentView(R.layout.activity_warehouse_worker);
+                            startActivity(new Intent(LoginActivity.this,WarehouseworkerActivity.class));
                             break;
                         case "Kiero":
-                            setContentView(R.layout.activity_manager);
+                            startActivity(new Intent(LoginActivity.this,DriverActivity.class));
                             break;
                     }
 

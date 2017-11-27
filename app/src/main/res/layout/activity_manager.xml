@@ -69,12 +69,12 @@
             android:id="@+id/show_manager_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hereisthenameofmanager"
+            android:text="Konrad"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.598"
+            app:layout_constraintHorizontal_bias="0.321"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -84,11 +84,13 @@
             android:id="@+id/show_manager_surname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hereisthesurname"
+            android:text="Adamik"
+            android:textAlignment="textStart"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.325"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -98,12 +100,12 @@
             android:id="@+id/show_account_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hereisaccounttype"
+            android:text="Manager"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintHorizontal_bias="0.338"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -144,13 +146,13 @@
     <LinearLayout
         android:id="@+id/layout_tasks"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="228dp"
         android:orientation="vertical">
 
         <ListView
             android:id="@+id/tasks"
             android:layout_width="match_parent"
-            android:layout_height="225dp" />
+            android:layout_height="235dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -218,16 +220,17 @@
                 android:id="@+id/add_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Add User"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.347"
+                app:layout_constraintHorizontal_bias="0.357"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.063" />
+                app:layout_constraintVertical_bias="0.0" />
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
