@@ -3,6 +3,7 @@ package com.example.kamil.transapp;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -38,9 +39,11 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... params) {
 
 
-        String login_url = "http://limitlessgames.pl/login.php"; // standard address localhost
+        String login_url = "http://limitlessgames.pl/login.php";
         String addUser_url = "http://limitlessgames.pl/register.php";
+        String removeUser_url = "http://limitlessgames.pl/unregister.php";
         type = params[0];
+
 
         if(type.equals("login")) {
             try {
@@ -91,6 +94,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         else if(type.equals("register"))
         {
             try {
+
                 String user_name = params[1];
                 String password = params[2];
                 String worker_type = params[3];
@@ -137,6 +141,52 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 e.printStackTrace();
             }
         }
+        else if(type.equals("unregister"))
+        {
+            try {
+
+                String user_name = params[1];
+                URL url = new URL(removeUser_url);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                String post_data = URLEncoder.encode("user_name", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8");
+                Log.d("tag",post_data);
+                bufferedWriter.write(post_data);
+
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                String result="";
+                String line="";
+
+
+                while((line = bufferedReader.readLine()) != null)
+                {
+                    result += line;
+                }
+                result = result.replaceAll("\\s", "");
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return result;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
 
         return null;
     }
@@ -151,6 +201,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result) {
+
 
         if(type.equals("login"))
         {
@@ -169,17 +220,33 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         {
             if(result.equals("error"))
             {
-                alertDialog.setMessage("Register unsuccessful");
+                alertDialog.setMessage("Register unsuccessful!");
                 alertDialog.show();
             }
             else
             {
-                alertDialog.setMessage("Register successful");
+                alertDialog.setMessage("Register successful!");
                 alertDialog.show();
                 if (mListener != null)
                     mListener.myMethod(result);
             }
         }
+        else if(type.equals("unregister"))
+        {
+            if(result.equals("error"))
+            {
+                alertDialog.setMessage("Deleting user unsuccessful!");
+                alertDialog.show();
+            }
+            else
+            {
+                alertDialog.setMessage("Deleting user successful!");
+                alertDialog.show();
+                if (mListener != null)
+                    mListener.myMethod(result);
+            }
+        }
+
 
 
     }

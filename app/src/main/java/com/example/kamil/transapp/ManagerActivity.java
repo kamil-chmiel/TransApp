@@ -24,5 +24,9 @@ public class ManagerActivity extends LoginActivity {
             startActivity(new Intent(ManagerActivity.this,AddUser.class));
     }
 
+    public void OnRemoveUser(View view){
+        startActivity(new Intent(ManagerActivity.this,RemoveUser.class));
+    }
+
 
 }

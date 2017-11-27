@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".AddUser"></activity>
         <activity android:name=".ManagerActivity"></activity>
+        <activity android:name=".RemoveUser"></activity>
     </application>
 
 </manifest>

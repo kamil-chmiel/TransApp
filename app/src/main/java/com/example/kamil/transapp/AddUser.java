@@ -15,7 +15,7 @@ public class AddUser extends ManagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
-        username = (EditText) findViewById(R.id.usernameText);
+        username = (EditText) findViewById(R.id.usernameToDeleteText);
         password = (EditText) findViewById(R.id.passwordText);
         workerType = (EditText) findViewById(R.id.typeText);
     }
