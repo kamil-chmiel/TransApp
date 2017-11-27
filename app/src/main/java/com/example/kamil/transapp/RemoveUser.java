@@ -30,7 +30,7 @@ public class RemoveUser extends ManagerActivity {
         BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
             @Override
             public void myMethod(String result) {
-
+                usernameToDelete.setText("");
             }
         });
 

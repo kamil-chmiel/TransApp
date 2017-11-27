@@ -94,7 +94,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         else if(type.equals("register"))
         {
             try {
-
                 String user_name = params[1];
                 String password = params[2];
                 String worker_type = params[3];
