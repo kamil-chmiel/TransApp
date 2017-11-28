@@ -32,13 +32,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void myMethod(String workerType) {
                     switch (workerType) {
-                        case "Menago":
+                        case "Manager":
                             startActivity(new Intent(LoginActivity.this,ManagerActivity.class));
                             break;
-                        case "Mag":
+                        case "WarehouseWorker":
                             startActivity(new Intent(LoginActivity.this,WarehouseworkerActivity.class));
                             break;
-                        case "Kiero":
+                        case "Driver":
                             startActivity(new Intent(LoginActivity.this,DriverActivity.class));
                             break;
                     }
