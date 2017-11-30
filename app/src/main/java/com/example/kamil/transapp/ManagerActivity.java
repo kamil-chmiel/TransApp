@@ -42,5 +42,10 @@ public class ManagerActivity extends LoginActivity {
         startActivity(new Intent(ManagerActivity.this,RemoveUser.class));
     }
 
+    public void OnTestButton(View view){
+        GetDataFromDatabase getData = new GetDataFromDatabase(this);
+        getData.execute("kierowca", "Imie,Nazwisko");
+    }
+
 
 }
