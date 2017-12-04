@@ -24,7 +24,7 @@ import java.net.URLEncoder;
 public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
 
     Context ctx;
-
+    String Data;
     private AlertDialog Message;
 
     GetDataFromDatabase(Context ctx){
@@ -53,9 +53,9 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
                 BufferedWriter tablesToGet = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
                 post_data +=  URLEncoder.encode("table_name", "UTF-8") + "=" + URLEncoder.encode(dataToGet[0], "UTF-8") + "&" //set table to get data from
-                + URLEncoder.encode("sql_query", "UTF-8") + "=" + URLEncoder.encode(dataToGet[1], "UTF-8") + "&"
-                        + URLEncoder.encode("query_type", "UTF-8") + "=" + URLEncoder.encode("UserData", "UTF-8") + "&"
-                        + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode("kchmiel", "UTF-8") + "&";
+                + URLEncoder.encode("column_name", "UTF-8") + "=" + URLEncoder.encode(dataToGet[1], "UTF-8") + "&"
+                        + URLEncoder.encode("condition", "UTF-8") + "=" + URLEncoder.encode(dataToGet[2], "UTF-8") + "&"
+                        + URLEncoder.encode("pattern", "UTF-8") + "=" + URLEncoder.encode(dataToGet[3], "UTF-8") + "&";
 
                 Log.d("tag",post_data);
                 tablesToGet.write(post_data);
@@ -101,7 +101,13 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
 
         Message.setMessage(result);
         Message.show();
+        Data = result;
 
+    }
+
+    public String getResult(){
+
+        return Data;
     }
 
 
