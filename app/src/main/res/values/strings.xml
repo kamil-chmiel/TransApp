@@ -2,4 +2,9 @@
     <string name="app_name">TransApp</string>
     <string name="title_activity_manager">ManagerActivity</string>
     <string name="title_activity_cleaner">Cleaner</string>
+    <string-array name="types">
+        <item>Manager</item>
+        <item>WarehouseWorker</item>
+        <item>Driver</item>
+    </string-array>
 </resources>
