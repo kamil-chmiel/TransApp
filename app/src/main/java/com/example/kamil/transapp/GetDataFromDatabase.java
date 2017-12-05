@@ -19,12 +19,13 @@ import java.net.URLEncoder;
 
 /**
  * Created by Adams on 2017-11-29.
+ * gets info from database
  */
 
 public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
 
     Context ctx;
-    private AlertDialog Message;
+    //private AlertDialog Message; --debug
     private AsyncResponse delegate = null;
 
     GetDataFromDatabase(Context ctx,AsyncResponse delegate){
@@ -38,8 +39,9 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
 
         String getDataURL = "http://limitlessgames.pl/getDataFromDatabase.php";
         String post_data = "";
+        StringBuilder temp = new StringBuilder(51); //longest info in database is VARCHAR 51
         String result = "";
-        String line = "";
+        String line;
 
             try {
 
@@ -58,7 +60,6 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
                         + URLEncoder.encode("condition", "UTF-8") + "=" + URLEncoder.encode(dataToGet[2], "UTF-8") + "&"
                         + URLEncoder.encode("pattern", "UTF-8") + "=" + URLEncoder.encode(dataToGet[3], "UTF-8") + "&";
 
-                Log.d("tag",post_data);
                 tablesToGet.write(post_data);
 
                 tablesToGet.flush();
@@ -70,10 +71,14 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
 
 
                 while ((line = valueFromTables.readLine()) != null) {
-                    result += line;
+                    temp.append(line);
                 }
 
+                result = temp.toString();
                 result = result.replaceAll("\\s", "");
+
+
+
                 valueFromTables.close();
                 inputStream.close();
                 httpURLConnection.disconnect();

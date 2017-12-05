@@ -12,10 +12,13 @@ import android.widget.TextView;
 
 /**
  * Created by Kamil on 26.11.2017.
+ * Manager Activity class
  */
 
 
 public class ManagerActivity extends LoginActivity {
+
+    String login;
 
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -37,15 +40,32 @@ public class ManagerActivity extends LoginActivity {
         setContentView(R.layout.activity_manager);
 
         Bundle b = getIntent().getExtras();
-        String login = b.getString("login");
+        if(b != null)
+            login = b.getString("login");
 
         NameToChange = (TextView) findViewById(R.id.show_manager_name);
         SurnameToChange = (TextView) findViewById(R.id.show_manager_surname);
 
         listView = (ListView) findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,orders);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
 
+        getUserInfo();
+
+
+
+    }
+
+    public void OnAddUser(View view){
+        startActivity(new Intent(ManagerActivity.this,AddUser.class));
+
+    }
+
+    public void OnRemoveUser(View view){
+        startActivity(new Intent(ManagerActivity.this,RemoveUser.class));
+    }
+
+    public void getUserInfo(){
 
         GetDataFromDatabase setName = new GetDataFromDatabase(this, new AsyncResponse(){
             @Override
@@ -67,17 +87,8 @@ public class ManagerActivity extends LoginActivity {
 
         });
 
-        setName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"menadzer","Imie","Login",login);
-        setSurname.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"menadzer","Nazwisko","Login",login);
-
-    }
-
-    public void OnAddUser(View view){
-        startActivity(new Intent(ManagerActivity.this,AddUser.class));
-    }
-
-    public void OnRemoveUser(View view){
-        startActivity(new Intent(ManagerActivity.this,RemoveUser.class));
+        setName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "menadzer", "Imie", "Login", login);
+        setSurname.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "menadzer", "Nazwisko", "Login", login);
     }
 
 

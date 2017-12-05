@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class DriverActivity extends LoginActivity {
 
     TextView NameToChange, SurnameToChange;
+    String login;
 
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -32,10 +33,13 @@ public class DriverActivity extends LoginActivity {
         SurnameToChange = (TextView) findViewById(R.id.show_driver_surname);
 
         Bundle b = getIntent().getExtras();
-        String login = b.getString("login");
+
+        if(b != null)
+            login = b.getString("login");
+
 
         listView = (ListView) findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,orders);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
 
         GetDataFromDatabase setName = new GetDataFromDatabase(this, new AsyncResponse(){

@@ -23,12 +23,15 @@ public class LoginActivity extends AppCompatActivity {
 
     public void OnLogin(View view){
 
-        final String username = UsernameET.getText().toString();
+
+        String temp = UsernameET.getText().toString();
+        temp = temp.replaceAll("\\s", "");
+        final String username = temp;
         String password = PasswordET.getText().toString();
 
         String type = "login";
 
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new AsyncResponse() {
+        UserLogin userLogin = new UserLogin(this, new AsyncResponse() {
             @Override
             public void returnResult(String workerType) {
                     switch (workerType) {
@@ -59,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-        bgWorker.execute(type, username, password);
+        userLogin.execute(type, username, password);
 
     }
 

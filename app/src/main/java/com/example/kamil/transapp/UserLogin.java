@@ -19,18 +19,19 @@ import java.net.URLEncoder;
 
 /**
  * Created by Kamil on 25.11.2017.
+ *  Login,Register and Unregister service
  */
 
 
 
-public class BackgroundWorker extends AsyncTask<String,Void,String> {
+public class UserLogin extends AsyncTask<String,Void,String> {
 
     private AsyncResponse delegate = null;
     Context context;
-    AlertDialog alertDialog;
+    private AlertDialog alertDialog;
     String type;
 
-    BackgroundWorker (Context ctx, AsyncResponse delegate){
+    UserLogin(Context ctx, AsyncResponse delegate){
         context = ctx;
         this.delegate = delegate;
     }
@@ -42,6 +43,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         String login_url = "http://limitlessgames.pl/login.php";
         String addUser_url = "http://limitlessgames.pl/register.php";
         String removeUser_url = "http://limitlessgames.pl/unregister.php";
+        StringBuilder temp = new StringBuilder(51); //longest info in database is VARCHAR 51
+        String result= "";
+        String line;
         type = params[0];
 
 
@@ -49,7 +53,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             try {
                 String user_name = params[1];
                 String password = params[2];
+
                 URL url = new URL(login_url);
+
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -70,14 +76,15 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-                String result="";
-                String line="";
+
 
 
                 while((line = bufferedReader.readLine()) != null)
                 {
-                    result += line;
+                    temp.append(line);
                 }
+
+                result = temp.toString();
                 result = result.replaceAll("\\s", "");
                 bufferedReader.close();
                 inputStream.close();
@@ -119,8 +126,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-                String result="";
-                String line="";
 
 
                 while((line = bufferedReader.readLine()) != null)
@@ -156,7 +161,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
                 String post_data = URLEncoder.encode("user_name", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8");
-                Log.d("tag",post_data);
                 bufferedWriter.write(post_data);
 
                 bufferedWriter.flush();
@@ -165,8 +169,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-                String result="";
-                String line="";
 
 
                 while((line = bufferedReader.readLine()) != null)

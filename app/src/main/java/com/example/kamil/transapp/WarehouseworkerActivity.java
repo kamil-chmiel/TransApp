@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 /**
  * Created by Kamil on 26.11.2017.
+ * WarehouseWorker Activity class
  */
 
 public class WarehouseworkerActivity extends LoginActivity {
 
     TextView NameToChange, SurnameToChange;
+
+    String login;
 
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -36,11 +39,12 @@ public class WarehouseworkerActivity extends LoginActivity {
         SurnameToChange = (TextView) findViewById(R.id.show_warehouse_worker_surname);
 
         Bundle b = getIntent().getExtras();
-        String login = b.getString("login");
+        if(b != null)
+            login = b.getString("login");
 
 
         listView = (ListView) findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,orders);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
 
 
