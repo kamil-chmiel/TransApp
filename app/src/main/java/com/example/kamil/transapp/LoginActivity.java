@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
             public void myMethod(String workerType) {
                     switch (workerType) {
                         case "Manager":
-                            startActivity(new Intent(LoginActivity.this,ManagerActivity.class));
+                            startActivity(new Intent(LoginActivity.this,MainManagerActivity.class));
                             break;
                         case "WarehouseWorker":
                             startActivity(new Intent(LoginActivity.this,WarehouseworkerActivity.class));

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen3"
+    tools:context="com.example.kamil.transapp.activity_manager_tasks">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add new task"
+            android:textColor="@android:color/white"
+            android:textSize="40dp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="46dp" />
+
+        <TextView
+            android:id="@+id/orderNum"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:text="Order no. #0001"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Customer"
+            android:inputType="textPersonName"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="ItemIDs"
+            android:inputType="textPersonName"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Describtion"
+            android:inputType="textPersonName"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Deadline"
+            android:inputType="date"
+            android:textColor="#ffffff" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+
+        <Spinner
+            android:layout_width="260dp"
+            android:layout_height="35dp" />
+
+        <Spinner
+            android:layout_width="260dp"
+            android:layout_height="35dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="61dp" />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Add" />
+
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
