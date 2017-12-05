@@ -40,9 +40,9 @@ public class AddUser extends ManagerActivity {
 
 
         String type = "register";
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
+        BackgroundWorker bgWorker = new BackgroundWorker(this, new AsyncResponse() {
             @Override
-            public void myMethod(String result) {
+            public void returnResult(String result) {
                 username.setText("");
                 password.setText("");
             }

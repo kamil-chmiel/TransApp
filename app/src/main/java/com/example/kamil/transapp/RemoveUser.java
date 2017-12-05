@@ -27,9 +27,9 @@ public class RemoveUser extends ManagerActivity {
 
         String type = "unregister";
 
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
+        BackgroundWorker bgWorker = new BackgroundWorker(this, new AsyncResponse() {
             @Override
-            public void myMethod(String result) {
+            public void returnResult(String result) {
                 usernameToDelete.setText("");
             }
         });
