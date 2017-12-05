@@ -27,12 +27,12 @@ import java.net.URLEncoder;
 public class UserLogin extends AsyncTask<String,Void,String> {
 
     private AsyncResponse delegate = null;
-    Context context;
+    private Context ctx;
     private AlertDialog alertDialog;
     private String type;
 
     UserLogin(Context ctx, AsyncResponse delegate){
-        context = ctx;
+        this.ctx = ctx;
         this.delegate = delegate;
     }
 
@@ -44,7 +44,7 @@ public class UserLogin extends AsyncTask<String,Void,String> {
         String addUser_url = "http://limitlessgames.pl/register.php";
         String removeUser_url = "http://limitlessgames.pl/unregister.php";
         StringBuilder temp = new StringBuilder(51); //longest info in database is VARCHAR 51
-        String result= "";
+        String result;
         String line;
         type = params[0];
 
@@ -128,8 +128,10 @@ public class UserLogin extends AsyncTask<String,Void,String> {
 
 
                     while ((line = bufferedReader.readLine()) != null) {
-                        result += line;
+                        temp.append(line);
                     }
+
+                    result = temp.toString();
                     result = result.replaceAll("\\s", "");
                     bufferedReader.close();
                     inputStream.close();
@@ -168,10 +170,11 @@ public class UserLogin extends AsyncTask<String,Void,String> {
                     InputStream inputStream = httpURLConnection.getInputStream();
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
 
-
                     while ((line = bufferedReader.readLine()) != null) {
-                        result += line;
+                        temp.append(line);
                     }
+
+                    result = temp.toString();
                     result = result.replaceAll("\\s", "");
                     bufferedReader.close();
                     inputStream.close();
@@ -194,7 +197,7 @@ public class UserLogin extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPreExecute() {
-        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog = new AlertDialog.Builder(ctx).create();
 
         alertDialog.setTitle("Action Status!");
 

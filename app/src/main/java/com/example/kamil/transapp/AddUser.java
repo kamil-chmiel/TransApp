@@ -40,7 +40,7 @@ public class AddUser extends ManagerActivity {
 
 
         String type = "register";
-        UserLogin userLogin = new UserLogin(this, new AsyncResponse() {
+        UserLogin userLogin = new UserLogin(this,new AsyncResponse() {
             @Override
             public void returnResult(String result) {
                 username.setText("");
