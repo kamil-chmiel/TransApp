@@ -29,7 +29,7 @@ public class UserLogin extends AsyncTask<String,Void,String> {
     private AsyncResponse delegate = null;
     Context context;
     private AlertDialog alertDialog;
-    String type;
+    private String type;
 
     UserLogin(Context ctx, AsyncResponse delegate){
         context = ctx;
@@ -49,154 +49,154 @@ public class UserLogin extends AsyncTask<String,Void,String> {
         type = params[0];
 
 
-        if(type.equals("login")) {
-            try {
-                String user_name = params[1];
-                String password = params[2];
+        switch (type) {
+            case "login": {
+                try {
+                    String user_name = params[1];
+                    String password = params[2];
 
-                URL url = new URL(login_url);
-
-
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-
-                String post_data = URLEncoder.encode("user_name", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"
-                        + URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
-
-                bufferedWriter.write(post_data);
-
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                    URL url = new URL(login_url);
 
 
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
 
-                while((line = bufferedReader.readLine()) != null)
-                {
-                    temp.append(line);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                    String post_data = URLEncoder.encode("user_name", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&"
+                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+
+                    bufferedWriter.write(post_data);
+
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+
+
+                    while ((line = bufferedReader.readLine()) != null) {
+                        temp.append(line);
+                    }
+
+                    result = temp.toString();
+                    result = result.replaceAll("\\s", "");
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+
+                    return result;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-                result = temp.toString();
-                result = result.replaceAll("\\s", "");
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return result;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e){
-                e.printStackTrace();
+                break;
             }
-        }
-        else if(type.equals("register"))
-        {
-            try {
-                String user_name = params[1];
-                String password = params[2];
-                String worker_type = params[3];
-                URL url = new URL(addUser_url);
+            case "register": {
+                try {
+                    String user_name = params[1];
+                    String password = params[2];
+                    String worker_type = params[3];
+                    URL url = new URL(addUser_url);
 
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
 
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                String post_data = URLEncoder.encode("user_name", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"
-                        + URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8") +"&"
-                        + URLEncoder.encode("worker_type", "UTF-8")+"="+URLEncoder.encode(worker_type,"UTF-8");
+                    String post_data = URLEncoder.encode("user_name", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&"
+                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8") + "&"
+                            + URLEncoder.encode("worker_type", "UTF-8") + "=" + URLEncoder.encode(worker_type, "UTF-8");
 
-                bufferedWriter.write(post_data);
+                    bufferedWriter.write(post_data);
 
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
 
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
 
 
-                while((line = bufferedReader.readLine()) != null)
-                {
-                    result += line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    result = result.replaceAll("\\s", "");
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+
+                    return result;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                result = result.replaceAll("\\s", "");
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return result;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e){
-                e.printStackTrace();
+                break;
             }
-        }
-        else if(type.equals("unregister"))
-        {
-            try {
+            case "unregister": {
+                try {
 
-                String user_name = params[1];
-                URL url = new URL(removeUser_url);
+                    String user_name = params[1];
+                    URL url = new URL(removeUser_url);
 
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
 
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                String post_data = URLEncoder.encode("user_name", "UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8");
-                bufferedWriter.write(post_data);
+                    String post_data = URLEncoder.encode("user_name", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8");
+                    bufferedWriter.write(post_data);
 
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
 
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
 
 
-                while((line = bufferedReader.readLine()) != null)
-                {
-                    result += line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    result = result.replaceAll("\\s", "");
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+
+                    return result;
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                result = result.replaceAll("\\s", "");
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return result;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e){
-                e.printStackTrace();
+                break;
             }
-        }
 
+
+        }
         return null;
     }
 
     @Override
     protected void onPreExecute() {
         alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("Login Status");
 
+        alertDialog.setTitle("Action Status!");
 
     }
 
@@ -204,47 +204,43 @@ public class UserLogin extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result) {
 
 
-        if(type.equals("login"))
-        {
-            if(result.equals("error")) {
+        switch (type) {
+            case "login": {
+                if (result.equals("error")) {
 
-                alertDialog.setMessage("Wrong username or password. ");
-                alertDialog.show();
+                    alertDialog.setMessage("Wrong username or password. ");
+                    alertDialog.show();
+                } else {
+                    if (delegate != null)
+                        delegate.returnResult(result);
+                }
+                break;
             }
-            else
-            {
-                if (delegate != null)
-                    delegate.returnResult(result);
+
+            case"register": {
+                if (result.equals("error")) {
+                    alertDialog.setMessage("Register unsuccessful!");
+                    alertDialog.show();
+                } else {
+                    alertDialog.setMessage("Register successful!");
+                    alertDialog.show();
+                    if (delegate != null)
+                        delegate.returnResult(result);
+                }
+                break;
             }
-        }
-        else if(type.equals("register"))
-        {
-            if(result.equals("error"))
-            {
-                alertDialog.setMessage("Register unsuccessful!");
-                alertDialog.show();
-            }
-            else
-            {
-                alertDialog.setMessage("Register successful!");
-                alertDialog.show();
-                if (delegate != null)
-                    delegate.returnResult(result);
-            }
-        }
-        else if(type.equals("unregister"))
-        {
-            if(result.equals("error"))
-            {
-                alertDialog.setMessage("Deleting user unsuccessful!");
-                alertDialog.show();
-            }
-            else
-            {
-                alertDialog.setMessage("Deleting user successful!");
-                alertDialog.show();
-                if (delegate != null)
-                    delegate.returnResult(result);
+
+            case "unregister": {
+                if (result.equals("error")) {
+                    alertDialog.setMessage("Deleting user unsuccessful!");
+                    alertDialog.show();
+                } else {
+                    alertDialog.setMessage("Deleting user successful!");
+                    alertDialog.show();
+                    if (delegate != null)
+                        delegate.returnResult(result);
+                }
+                break;
             }
         }
 
