@@ -24,7 +24,7 @@ import java.net.URLEncoder;
 
 public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
 
-    Context ctx;
+    private Context ctx;
     //private AlertDialog Message; --debug
     private AsyncResponse delegate = null;
 
@@ -59,6 +59,7 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
                 + URLEncoder.encode("column_name", "UTF-8") + "=" + URLEncoder.encode(dataToGet[1], "UTF-8") + "&"
                         + URLEncoder.encode("condition", "UTF-8") + "=" + URLEncoder.encode(dataToGet[2], "UTF-8") + "&"
                         + URLEncoder.encode("pattern", "UTF-8") + "=" + URLEncoder.encode(dataToGet[3], "UTF-8") + "&";
+
 
                 tablesToGet.write(post_data);
 
