@@ -3,7 +3,6 @@ package com.example.kamil.transapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -24,23 +23,37 @@ public class LoginActivity extends AppCompatActivity {
 
     public void OnLogin(View view){
 
-        String username = UsernameET.getText().toString();
+        final String username = UsernameET.getText().toString();
         String password = PasswordET.getText().toString();
 
         String type = "login";
 
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
+        BackgroundWorker bgWorker = new BackgroundWorker(this, new AsyncResponse() {
             @Override
-            public void myMethod(String workerType) {
+            public void returnResult(String workerType) {
                     switch (workerType) {
                         case "Manager":
-                            startActivity(new Intent(LoginActivity.this,ManagerActivity.class));
+
+                            Intent managerIntent = new Intent(LoginActivity.this, ManagerActivity.class);
+                            managerIntent.putExtra("login", username); //passing login to ManagerActivity
+                            startActivity(managerIntent);
+
                             break;
+
                         case "WarehouseWorker":
-                            startActivity(new Intent(LoginActivity.this,WarehouseworkerActivity.class));
+
+                            Intent warehouseWorkerIntent = new Intent(LoginActivity.this, WarehouseworkerActivity.class);
+                            warehouseWorkerIntent.putExtra("login", username); //passing login to WarehouseworkerActivity
+                            startActivity(warehouseWorkerIntent);
+
                             break;
+
                         case "Driver":
-                            startActivity(new Intent(LoginActivity.this,DriverActivity.class));
+
+                            Intent driverIntent = new Intent(LoginActivity.this, DriverActivity.class);
+                            driverIntent.putExtra("login", username); //passing login to DriverActivity
+                            startActivity(driverIntent);
+
                             break;
                     }
 

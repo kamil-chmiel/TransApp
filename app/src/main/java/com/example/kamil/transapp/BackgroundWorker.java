@@ -25,14 +25,14 @@ import java.net.URLEncoder;
 
 public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
-    private ResultCheck mListener;
+    private AsyncResponse delegate = null;
     Context context;
     AlertDialog alertDialog;
     String type;
 
-    BackgroundWorker (Context ctx, ResultCheck mListener){
+    BackgroundWorker (Context ctx, AsyncResponse delegate){
         context = ctx;
-        this.mListener = mListener;
+        this.delegate = delegate;
     }
 
     @Override
@@ -211,8 +211,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             }
             else
             {
-                if (mListener != null)
-                    mListener.myMethod(result);
+                if (delegate != null)
+                    delegate.returnResult(result);
             }
         }
         else if(type.equals("register"))
@@ -226,8 +226,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             {
                 alertDialog.setMessage("Register successful!");
                 alertDialog.show();
-                if (mListener != null)
-                    mListener.myMethod(result);
+                if (delegate != null)
+                    delegate.returnResult(result);
             }
         }
         else if(type.equals("unregister"))
@@ -241,8 +241,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             {
                 alertDialog.setMessage("Deleting user successful!");
                 alertDialog.show();
-                if (mListener != null)
-                    mListener.myMethod(result);
+                if (delegate != null)
+                    delegate.returnResult(result);
             }
         }
 
@@ -250,10 +250,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
     }
 
-    private boolean myMethod(boolean value) {
-        //handle value
-        return value;
-    }
 
     @Override
     protected void onProgressUpdate(Void... params) {

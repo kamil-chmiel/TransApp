@@ -24,11 +24,12 @@ import java.net.URLEncoder;
 public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
 
     Context ctx;
-    String Data;
     private AlertDialog Message;
+    private AsyncResponse delegate = null;
 
-    GetDataFromDatabase(Context ctx){
+    GetDataFromDatabase(Context ctx,AsyncResponse delegate){
         this.ctx = ctx;
+        this.delegate = delegate;
     }
 
     @Override
@@ -65,7 +66,7 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
                 outputStream.close();
 
                 InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader valueFromTables = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                BufferedReader valueFromTables = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
 
                 while ((line = valueFromTables.readLine()) != null) {
@@ -91,24 +92,23 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
     @Override
     protected void onPreExecute() {
 
-        Message = new AlertDialog.Builder(ctx).create();
-        Message.setTitle("Returning Info !");
+       // Message = new AlertDialog.Builder(ctx).create();
+       // Message.setTitle("Returning Info !"); --debug
 
     }
 
     @Override
     protected void onPostExecute(String result) {
 
-        Message.setMessage(result);
-        Message.show();
-        Data = result;
+       // Message.setMessage(result);
+        //Message.show(); --debug
+
+        if (delegate != null)
+            delegate.returnResult(result);
 
     }
 
-    public String getResult(){
 
-        return Data;
-    }
 
 
 }

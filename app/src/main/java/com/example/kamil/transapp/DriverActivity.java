@@ -1,15 +1,17 @@
 package com.example.kamil.transapp;
 
 
-import android.content.Intent;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import android.widget.TextView;
 
 
 public class DriverActivity extends LoginActivity {
+
+    TextView NameToChange, SurnameToChange;
 
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -26,9 +28,41 @@ public class DriverActivity extends LoginActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
 
+        NameToChange = (TextView) findViewById(R.id.show_driver_name);
+        SurnameToChange = (TextView) findViewById(R.id.show_driver_surname);
+
+        Bundle b = getIntent().getExtras();
+        String login = b.getString("login");
+
         listView = (ListView) findViewById(R.id.tasks);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
+
+        GetDataFromDatabase setName = new GetDataFromDatabase(this, new AsyncResponse(){
+            @Override
+            public void returnResult(String Name) {
+
+                NameToChange.setText(Name);
+
+            }
+
+        });
+
+        GetDataFromDatabase setSurname = new GetDataFromDatabase(this, new AsyncResponse(){
+            @Override
+            public void returnResult(String Name) {
+
+                SurnameToChange.setText(Name);
+
+            }
+
+        });
+
+        setName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"kierowca","Imie","Login",login);
+        setSurname.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"kierowca","Nazwisko","Login",login);
+
+
+
     }
 
 
