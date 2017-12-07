@@ -34,6 +34,13 @@ public class ManagerActivity extends LoginActivity {
         listView.setAdapter(adapter);
     }
 
+    public void OnResume(){
+        listView = (ListView) findViewById(R.id.tasks);
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,orders);
+        listView.setAdapter(adapter);
+    }
+
+
     public void OnAddUser(View view){
             startActivity(new Intent(ManagerActivity.this,AddUser.class));
     }

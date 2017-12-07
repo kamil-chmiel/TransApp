@@ -1,13 +1,18 @@
 package com.example.kamil.transapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +25,11 @@ public class MainManagerActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-    private int[] layouts;
+    private int[] layouts; // pages in manager menu
     private TextView[] dots;
     private LinearLayout dotsLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,8 @@ public class MainManagerActivity extends AppCompatActivity {
         dotsLayout=(LinearLayout)findViewById(R.id.layoutDots);
 
         layouts = new int[]{R.layout.activity_manager_schedule,R.layout.activity_manager,R.layout.activity_manager_tasks};
+
+
         addBottomDots(1);
         changeStatusBarColor();
         viewPagerAdapter = new ViewPagerAdapter();
@@ -45,6 +54,9 @@ public class MainManagerActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(viewListener);
         viewPager.setCurrentItem(1);
     }
+
+
+
 
     private void addBottomDots(int position)
     {
@@ -78,6 +90,9 @@ public class MainManagerActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
+            /*Intent intent = new Intent(MainManagerActivity.this, ManagerActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(intent);*/
         }
 
         @Override
@@ -101,8 +116,10 @@ public class MainManagerActivity extends AppCompatActivity {
         private LayoutInflater layoutInflater;
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, int position)
+        {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
             View v = layoutInflater.inflate(layouts[position],container,false);
             container.addView(v);
             return v;
@@ -115,7 +132,7 @@ public class MainManagerActivity extends AppCompatActivity {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return  view==object;
+            return view==object;
         }
 
         @Override
