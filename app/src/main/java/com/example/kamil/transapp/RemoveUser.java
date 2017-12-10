@@ -38,6 +38,5 @@ public class RemoveUser extends ManagerMenu {
         userLogin.execute(type, user_name);
     }
 
-
 }
 

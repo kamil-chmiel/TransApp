@@ -79,7 +79,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
         listView.setAdapter(adapter);
 
         // PODPIECIE BUTTONOW
-        addUserButton = view.findViewById(R.id.add_user_action);
+        addUserButton = view.findViewById(R.id.addUserButton);
         addUserButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -89,7 +89,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
                 startActivity(myIntent);
             }
         });
-        removeUserButton = view.findViewById(R.id.remove_user_action);
+        removeUserButton = view.findViewById(R.id.removeUserButton);
         removeUserButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

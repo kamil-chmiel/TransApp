@@ -51,6 +51,4 @@ public class AddUser extends ManagerMenu {
         userLogin.execute(type, user_name, _password, worker_type);
     }
 
-
-
 }

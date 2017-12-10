@@ -2,4 +2,15 @@
     <string name="app_name">TransApp</string>
     <string name="title_activity_manager">ManagerActivity</string>
     <string name="title_activity_cleaner">Cleaner</string>
+    <string-array name="types">
+        <item>Manager</item>
+        <item>WarehouseWorker</item>
+        <item>Driver</item>
+    </string-array>
+    <string name="title_activity_three_screen_menu">ThreeScreenMenu</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_manager_schedule">activity_manager_schedule</string>
+    <string name="title_activity_manager_tasks">activity_manager_tasks</string>
 </resources>

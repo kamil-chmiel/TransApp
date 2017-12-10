@@ -1,4 +1,4 @@
-package com.example.kamil.transapp;
+package objects;
 
 public class Order {
 

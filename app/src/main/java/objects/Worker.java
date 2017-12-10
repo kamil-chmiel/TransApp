@@ -1,4 +1,4 @@
-package com.example.kamil.transapp;
+package objects;
 
 /**
  * Created by Kamil on 26.11.2017.
