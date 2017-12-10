@@ -6,9 +6,10 @@ import android.widget.EditText;
 
 /**
  * Created by Adams on 2017-11-27.
+ * Removes user based on login
  */
 
-public class RemoveUser extends ManagerActivity {
+public class RemoveUser extends ManagerMenu {
 
     EditText usernameToDelete;
 
@@ -27,14 +28,16 @@ public class RemoveUser extends ManagerActivity {
 
         String type = "unregister";
 
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
+        UserLogin userLogin = new UserLogin(this, new AsyncResponse() {
             @Override
-            public void myMethod(String result) {
+            public void returnResult(String result) {
                 usernameToDelete.setText("");
             }
         });
 
-        bgWorker.execute(type, user_name);
+        userLogin.execute(type, user_name);
     }
+
+
 }
 
