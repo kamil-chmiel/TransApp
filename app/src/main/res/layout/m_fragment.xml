@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen2"
+    android:background="@color/dot_light_screen2"
     android:orientation="vertical"
-    tools:context="com.example.kamil.transapp.ManagerActivity">
+    tools:context="com.example.kamil.transapp.MFragment">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"
@@ -158,16 +158,17 @@
         android:id="@+id/adding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:gravity="bottom"
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/add_User"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:drawable/alert_light_frame">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/add_user_action"
+                android:id="@+id/addUserButton"
                 android:layout_width="56dp"
                 android:layout_height="51dp"
                 android:clickable="true"
@@ -175,30 +176,30 @@
                 android:onClick="OnAddUser"
                 app:backgroundTint="@android:color/holo_green_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.234"
+                app:layout_constraintHorizontal_bias="0.747"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.75"
+                app:layout_constraintVertical_bias="0.52"
                 app:srcCompat="@drawable/plus_add_button" />
 
             <TextView
                 android:id="@+id/add_remove_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add/Remove User"
-                android:textColor="#000000"
+                android:text="Manage users:"
+                android:textColor="#ffffff"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintHorizontal_bias="0.205"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.046" />
+                app:layout_constraintVertical_bias="0.509" />
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/remove_user_action"
+                android:id="@+id/removeUserButton"
                 android:layout_width="56dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="24dp"

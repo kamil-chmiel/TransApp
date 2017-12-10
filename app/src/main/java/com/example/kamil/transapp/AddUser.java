@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
-public class AddUser extends ManagerActivity {
+public class AddUser extends ManagerMenu {
 
     EditText username, password;
     Spinner workerType;
@@ -49,11 +49,6 @@ public class AddUser extends ManagerActivity {
         });
 
         userLogin.execute(type, user_name, _password, worker_type);
-    }
-
-    @Override
-    public void getUserInfo() {
-        // overriding so AddUser wont try to set user name and surname
     }
 
 }

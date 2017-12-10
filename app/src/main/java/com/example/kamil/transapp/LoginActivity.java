@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                     switch (workerType) {
                         case "Manager":
 
-                            Intent managerIntent = new Intent(LoginActivity.this, ManagerActivity.class);
+                            Intent managerIntent = new Intent(LoginActivity.this, ManagerMenu.class);
                             managerIntent.putExtra("login", username); //passing login to ManagerActivity
                             startActivity(managerIntent);
 

@@ -12,8 +12,8 @@
     <color name="dot_dark_screen2">#EF6C00</color>
     <color name="dot_dark_screen3">#00695C</color>
 
-    <color name="dot_light_screen1">#F8BBD0</color>
-    <color name="dot_light_screen2">#FFE0B2</color>
+    <color name="dot_light_screen1">#d7cb89</color>
+    <color name="dot_light_screen2">#6b93ba</color>
     <color name="dot_light_screen3">#80CBC4</color>
 
     <array name="dot_active">

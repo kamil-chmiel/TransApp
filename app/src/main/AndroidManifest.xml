@@ -18,19 +18,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddUser" />
-        <activity android:name=".ManagerActivity" />
         <activity android:name=".DriverActivity" />
         <activity android:name=".WarehouseworkerActivity" />
         <activity android:name=".RemoveUser" />
-        <activity
-            android:name=".activity_manager_schedule"
-            android:label="@string/title_activity_manager_schedule"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity_manager_tasks"
-            android:label="@string/title_activity_manager_tasks"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainManagerActivity"></activity>
+        <activity android:name=".ManagerMenu" />
     </application>
 
 </manifest>

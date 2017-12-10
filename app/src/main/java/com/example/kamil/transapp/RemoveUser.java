@@ -9,7 +9,7 @@ import android.widget.EditText;
  * Removes user based on login
  */
 
-public class RemoveUser extends ManagerActivity {
+public class RemoveUser extends ManagerMenu {
 
     EditText usernameToDelete;
 
@@ -38,9 +38,5 @@ public class RemoveUser extends ManagerActivity {
         userLogin.execute(type, user_name);
     }
 
-    @Override
-    public void getUserInfo() {
-        // overriding so RemoveUser wont try to set user name and surname
-    }
 }
 
