@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String type = "login";
 
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
+        UserLogin bgWorker = new BackgroundWorker(this, new ResultCheck() {
             @Override
             public void myMethod(String workerType) {
                     switch (workerType) {
