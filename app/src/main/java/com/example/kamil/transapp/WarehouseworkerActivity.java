@@ -1,18 +1,23 @@
 package com.example.kamil.transapp;
 
 
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 /**
  * Created by Kamil on 26.11.2017.
+ * WarehouseWorker Activity class
  */
 
 public class WarehouseworkerActivity extends LoginActivity {
+
+    TextView NameToChange, SurnameToChange;
+
+    String login;
 
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -29,9 +34,45 @@ public class WarehouseworkerActivity extends LoginActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warehouse_worker);
 
+
+        NameToChange = (TextView) findViewById(R.id.show_warehouse_worker_name);
+        SurnameToChange = (TextView) findViewById(R.id.show_warehouse_worker_surname);
+
+        Bundle b = getIntent().getExtras();
+        if(b != null)
+            login = b.getString("login");
+
+
         listView = (ListView) findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,orders);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
+
+
+
+        GetDataFromDatabase setName = new GetDataFromDatabase(this, new AsyncResponse(){
+            @Override
+            public void returnResult(String Name) {
+
+                NameToChange.setText(Name);
+
+            }
+
+        });
+
+        GetDataFromDatabase setSurname = new GetDataFromDatabase(this, new AsyncResponse(){
+            @Override
+            public void returnResult(String Name) {
+
+                SurnameToChange.setText(Name);
+
+            }
+
+        });
+
+        setName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"pracownik_magazynu","Imie","Login",login);
+        setSurname.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"pracownik_magazynu","Nazwisko","Login",login);
+
+
     }
 
 

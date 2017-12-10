@@ -22,12 +22,12 @@ public class AddUser extends ManagerActivity {
         password = (EditText) findViewById(R.id.passwordText);
         workerType = (Spinner) findViewById(R.id.typeBox);
 
-        ArrayAdapter<String> dropDownAdapter = new ArrayAdapter<String>(AddUser.this,
+        ArrayAdapter<String> dropDownAdapter = new ArrayAdapter<>(AddUser.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.types));
 
         dropDownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         workerType.setAdapter(dropDownAdapter);
-        Log.d("Mytag", workerType.toString());
+
     }
 
 
@@ -40,14 +40,20 @@ public class AddUser extends ManagerActivity {
 
 
         String type = "register";
-        BackgroundWorker bgWorker = new BackgroundWorker(this, new ResultCheck() {
+        UserLogin userLogin = new UserLogin(this,new AsyncResponse() {
             @Override
-            public void myMethod(String result) {
+            public void returnResult(String result) {
                 username.setText("");
                 password.setText("");
             }
         });
 
-        bgWorker.execute(type, user_name, _password, worker_type);
+        userLogin.execute(type, user_name, _password, worker_type);
     }
+
+    @Override
+    public void getUserInfo() {
+        // overriding so AddUser wont try to set user name and surname
+    }
+
 }
