@@ -24,27 +24,38 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="46dp" />
+            android:layout_height="35dp" />
 
         <TextView
             android:id="@+id/orderNum"
             android:layout_width="match_parent"
             android:layout_height="43dp"
-            android:text="Order no. #0001"
+            android:text="Order no. #0000"
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <EditText
+        <TextView
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Customer"
-            android:inputType="textPersonName"
-            android:textColor="#ffffff" />
+            android:text="Details:"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:text="Customer:" />
+
+        <Spinner
+            android:id="@+id/customerSpinner"
+            android:layout_width="260dp"
+            android:layout_height="35dp" />
 
         <EditText
+            android:id="@+id/itemsText"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -53,14 +64,16 @@
             android:textColor="#ffffff" />
 
         <EditText
+            android:id="@+id/describtionText"
             android:layout_width="260dp"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:ems="10"
             android:hint="Describtion"
             android:inputType="textPersonName"
             android:textColor="#ffffff" />
 
         <EditText
+            android:id="@+id/deadlineText"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -70,21 +83,42 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="27dp" />
+            android:layout_height="19dp" />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:text="Workers:"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:text="Warehouse Worker:" />
 
         <Spinner
+            android:id="@+id/workersSpinner"
             android:layout_width="260dp"
             android:layout_height="35dp" />
 
-        <Spinner
+        <TextView
             android:layout_width="260dp"
-            android:layout_height="35dp" />
+            android:layout_height="wrap_content"
+            android:text="Driver:" />
+
+        <Spinner
+            android:id="@+id/driverSpinner"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="61dp" />
 
         <Button
+            android:id="@+id/addTaskButton"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Add" />

@@ -3,7 +3,6 @@ package com.example.kamil.transapp;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -11,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MFragment extends Fragment implements View.OnClickListener {
 
@@ -25,14 +25,8 @@ public class MFragment extends Fragment implements View.OnClickListener {
     private FloatingActionButton removeUserButton;
     ListView listView;
     ArrayAdapter<String> adapter;
-    TextView NameToChange, SurnameToChange;
-    String[] orders = {
-            "Order #120001 24-11-2017 11:31:32",
-            "Order #120249 24-11-2017 9:12:11",
-            "Order #127233 25-11-2017 16:25:42",
-            "Order #124641 26-11-2017 10:46:01",
-            "Order #127820 27-11-2017 8:54:55"
-    };
+    TextView nameToChange, surnameToChange;
+    ArrayList<String> orders;
 
     public MFragment() {
         // Required empty public constructor
@@ -65,18 +59,16 @@ public class MFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.m_fragment, container, false);
-
+        listView = (ListView) view.findViewById(R.id.tasks);
 
 
         //UZUPELNIENIE DANYCH USERA
-        NameToChange = (TextView) view.findViewById(R.id.show_manager_name);
-        SurnameToChange = (TextView) view.findViewById(R.id.show_manager_surname);
-        getUserInfo();
+        nameToChange = (TextView) view.findViewById(R.id.show_manager_name);
+        surnameToChange = (TextView) view.findViewById(R.id.show_manager_surname);
+        setUserInfo(login);
 
         // UZUPELNIENIE LISTY TASKOW
-        listView = (ListView) view.findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,orders);
-        listView.setAdapter(adapter);
+        fillActiveTasks();
 
         // PODPIECIE BUTTONOW
         addUserButton = view.findViewById(R.id.addUserButton);
@@ -102,6 +94,12 @@ public class MFragment extends Fragment implements View.OnClickListener {
 
 
         return view;
+    }
+
+    private void fillActiveTasks() {
+        orders = DatabaseHandler.getActiveTasks();
+        adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,orders);
+        listView.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -130,33 +128,21 @@ public class MFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+
     }
 
 
-    public void getUserInfo(){
+    public void setUserInfo(String login){
 
-        GetDataFromDatabase setName = new GetDataFromDatabase(getContext(), new AsyncResponse(){
-            @Override
-            public void returnResult(String Name) {
-
-                NameToChange.setText(Name);
-
-            }
-
-        });
-
-        GetDataFromDatabase setSurname = new GetDataFromDatabase(getContext(), new AsyncResponse(){
-            @Override
-            public void returnResult(String Name) {
-
-                SurnameToChange.setText(Name);
-
-            }
-
-        });
-
-        setName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "menadzer", "Imie", "Login", login);
-        setSurname.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "menadzer", "Nazwisko", "Login", login);
+        String info[] = DatabaseHandler.getManagerInfo(login);
+        if(info.length>0)
+        {
+            //SessionController.setPeselNumber(info[0]);
+            nameToChange.setText(info[1]);
+            surnameToChange.setText(info[2]);
+            //sessSessionController.setAccountType("Manager");
+        }
     }
+
 
 }

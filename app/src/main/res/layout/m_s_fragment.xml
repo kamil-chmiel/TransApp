@@ -22,6 +22,40 @@
             android:textSize="40dp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/todayText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monday 01.01.2018"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="36dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your schedule:"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/scheduleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="36sp"
+            android:text="Monday: \nTuesday: \nTuesday: \nTuesday: \nTuesday:"
+            android:textColor="#ffffff" />
+
 
     </LinearLayout>
 
