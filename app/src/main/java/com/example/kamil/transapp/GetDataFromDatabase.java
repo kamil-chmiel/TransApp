@@ -79,7 +79,6 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
                 result = result.replaceAll("\\s", "");
 
 
-
                 valueFromTables.close();
                 inputStream.close();
                 httpURLConnection.disconnect();
@@ -110,7 +109,11 @@ public class GetDataFromDatabase extends AsyncTask<String,Void,String>  {
         //Message.show(); --debug
 
         if (delegate != null)
+        {
+
             delegate.returnResult(result);
+        }
+
 
     }
 

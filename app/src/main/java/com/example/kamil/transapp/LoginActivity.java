@@ -20,8 +20,63 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-
     public void OnLogin(View view){
+
+
+        String temp = UsernameET.getText().toString();
+        temp = temp.replaceAll("\\s", "");
+        final String username = temp;
+        String password = PasswordET.getText().toString();
+        DatabaseHandler DBC = new DatabaseHandler();
+
+        String workerType = DatabaseHandler.getInstance().checkLogin(username,password);
+
+                switch (workerType) {
+                    case "Manager":
+                        setUserInfo(username, workerType);
+                        Intent managerIntent = new Intent(LoginActivity.this, ManagerMenu.class);
+                        managerIntent.putExtra("login", username); //passing login to ManagerActivity
+                        startActivity(managerIntent);
+
+                        break;
+
+                    case "WarehouseWorker":
+
+                        Intent warehouseWorkerIntent = new Intent(LoginActivity.this, WarehouseworkerActivity.class);
+                        warehouseWorkerIntent.putExtra("login", username); //passing login to WarehouseworkerActivity
+                        startActivity(warehouseWorkerIntent);
+
+                        break;
+
+                    case "Driver":
+
+                        Intent driverIntent = new Intent(LoginActivity.this, DriverActivity.class);
+                        driverIntent.putExtra("login", username); //passing login to DriverActivity
+                        startActivity(driverIntent);
+
+                        break;
+                }
+
+    }
+
+    public void setUserInfo(String login, String type){
+
+        switch(type)
+        {
+            case "Manager":
+            {
+                String info[] = DatabaseHandler.getManagerInfo(login);
+                if(info.length>0)
+                {
+                    SessionController.setPeselNumber(info[0]);
+                    SessionController.setAccountType("Manager");
+                }
+                break;
+            }
+        }
+
+    }
+    /*public void OnLogin(View view){
 
 
         String temp = UsernameET.getText().toString();
@@ -64,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         userLogin.execute(type, username, password);
 
-    }
+    }*/
 
 
 }

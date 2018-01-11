@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -23,8 +24,8 @@ public class MSFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+    private TextView scheduleTV;
 
     public MSFragment() {
         // Required empty public constructor
@@ -50,9 +51,19 @@ public class MSFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.m_s_fragment, container, false);
+        View view = inflater.inflate(R.layout.m_s_fragment, container, false);
+        scheduleTV = (TextView)view.findViewById(R.id.scheduleText);
+        fillSchedule(scheduleTV);
+
+
+        return view;
+    }
+
+    private void fillSchedule(TextView fieldToFill) {
+        String[] data = DatabaseHandler.getSchedule(SessionController.getPeselNumber());
+        System.out.println(fieldToFill.getText());
+        fieldToFill.setText("Monday: "+data[0]+"\nTuesday: "+data[1]+"\nWednesday: "+data[2]+"\nThursday: "+data[3]+"\nFriday: "+data[4]);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
