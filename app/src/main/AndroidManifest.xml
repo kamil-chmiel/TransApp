@@ -22,6 +22,8 @@
         <activity android:name=".WarehouseworkerActivity" />
         <activity android:name=".RemoveUser" />
         <activity android:name=".ManagerMenu" />
+        <activity android:name=".WarehouseMenu" />
+        <activity android:name=".DriverMenu" />
     </application>
 
 </manifest>

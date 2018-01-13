@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 
@@ -20,7 +21,7 @@ import java.util.Calendar;
  * Use the {@link MSFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MSFragment extends Fragment {
+public class DSFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -30,13 +31,13 @@ public class MSFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private TextView scheduleTV, dateTV;
 
-    public MSFragment() {
+    public DSFragment() {
         // Required empty public constructor
     }
 
 
-    public static MSFragment newInstance(int nr) {
-        MSFragment fragment = new MSFragment();
+    public static DSFragment newInstance(int nr) {
+        DSFragment fragment = new DSFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, nr);
         fragment.setArguments(args);
@@ -55,8 +56,9 @@ public class MSFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.m_s_fragment, container, false);
+        View view = inflater.inflate(R.layout.d_s_fragment, container, false);
         scheduleTV = (TextView)view.findViewById(R.id.scheduleText);
+        dateTV = (TextView)view.findViewById(R.id.dateText);
 
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
@@ -64,7 +66,6 @@ public class MSFragment extends Fragment {
         String formattedDate = df.format(c.getTime());
         dateTV.setText(formattedDate);
         fillSchedule(scheduleTV);
-
 
         return view;
     }

@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class ManagerMenu extends AppCompatActivity {
+public class WarehouseMenu extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -21,7 +21,7 @@ public class ManagerMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manager_menu_viewer);
+        setContentView(R.layout.warehouse_menu_viewer);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -32,10 +32,10 @@ public class ManagerMenu extends AppCompatActivity {
         if(b != null)
             login = b.getString("login");
 
-
+        System.out.println("Jestem w WarehouseMenu");
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.manager_container);
+        mViewPager = (ViewPager) findViewById(R.id.warehouse_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
     }
@@ -77,11 +77,11 @@ public class ManagerMenu extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if(position==0)
-                return MSFragment.newInstance(position);
+                return WSFragment.newInstance(position);
             else if(position==1)
-                return MFragment.newInstance(login);
+                return WFragment.newInstance(login);
             else
-                return MTFragment.newInstance(position);
+                return WTFragment.newInstance(position);
         }
 
         @Override

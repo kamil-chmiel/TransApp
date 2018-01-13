@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dot_light_screen2"
-    android:orientation="vertical"
-    tools:context="com.example.kamil.transapp.MFragment">
+    android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"
@@ -21,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/manager_name"
+            android:id="@+id/warehouse_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name:"
@@ -36,7 +35,7 @@
             app:layout_constraintVertical_bias="0.068" />
 
         <TextView
-            android:id="@+id/manager_surname"
+            android:id="@+id/warehouse_surname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Surname:"
@@ -66,29 +65,32 @@
             app:layout_constraintVertical_bias="0.797" />
 
         <TextView
-            android:id="@+id/show_manager_name"
+            android:id="@+id/show_warehouse_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:textAlignment="textStart"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/manager_name"
+            app:layout_constraintStart_toEndOf="@+id/warehouse_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.075" />
 
         <TextView
-            android:id="@+id/show_manager_surname"
+            android:id="@+id/show_warehouse_surname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="textStart"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/manager_surname"
+            app:layout_constraintStart_toEndOf="@+id/warehouse_surname"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.417" />
 
@@ -97,8 +99,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:text="Manager"
+            android:text="Warehouse Worker"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -131,7 +132,7 @@
             android:id="@+id/info_Orders"
             android:layout_width="187dp"
             android:layout_height="30dp"
-            android:text="Unassigned Tasks:"
+            android:text="Orders to prepare:"
             android:textColor="#dfe3ee"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -152,69 +153,6 @@
             android:id="@+id/tasks"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/adding"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical">
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/add_User"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/addUserButton"
-                android:layout_width="56dp"
-                android:layout_height="51dp"
-                android:clickable="true"
-                android:focusable="auto"
-                android:onClick="OnAddUser"
-                app:backgroundTint="@android:color/holo_green_dark"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.747"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.52"
-                app:srcCompat="@drawable/plus_add_button" />
-
-            <TextView
-                android:id="@+id/add_remove_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Manage users:"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.205"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.509" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/removeUserButton"
-                android:layout_width="56dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="24dp"
-                android:adjustViewBounds="true"
-                android:clickable="true"
-                android:onClick="OnRemoveUser"
-                app:backgroundTint="@android:color/holo_red_light"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.943"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.75"
-                app:srcCompat="@drawable/remove_button" />
-        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
 </LinearLayout>
