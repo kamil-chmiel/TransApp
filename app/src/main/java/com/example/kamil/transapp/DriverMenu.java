@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class ManagerMenu extends AppCompatActivity {
+public class DriverMenu extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -21,7 +21,8 @@ public class ManagerMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manager_menu_viewer);
+        System.out.println("Jestem w Driver");
+        setContentView(R.layout.driver_menu_viewer);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -33,9 +34,8 @@ public class ManagerMenu extends AppCompatActivity {
             login = b.getString("login");
 
 
-
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.manager_container);
+        mViewPager = (ViewPager) findViewById(R.id.driver_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
     }
@@ -77,11 +77,11 @@ public class ManagerMenu extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if(position==0)
-                return MSFragment.newInstance(position);
+                return DSFragment.newInstance(position);
             else if(position==1)
-                return MFragment.newInstance(login);
+                return DFragment.newInstance(login);
             else
-                return MTFragment.newInstance(position);
+                return DTFragment.newInstance(position);
         }
 
         @Override

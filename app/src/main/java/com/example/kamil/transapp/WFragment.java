@@ -1,7 +1,6 @@
 package com.example.kamil.transapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MFragment extends Fragment implements View.OnClickListener {
+public class WFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private String mParam1;
@@ -28,12 +27,12 @@ public class MFragment extends Fragment implements View.OnClickListener {
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
 
-    public MFragment() {
+    public WFragment() {
         // Required empty public constructor
     }
 
-    public static MFragment newInstance(String log) {
-        MFragment fragment = new MFragment();
+    public static WFragment newInstance(String log) {
+        WFragment fragment = new WFragment();
         Bundle args = new Bundle();
         login = log;
         return fragment;
@@ -58,16 +57,18 @@ public class MFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.m_fragment, container, false);
+        View view = inflater.inflate(R.layout.w_fragment, container, false);
+
         listView = (ListView) view.findViewById(R.id.tasks);
 
 
         //UZUPELNIENIE DANYCH USERA
-        nameToChange = (TextView) view.findViewById(R.id.show_manager_name);
-        surnameToChange = (TextView) view.findViewById(R.id.show_manager_surname);
-        setManagerInfo(login);
+        nameToChange = (TextView) view.findViewById(R.id.show_warehouse_name);
+        surnameToChange = (TextView) view.findViewById(R.id.show_warehouse_surname);
 
-        // UZUPELNIENIE LISTY TASKOW
+        setWarehouseInfo(login);
+
+        /*// UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
 
         // PODPIECIE BUTTONOW
@@ -90,7 +91,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
                 Intent myIntent = new Intent(getContext(), RemoveUser.class);
                 startActivity(myIntent);
             }
-        });
+        });*/
 
 
         return view;
@@ -132,9 +133,9 @@ public class MFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public void setManagerInfo(String login){
+    public void setWarehouseInfo(String login){
 
-        String info[] = DatabaseHandler.getWorkerInfo(login, "Manager");
+        String info[] = DatabaseHandler.getWorkerInfo(login,"WarehouseWorker");
         if(info.length>0)
         {
             //SessionController.setPeselNumber(info[0]);
@@ -143,6 +144,5 @@ public class MFragment extends Fragment implements View.OnClickListener {
             //sessSessionController.setAccountType("Manager");
         }
     }
-
 
 }

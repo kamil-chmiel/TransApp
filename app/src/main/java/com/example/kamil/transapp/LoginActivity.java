@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 switch (workerType) {
                     case "Manager":
-                        setUserInfo(username, workerType);
+                        setSessionInfo(username, workerType);
                         Intent managerIntent = new Intent(LoginActivity.this, ManagerMenu.class);
                         managerIntent.putExtra("login", username); //passing login to ManagerActivity
                         startActivity(managerIntent);
@@ -41,16 +41,16 @@ public class LoginActivity extends AppCompatActivity {
                         break;
 
                     case "WarehouseWorker":
-
-                        Intent warehouseWorkerIntent = new Intent(LoginActivity.this, WarehouseworkerActivity.class);
+                        setSessionInfo(username, workerType);
+                        Intent warehouseWorkerIntent = new Intent(LoginActivity.this, WarehouseMenu.class);
                         warehouseWorkerIntent.putExtra("login", username); //passing login to WarehouseworkerActivity
                         startActivity(warehouseWorkerIntent);
 
                         break;
 
                     case "Driver":
-
-                        Intent driverIntent = new Intent(LoginActivity.this, DriverActivity.class);
+                        setSessionInfo(username, workerType);
+                        Intent driverIntent = new Intent(LoginActivity.this, DriverMenu.class);
                         driverIntent.putExtra("login", username); //passing login to DriverActivity
                         startActivity(driverIntent);
 
@@ -59,20 +59,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void setUserInfo(String login, String type){
+    public void setSessionInfo(String login, String type){
 
-        switch(type)
+        String info[] = DatabaseHandler.getWorkerInfo(login, type);
+        if(info.length>0)
         {
-            case "Manager":
-            {
-                String info[] = DatabaseHandler.getManagerInfo(login);
-                if(info.length>0)
-                {
-                    SessionController.setPeselNumber(info[0]);
-                    SessionController.setAccountType("Manager");
-                }
-                break;
-            }
+            SessionController.setPeselNumber(info[0]);
+            SessionController.setAccountType(type);
         }
 
     }

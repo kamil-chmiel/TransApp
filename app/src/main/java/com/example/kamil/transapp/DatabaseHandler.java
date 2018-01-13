@@ -137,25 +137,46 @@ public class DatabaseHandler {
         return type;
     }
 
-    public static String[] getManagerInfo(String login)
+    public static String[] getWorkerInfo(String login, String type)
     {
-        String[] managerInfo = new String[3];
-        System.out.println("Login: "+login);
-        ResultSet r = executeQuery(s, "Select * from menadzer where Login='"+login+"'");
+        String[] workerInfo = new String[3];
+        ResultSet r = null;
+        switch(type)
+        {
+            case "Manager":
+            {
+                r = executeQuery(s, "Select * from menadzer where Login='"+login+"'");
+                break;
+            }
+            case "WarehouseWorker":
+            {
+                r = executeQuery(s, "Select * from pracownik_magazynu where Login='"+login+"'");
+                break;
+            }
+            case "Driver":
+            {
+                r = executeQuery(s, "Select * from kierowca where Login='"+login+"'");
+                break;
+            }
+            default:
+                System.out.println("Nie ma typu: "+type);
+                break;
+        }
+
 
         try {
-            if(r.next())
+            if(r!=null && r.next())
             {
-                managerInfo[0] = (String) r.getObject(1);
-                managerInfo[1] = (String) r.getObject(2);
-                managerInfo[2] = (String) r.getObject(3);
+                workerInfo[0] = (String) r.getObject(1);
+                workerInfo[1] = (String) r.getObject(2);
+                workerInfo[2] = (String) r.getObject(3);
             }
         }
         catch (SQLException e) {
             System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
         }
         //closeConnection(connection, s);
-        return managerInfo;
+        return workerInfo;
     }
 
     public static ArrayList<String> getAvailableWorkers()
@@ -229,7 +250,6 @@ public class DatabaseHandler {
         catch (SQLException e) {
             System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
         }
-        //closeConnection(connection, s);
         return data;
     }
 
@@ -255,21 +275,64 @@ public class DatabaseHandler {
         }
     }
 
-    public static ArrayList<String> getActiveTasks()
+    public static ArrayList<String> getActiveTasks(String type, String pesel)
     {
         ArrayList<String> data = new ArrayList<>();
-        ResultSet r = executeQuery(s, "Select * from zamowienie");
+        ResultSet r = null;
 
-        try {
-            while(r.next())
+        switch(type)
+        {
+            case "Manager":
             {
-                data.add("#"+r.getObject(1).toString()+"\nCustomer: "+r.getObject(5).toString()+ "\nWarehouseWorker: "+
-                        r.getObject(7)+ "\nDriver: "+ r.getObject(8)+ "\nState: "+
-                        r.getObject(9));
+                r = executeQuery(s, "Select * from zamowienie");
+                try {
+                    while(r.next())
+                    {
+                        data.add("#"+r.getObject(1).toString()+"\nCustomer: "+r.getObject(5).toString()+ "\nWarehouseWorker: "+
+                                r.getObject(7)+ "\nDriver: "+ r.getObject(8)+ "\nState: "+
+                                r.getObject(9));
+                    }
+                }
+                catch (SQLException e) {
+                    System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+                }
+                break;
             }
-        }
-        catch (SQLException e) {
-            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+            case "WarehouseWorker":
+            {
+                r = executeQuery(s, "Select * from zamowienie where peselMagazyniera='"+pesel+"';");
+                try {
+                    while(r.next())
+                    {
+                        data.add("#"+r.getObject(1).toString()+"\nCustomer: "+r.getObject(5).toString()+ "\nWarehouseWorker: "+
+                                r.getObject(7)+ "\nDriver: "+ r.getObject(8)+ "\nState: "+
+                                r.getObject(9));
+                    }
+                }
+                catch (SQLException e) {
+                    System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+                }
+                break;
+            }
+            case "Driver":
+            {
+                r = executeQuery(s, "Select * from zamowienie where peselKierowcy='"+pesel+"';");
+                try {
+                    while(r.next())
+                    {
+                        data.add("#"+r.getObject(1).toString()+"\nCustomer: "+r.getObject(5).toString()+ "\nWarehouseWorker: "+
+                                r.getObject(7)+ "\nDriver: "+ r.getObject(8)+ "\nState: "+
+                                r.getObject(9));
+                    }
+                }
+                catch (SQLException e) {
+                    System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+                }
+                break;
+            }
+            default:
+                System.out.println("Brak takiego typu pracownika!");
+                break;
         }
 
         return data;
