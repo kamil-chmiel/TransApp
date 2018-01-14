@@ -285,13 +285,25 @@ public class DatabaseHandler {
         {
             case "Manager":
             {
+                String customerName="", warehouseName="", driverName="";
+                ResultSet ri;
                 r = executeQuery(s, "Select * from zamowienie WHERE Stan!='Done';");
                 try {
                     while(r.next())
                     {
-                        data.add("#"+r.getObject(1).toString()+"\nCustomer: "+r.getObject(5).toString()+ "\nWarehouseWorker: "+
-                                r.getObject(7)+ "\nDriver: "+ r.getObject(8)+ "\nState: "+
-                                r.getObject(9));
+                        ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+r.getObject(5)+"';");
+                        if(ri.next()) customerName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();
+                        ri = executeQuery(s2, "Select Imie, Nazwisko from pracownik_magazynu where PESEL='"+r.getObject(7)+"';");
+                        if(ri.next()) warehouseName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();
+                        ri = executeQuery(s2, "Select Imie, Nazwisko from kierowca where PESEL='"+r.getObject(8)+"';");
+                        if(ri.next()) driverName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();
+
+                        data.add("#"+r.getObject(1).toString()+
+                                "\nCustomer: "+customerName+
+                                "\nWarehouseWorker: "+ warehouseName+
+                                "\nDriver: "+ driverName+
+                                "\nAddress: "+ r.getObject(6)+
+                                "\nState: "+ r.getObject(9));
                     }
                 }
                 catch (SQLException e) {
@@ -299,6 +311,8 @@ public class DatabaseHandler {
                 }
                 break;
             }
+
+
             case "WarehouseWorker":
             {
                 r = executeQuery(s, "Select * from zamowienie where peselMagazyniera='"+pesel+"' AND Stan='Load preparing';");
@@ -315,7 +329,7 @@ public class DatabaseHandler {
                         {
                             ri = executeQuery(s2, "Select Nazwa from towar where ID_Towaru="+parts[i].toString()+";");
                             if(ri.next())
-                                items += "\n" + (i+1)+") " + ri.getObject(1).toString()+"\n";
+                                items += "\n" + (i+1)+") " + ri.getObject(1).toString();
                         }
                         ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+customerPesel+"';");
 
@@ -327,8 +341,7 @@ public class DatabaseHandler {
                                 "\nDescribtion: "+r.getObject(3).toString()+
                                 "\nCustomer: "+ customerName+
                                 "\nDeadline: "+ r.getObject(10).toString()+
-                                "\n\nState: "+ r.getObject(9)+
-                                "\n\n*Click to see details*");
+                                "\n\nState: "+ r.getObject(9));
                     }
                 }
                 catch (SQLException e) {
@@ -450,7 +463,26 @@ public class DatabaseHandler {
 
     public static void changeTaskState(String id, String toState)
     {
-        executeUpdate(s, "UPDATE zamowienie SET Stan = 'Done' WHERE Numer_Zamowienia='"+ id +"';");
+        executeUpdate(s, "UPDATE zamowienie SET Stan = '"+toState+"' WHERE Numer_Zamowienia='"+ id +"';");
+    }
+
+    public static void changeDriverAvability(String type, String pesel, int avability)
+    {
+        switch(type)
+        {
+            case "WarehouseWorker":
+            {
+                executeUpdate(s, "UPDATE pracownik_magazynu SET Dostepny ="+ avability +" WHERE PESEL='"+ pesel +"';");
+                break;
+            }
+            case "Driver":
+            {
+                executeUpdate(s, "UPDATE kierowca SET Dostepny ="+ avability +" WHERE PESEL='"+ pesel +"';");
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     public DatabaseHandler() {

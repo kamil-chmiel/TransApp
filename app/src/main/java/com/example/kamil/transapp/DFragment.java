@@ -84,6 +84,7 @@ public class DFragment extends Fragment implements View.OnClickListener {
 
                 Intent popUpIntent = new Intent(getActivity(), Pop.class);
                 popUpIntent.putExtra("Details", o.toString());
+                popUpIntent.putExtra("Type", "Driver");
                 startActivity(popUpIntent);
             }
         });

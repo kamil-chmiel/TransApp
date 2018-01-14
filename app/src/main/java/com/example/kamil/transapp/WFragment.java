@@ -1,6 +1,7 @@
 package com.example.kamil.transapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,30 +76,22 @@ public class WFragment extends Fragment implements View.OnClickListener {
         // UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
 
+        // KLIKANIE TASKU
 
-        /*
-        // PODPIECIE BUTTONOW
-        addUserButton = view.findViewById(R.id.addUserButton);
-        addUserButton.setOnClickListener(new View.OnClickListener()
-        {
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onClick(View v)
-            {
-                Intent myIntent = new Intent(getContext(), AddUser.class);
-                startActivity(myIntent);
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                Object o = listView.getItemAtPosition(position);
+
+                Intent popUpIntent = new Intent(getActivity(), Pop.class);
+                popUpIntent.putExtra("Details", o.toString());
+                popUpIntent.putExtra("Type", "Warehouse");
+                startActivity(popUpIntent);
             }
         });
-        removeUserButton = view.findViewById(R.id.removeUserButton);
-        removeUserButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent myIntent = new Intent(getContext(), RemoveUser.class);
-                startActivity(myIntent);
-            }
-        });*/
-
 
         return view;
     }

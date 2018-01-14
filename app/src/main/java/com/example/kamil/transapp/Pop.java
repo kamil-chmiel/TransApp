@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class Pop extends Activity{
 
 
-    private static String taskDetails="";
+    private static String taskDetails="", type;
     private static TextView descTV;
     private static Button setButton;
 
@@ -39,27 +39,45 @@ public class Pop extends Activity{
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         taskDetails = bundle.getString("Details");
-
+        type = bundle.getString("Type");
         setButton = findViewById(R.id.done_button);
-        setButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    String[] detailsParts = taskDetails.split(" ");
-                    DatabaseHandler.changeTaskState(detailsParts[1],"Done");
-                }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                }
-                finally {
-                    Pop.super.onBackPressed();
-                }
 
-            }
-        });
-
+        switch(type) {
+            case "Driver":
+                setButton.setText("Set as 'Done'");
+                setButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            String[] detailsParts = taskDetails.split(" ");
+                            DatabaseHandler.changeTaskState(detailsParts[1], "Done");
+                            DatabaseHandler.changeDriverAvability(SessionController.getAccountType(),SessionController.getPeselNumber(),1);
+                        } catch (Exception ex) {
+                            System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                        } finally {
+                            Pop.super.onBackPressed();
+                        }
+                    }
+                });
+                break;
+            case "Warehouse":
+                setButton.setText("Set as 'Prepared'");
+                setButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            String[] detailsParts = taskDetails.split(" ");
+                            DatabaseHandler.changeTaskState(detailsParts[1], "Prepared");
+                            DatabaseHandler.changeDriverAvability(SessionController.getAccountType(),SessionController.getPeselNumber(),1);
+                        } catch (Exception ex) {
+                            System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                        } finally {
+                            Pop.super.onBackPressed();
+                        }
+                    }
+                });
+                break;
+        }
         descTV = findViewById(R.id.describtion_text);
         descTV.setText(taskDetails);
     }
