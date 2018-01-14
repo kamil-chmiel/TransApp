@@ -65,18 +65,18 @@
                             android:textStyle="bold" />
 
                         <Spinner
-                            android:id="@+id/itemsSpinner"
+                            android:id="@+id/trucksSpinner"
                             android:layout_width="240dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center" />
 
                         <EditText
-                            android:id="@+id/describtionText"
+                            android:id="@+id/descriptionText"
                             android:layout_width="240dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:ems="10"
-                            android:hint="Describtion"
+                            android:hint="Description"
                             android:inputType="text"
                             android:textAlignment="textStart" />
 

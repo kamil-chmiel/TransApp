@@ -1,6 +1,8 @@
 package com.example.kamil.transapp;
 
+import android.content.Context;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -38,11 +40,10 @@ public class DatabaseHandler {
 
     public static Connection connectToDatabase(String kindOfDatabase, String adress,
                                                String dataBaseName, String userName, String password) throws SQLException {
-        String baza = kindOfDatabase + adress + "/" + dataBaseName;
+        String base = kindOfDatabase + adress + "/" + dataBaseName;
         java.sql.Connection connection = null;
-            connection = DriverManager.getConnection(baza, userName, password);
-
-        return connection;
+            connection = DriverManager.getConnection(base, userName, password);
+         return connection;
     }
 
     private static Statement createStatement(Connection connection) {

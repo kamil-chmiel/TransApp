@@ -2,6 +2,8 @@ package com.example.kamil.transapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,10 +47,11 @@ public class LoginActivity extends AppCompatActivity {
         temp = temp.replaceAll("\\s", "");
         final String username = temp;
         String password = PasswordET.getText().toString();
-        DatabaseHandler DBC = new DatabaseHandler();
 
+        if(isNetworkAvailable()) {
 
-        String workerType = DatabaseHandler.getInstance().checkLogin(username,password);
+            DatabaseHandler DBC = new DatabaseHandler();
+            String workerType = DatabaseHandler.getInstance().checkLogin(username, password);
 
                 switch (workerType) {
                     case "Manager":
@@ -73,8 +77,14 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(driverIntent);
 
                         break;
+                    default:
+                        Toast.makeText(this, "Couldn't Log In! Check your credentials!", Toast.LENGTH_LONG).show();
+                        break;
                 }
 
+        }
+        else
+            Toast.makeText(this, "Couldn't Log In! Check your network connection!", Toast.LENGTH_LONG).show();
     }
 
     public void setSessionInfo(String login, String type){
@@ -87,5 +97,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
+    private boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
 }

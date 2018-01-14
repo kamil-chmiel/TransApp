@@ -69,7 +69,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
         driverSpinner = (Spinner) view.findViewById(R.id.driverSpinner);
         orderTV = (TextView) view.findViewById(R.id.orderNum);
         itemsTV = (TextView) view.findViewById(R.id.itemsText);
-        describtion = (TextView) view.findViewById(R.id.describtionText);
+        describtion = (TextView) view.findViewById(R.id.descriptionText);
         deadline = (TextView) view.findViewById(R.id.deadlineText);
         orderNum = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
         orderTV.setText("Order no. #"+ orderNum);
