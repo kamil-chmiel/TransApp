@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,6 +28,9 @@ public class MFragment extends Fragment implements View.OnClickListener {
     ArrayAdapter<String> adapter;
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
+    private static boolean refreshing = true;
+
+    final Handler wFragmentHandler = new Handler();
 
     public MFragment() {
         // Required empty public constructor
@@ -59,6 +63,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.m_fragment, container, false);
+        refreshData();
         listView = (ListView) view.findViewById(R.id.tasks);
 
 
@@ -102,6 +107,31 @@ public class MFragment extends Fragment implements View.OnClickListener {
         listView.setAdapter(adapter);
     }
 
+    public void refreshData()
+    {
+        new Thread(new Runnable() {
+            public void run() {
+
+                while(refreshing)
+                {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    wFragmentHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            fillActiveTasks();
+                        }
+                    });
+                }
+
+            }
+        }).start();
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -137,10 +167,8 @@ public class MFragment extends Fragment implements View.OnClickListener {
         String info[] = DatabaseHandler.getWorkerInfo(login, "Manager");
         if(info.length>0)
         {
-            //SessionController.setPeselNumber(info[0]);
             nameToChange.setText(info[1]);
             surnameToChange.setText(info[2]);
-            //sessSessionController.setAccountType("Manager");
         }
     }
 

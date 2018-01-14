@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -26,18 +27,15 @@ public class WTFragment extends Fragment implements View.OnClickListener {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private Button addTaskButton;
-    private ArrayList<String> workers = new ArrayList<String>();
+    private Button addItemButton, addNewItemButton, deleteItemButton;
+    private ArrayList<String> items = new ArrayList<String>();
     private boolean readData = true;
     private String orderNum;
     private ArrayList<Task> tasks;
-    private Spinner workersSpinner;
-    private Spinner customerSpinner;
-    private Spinner driverSpinner;
-    private TextView orderTV;
-    private TextView itemsTV;
-    private TextView describtion;
-    private TextView deadline;
+    private Spinner itemsSpinner, deleteItemsSpinner;
+    private EditText amountText, nameText, priceText, dimensionsText, weightText, newAmountText;
+    private int itemToChange;
+    private int amount;
 
     public WTFragment() {
         // Required empty public constructor
@@ -65,7 +63,11 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.w_t_fragment, container, false);
-
+        addItemButton = (Button) view.findViewById(R.id.add_button);
+        addNewItemButton = (Button) view.findViewById(R.id.add_new_item_button);
+        deleteItemButton = (Button) view.findViewById(R.id.delete_button);
+        itemsSpinner = (Spinner) view.findViewById(R.id.items_spinner);
+        deleteItemsSpinner = (Spinner) view.findViewById(R.id.delete_items_spinner);
         TabHost tab = (TabHost) view.findViewById(R.id.tabHost);
         tab.setup();
 
@@ -85,60 +87,113 @@ public class WTFragment extends Fragment implements View.OnClickListener {
         tab.addTab(spec3);
 
 
-        /*workersSpinner = (Spinner) view.findViewById(R.id.workersSpinner);
-        customerSpinner = (Spinner) view.findViewById(R.id.customerSpinner);
-        driverSpinner = (Spinner) view.findViewById(R.id.driverSpinner);
-        orderTV = (TextView) view.findViewById(R.id.orderNum);
-        itemsTV = (TextView) view.findViewById(R.id.itemsText);
-        describtion = (TextView) view.findViewById(R.id.describtionText);
-        deadline = (TextView) view.findViewById(R.id.deadlineText);
-        orderNum = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        orderTV.setText("Order no. #"+ orderNum);
+        amountText = (EditText) view.findViewById(R.id.amount_text);
+        fillAvailableItems();
 
-        fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
-
-
-        addTaskButton = (Button) view.findViewById(R.id.addTaskButton);
-        addTaskButton.setOnClickListener(new View.OnClickListener()
+        addItemButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                String pesel = customerSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] customerInfo = DatabaseHandler.getWorkerDetails("klient", pesel);
-                Customer newCustomer = new Customer(customerInfo[0],customerInfo[1],customerInfo[2],customerInfo[3]);
-
-                pesel = workersSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] workerInfo = DatabaseHandler.getWorkerDetails("pracownik_magazynu", pesel);
-                WarehouseWorker newWorker = new WarehouseWorker(workerInfo[0],workerInfo[1],workerInfo[2]);
-
-                pesel = driverSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] driverInfo = DatabaseHandler.getWorkerDetails("kierowca", pesel);
-                Driver newDriver = new Driver(driverInfo[0],driverInfo[1],driverInfo[2]);
-
-                Task newTask = new Task(orderNum, itemsTV.getText().toString(),
-                        describtion.getText().toString(), deadline.getText().toString(), newCustomer, newWorker, newDriver);
-
-                try {
-                    SessionController.addTask(newTask);
+                try
+                {
+                    String temp = itemsSpinner.getSelectedItem().toString();
+                    String arr[] = temp.split(" ");
+                    if(amountText.getText()!=null)
+                        DatabaseHandler.addItem(Integer.parseInt(arr[0]) ,Integer.parseInt(amountText.getText().toString()));
+                    amountText.setText("");
                 }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania taska do bazy " + ex.getMessage());
-                }
-                finally {
+                catch(Exception e)
+                {
                     AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Task saved!");
-                    Message.setMessage("Task #"+orderNum+" has been saved!");
+                    Message.setTitle("Error");
+                    Message.setMessage("Amount '"+nameText.getText()+"' hasn't been added.");
                     Message.show();
                 }
-
-                newTask.sendToDataBase();
-                clearForm();
+                finally
+                {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Amount added!");
+                    Message.setMessage("Amount has been added to the base!");
+                    Message.show();
+                }
             }
-        });*/
+        });
+
+
+        // OBSLUGA DODANIA NOWEGO TOWARU
+
+        nameText = (EditText) view.findViewById(R.id.name_text);
+        priceText = (EditText) view.findViewById(R.id.price_text);
+        dimensionsText = (EditText) view.findViewById(R.id.dimensions_text);
+        weightText = (EditText) view.findViewById(R.id.weight_text);
+        newAmountText = (EditText) view.findViewById(R.id.new_amount_text);
+
+        addNewItemButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    if (nameText.getText() != null && priceText != null && dimensionsText != null && weightText != null && newAmountText != null) {
+                        DatabaseHandler.addNewItem(nameText.getText().toString(), Float.parseFloat(priceText.getText().toString()),
+                                dimensionsText.getText().toString(), Float.parseFloat(weightText.getText().toString()),
+                                Integer.parseInt(newAmountText.getText().toString()));
+
+                        nameText.setText("");
+                        priceText.setText("");
+                        dimensionsText.setText("");
+                        weightText.setText("");
+                        newAmountText.setText("");
+                    }
+                }
+                catch(Exception e)
+                {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Error");
+                    Message.setMessage("Item '"+nameText.getText()+"' hasn't been added.");
+                    Message.show();
+                }
+                finally
+                {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("New item added!");
+                    Message.setMessage("Item '"+nameText.getText()+"' has been added to the base!");
+                    Message.show();
+                }
+            }
+        });
+
+        // USUNIECIE TOWARU
+
+        deleteItemButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    String temp = deleteItemsSpinner.getSelectedItem().toString();
+                    String arr[] = temp.split(" ");
+                    DatabaseHandler.deleteItem(Integer.parseInt(arr[0]));
+                    fillAvailableItems();
+                }
+                catch(Exception e)
+                {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Error");
+                    Message.setMessage("Item hasn't been deleted.");
+                    Message.show();
+                }
+                finally
+                {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Item deleted!");
+                    Message.setMessage("Item has been deleted from the base!");
+                    Message.show();
+                }
+            }
+        });
+
         return view;
     }
 
@@ -149,16 +204,6 @@ public class WTFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void clearForm()
-    {
-        orderNum = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        orderTV.setText("Order no. #"+ orderNum);
-        itemsTV.setText("");
-        describtion.setText("");
-        deadline.setText("");
-
-        fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -183,20 +228,13 @@ public class WTFragment extends Fragment implements View.OnClickListener {
 
 
 
-    public void fillAvailableWorkers(Spinner workersSpinner, Spinner customerSpinner, Spinner driverSpinner)
+    public void fillAvailableItems()
     {
-        workers = DatabaseHandler.getInstance().getAvailableWorkers();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, workers);
+        items = DatabaseHandler.getInstance().getItems();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        workersSpinner.setAdapter(adapter);
-
-        ArrayAdapter<String> customerAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, DatabaseHandler.getInstance().getCustomers());
-        customerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        customerSpinner.setAdapter(customerAdapter);
-
-        ArrayAdapter<String> driverAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, DatabaseHandler.getInstance().getAvailableDrivers());
-        driverAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        driverSpinner.setAdapter(driverAdapter);
+        itemsSpinner.setAdapter(adapter);
+        deleteItemsSpinner.setAdapter(adapter);
     }
 
 }

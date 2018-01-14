@@ -14,7 +14,7 @@ public class DatabaseHandler {
 
     private static java.sql.Connection connection;
     private static DatabaseHandler instance = null;
-    private static Statement s;
+    private static Statement s, s2;
 
     public static DatabaseHandler getInstance() {
         if(instance == null) {
@@ -302,11 +302,28 @@ public class DatabaseHandler {
             {
                 r = executeQuery(s, "Select * from zamowienie where peselMagazyniera='"+pesel+"';");
                 try {
-                    while(r.next())
+                    if(r.next())
                     {
-                        data.add("#"+r.getObject(1).toString()+"\nCustomer: "+r.getObject(5).toString()+ "\nWarehouseWorker: "+
-                                r.getObject(7)+ "\nDriver: "+ r.getObject(8)+ "\nState: "+
-                                r.getObject(9));
+                        String[] parts = r.getObject(2).toString().split(",");
+                        String customerPesel = r.getObject(5).toString();
+                        String customerName="";
+                        String items="";
+                        ResultSet ri;
+
+                        for(int i=0; i<parts.length; i++)
+                        {
+                            ri = executeQuery(s2, "Select Nazwa from towar where ID_Towaru="+parts[i].toString()+";");
+                            if(ri.next())
+                                items += "\n" + (i+1)+") " + ri.getObject(1).toString()+"\n";
+                        }
+                        ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+customerPesel+"';");
+                        if(ri.next())
+                            customerName = ri.getObject(1).toString() + " " + ri.getObject(2).toString();
+                        data.add("Order #"+r.getObject(1).toString()+
+                                "\n\nItems: "+items+
+                                "\nDescribtion: "+r.getObject(3).toString()+
+                                "\nCustomer: "+ customerName+
+                                "\nState: "+ r.getObject(9));
                     }
                 }
                 catch (SQLException e) {
@@ -360,6 +377,40 @@ public class DatabaseHandler {
         return schedule;
     }
 
+    public static ArrayList<String> getItems()
+    {
+        ArrayList<String> items = new ArrayList<>();
+        ResultSet r = executeQuery(s, "Select * from towar");
+
+        try {
+            while(r.next())
+            {
+                items.add(r.getObject(1).toString()+" ) "+r.getObject(2).toString()+" Ilosc: "+r.getObject(6).toString());
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        //closeConnection(connection, s);
+        return items;
+    }
+
+    public static void addItem(int id, int amount)
+    {
+        executeUpdate(s, "UPDATE towar SET Ilosc_Sztuk = Ilosc_Sztuk + "+amount+" where ID_Towaru="+ id +";");
+    }
+
+    public static void addNewItem(String name, float price, String dimensions, float weight, int amount)
+    {
+        executeUpdate(s, "INSERT INTO `towar`(`Nazwa`, `Cena(zl)`, `Wymiary`, `Waga(kg)`, `Ilosc_Sztuk`) " +
+                "VALUES ('"+name+"',"+price+",'"+dimensions+"',"+weight+",'"+amount+"');");
+    }
+
+    public static void deleteItem(int id)
+    {
+        executeUpdate(s, "DELETE FROM towar WHERE ID_Towaru="+id+";");
+    }
+
     public DatabaseHandler() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
@@ -380,5 +431,6 @@ public class DatabaseHandler {
 
 
         s = createStatement(connection);
+        s2 = createStatement(connection);
     }
 }

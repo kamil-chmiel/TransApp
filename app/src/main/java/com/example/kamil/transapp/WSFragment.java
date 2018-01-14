@@ -57,6 +57,7 @@ public class WSFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.w_s_fragment, container, false);
         scheduleTV = (TextView)view.findViewById(R.id.scheduleText);
+        dateTV = (TextView)view.findViewById(R.id.dateText);
 
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());

@@ -3,6 +3,7 @@ package com.example.kamil.transapp;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,10 +23,12 @@ public class WFragment extends Fragment implements View.OnClickListener {
     static String login;
     private FloatingActionButton addUserButton;
     private FloatingActionButton removeUserButton;
-    ListView listView;
-    ArrayAdapter<String> adapter;
-    TextView nameToChange, surnameToChange;
-    ArrayList<String> orders;
+    private ListView listView;
+    private TextView nameToChange, surnameToChange;
+    private ArrayList<String> orders;
+    private static boolean refreshing = true;
+
+    final Handler wFragmentHandler = new Handler();
 
     public WFragment() {
         // Required empty public constructor
@@ -58,9 +61,9 @@ public class WFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.w_fragment, container, false);
+        refreshData();
 
         listView = (ListView) view.findViewById(R.id.tasks);
-
 
         //UZUPELNIENIE DANYCH USERA
         nameToChange = (TextView) view.findViewById(R.id.show_warehouse_name);
@@ -68,9 +71,11 @@ public class WFragment extends Fragment implements View.OnClickListener {
 
         setWarehouseInfo(login);
 
-        /*// UZUPELNIENIE LISTY TASKOW
+        // UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
 
+
+        /*
         // PODPIECIE BUTTONOW
         addUserButton = view.findViewById(R.id.addUserButton);
         addUserButton.setOnClickListener(new View.OnClickListener()
@@ -97,9 +102,9 @@ public class WFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void fillActiveTasks() {
+    public void fillActiveTasks() {
         orders = DatabaseHandler.getActiveTasks(SessionController.getAccountType(), SessionController.getPeselNumber());
-        adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,orders);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
     }
 
@@ -130,6 +135,31 @@ public class WFragment extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
 
+    }
+
+    public void refreshData()
+    {
+        new Thread(new Runnable() {
+            public void run() {
+
+                while(refreshing)
+                {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    wFragmentHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            fillActiveTasks();
+                        }
+                    });
+                }
+
+            }
+        }).start();
     }
 
 
