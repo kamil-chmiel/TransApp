@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen3"
-    tools:context="com.example.kamil.transapp.activity_manager_tasks">
+    android:background="@color/screen3">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,12 +23,12 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="35dp" />
+            android:layout_height="10dp" />
 
         <TextView
             android:id="@+id/orderNum"
             android:layout_width="match_parent"
-            android:layout_height="43dp"
+            android:layout_height="wrap_content"
             android:text="Order no. #0000"
             android:textAlignment="center"
             android:textColor="#ffffff"
@@ -66,7 +65,7 @@
         <EditText
             android:id="@+id/describtionText"
             android:layout_width="260dp"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:ems="10"
             android:hint="Describtion"
             android:inputType="textPersonName"
@@ -115,7 +114,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="61dp" />
+            android:layout_height="20dp" />
 
         <Button
             android:id="@+id/addTaskButton"

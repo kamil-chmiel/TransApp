@@ -1,15 +1,20 @@
 package com.example.kamil.transapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText UsernameET, PasswordET;
-
+    private EditText UsernameET, PasswordET;
+    private ImageView bg, circle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,16 +23,29 @@ public class LoginActivity extends AppCompatActivity {
         UsernameET = (EditText) findViewById(R.id.loginText);
         PasswordET = (EditText) findViewById(R.id.passwordText);
 
+        bg = findViewById(R.id.loading_background);
+        circle = findViewById(R.id.loading_circle);
 
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+
+        rotateAnimation.setInterpolator(new LinearInterpolator());
+        rotateAnimation.setDuration(1800);
+        rotateAnimation.setRepeatCount(Animation.INFINITE);
+
+        findViewById(R.id.loading_circle).startAnimation(rotateAnimation);
     }
     public void OnLogin(View view){
 
-
+        bg.setAlpha(1);
+        circle.setAlpha(1);
         String temp = UsernameET.getText().toString();
         temp = temp.replaceAll("\\s", "");
         final String username = temp;
         String password = PasswordET.getText().toString();
         DatabaseHandler DBC = new DatabaseHandler();
+
 
         String workerType = DatabaseHandler.getInstance().checkLogin(username,password);
 
@@ -69,50 +87,5 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-    /*public void OnLogin(View view){
-
-
-        String temp = UsernameET.getText().toString();
-        temp = temp.replaceAll("\\s", "");
-        final String username = temp;
-        String password = PasswordET.getText().toString();
-
-        String type = "login";
-
-        UserLogin userLogin = new UserLogin(this, new AsyncResponse() {
-            @Override
-            public void returnResult(String workerType) {
-                    switch (workerType) {
-                        case "Manager":
-
-                            Intent managerIntent = new Intent(LoginActivity.this, ManagerMenu.class);
-                            managerIntent.putExtra("login", username); //passing login to ManagerActivity
-                            startActivity(managerIntent);
-
-                            break;
-
-                        case "WarehouseWorker":
-
-                            Intent warehouseWorkerIntent = new Intent(LoginActivity.this, WarehouseworkerActivity.class);
-                            warehouseWorkerIntent.putExtra("login", username); //passing login to WarehouseworkerActivity
-                            startActivity(warehouseWorkerIntent);
-
-                            break;
-
-                        case "Driver":
-
-                            Intent driverIntent = new Intent(LoginActivity.this, DriverActivity.class);
-                            driverIntent.putExtra("login", username); //passing login to DriverActivity
-                            startActivity(driverIntent);
-
-                            break;
-                    }
-
-            }
-        });
-        userLogin.execute(type, username, password);
-
-    }*/
-
 
 }

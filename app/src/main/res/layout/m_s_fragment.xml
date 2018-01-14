@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen1"
-    tools:context="com.example.kamil.transapp.activity_manager_schedule">
+    android:background="@color/screen1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +22,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/todayText"
+            android:id="@+id/dateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Monday 01.01.2018"

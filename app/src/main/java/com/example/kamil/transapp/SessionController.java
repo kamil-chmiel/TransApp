@@ -1,6 +1,9 @@
 package com.example.kamil.transapp;
 
 
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import java.util.ArrayList;
 
 public class SessionController
@@ -13,12 +16,6 @@ public class SessionController
         this.accountType = accountType;
         this.peselNumber = peselNumber;
     }
-
-    public void refreshData()
-    {
-        // tu bedzie odswiezane info z bazy co minute
-    }
-
 
     public static String getAccountType() {
         return accountType;
@@ -43,4 +40,5 @@ public class SessionController
     public static void addTask(Task task) {
         SessionController.tasks.add(task);
     }
+
 }
