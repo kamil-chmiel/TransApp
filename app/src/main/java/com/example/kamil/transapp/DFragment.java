@@ -1,13 +1,17 @@
 package com.example.kamil.transapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,10 +26,15 @@ public class DFragment extends Fragment implements View.OnClickListener {
     static String login;
     private FloatingActionButton addUserButton;
     private FloatingActionButton removeUserButton;
+    private String orderNum, customer, address;
     ListView listView;
     ArrayAdapter<String> adapter;
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
+
+    private static boolean refreshing = true;
+
+    final Handler wFragmentHandler = new Handler();
 
     public DFragment() {
         // Required empty public constructor
@@ -47,18 +56,12 @@ public class DFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    /*public void OnResume(){
-        listView = (ListView) view.findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,orders);
-        listView.setAdapter(adapter);
-    }*/
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.d_fragment, container, false);
-
+        refreshData();
         listView = (ListView) view.findViewById(R.id.tasks);
 
 
@@ -67,38 +70,33 @@ public class DFragment extends Fragment implements View.OnClickListener {
         surnameToChange = (TextView) view.findViewById(R.id.show_driver_surname);
 
         setDriverInfo(login);
-
-        /*// UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
 
-        // PODPIECIE BUTTONOW
-        addUserButton = view.findViewById(R.id.addUserButton);
-        addUserButton.setOnClickListener(new View.OnClickListener()
-        {
+        //klikanie tasku
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onClick(View v)
-            {
-                Intent myIntent = new Intent(getContext(), AddUser.class);
-                startActivity(myIntent);
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                Object o = listView.getItemAtPosition(position);
+
+                Intent popUpIntent = new Intent(getActivity(), Pop.class);
+                popUpIntent.putExtra("Details", o.toString());
+                startActivity(popUpIntent);
             }
         });
-        removeUserButton = view.findViewById(R.id.removeUserButton);
-        removeUserButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent myIntent = new Intent(getContext(), RemoveUser.class);
-                startActivity(myIntent);
-            }
-        });*/
-
 
         return view;
     }
 
-    private void fillActiveTasks() {
+    public void fillActiveTasks() {
         orders = DatabaseHandler.getActiveTasks(SessionController.getAccountType(), SessionController.getPeselNumber());
+        if(orders.size()>0) {
+            String[] partsOfOrder = orders.get(0).split(" ");
+            orderNum = partsOfOrder[1];
+        }
         adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,orders);
         listView.setAdapter(adapter);
     }
@@ -132,6 +130,30 @@ public class DFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    public void refreshData()
+    {
+        new Thread(new Runnable() {
+            public void run() {
+
+                while(refreshing)
+                {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    wFragmentHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            fillActiveTasks();
+                        }
+                    });
+                }
+
+            }
+        }).start();
+    }
 
     public void setDriverInfo(String login){
 

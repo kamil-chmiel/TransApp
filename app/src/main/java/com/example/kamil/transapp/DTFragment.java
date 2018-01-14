@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -26,18 +27,13 @@ public class DTFragment extends Fragment implements View.OnClickListener {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private Button addTaskButton;
-    private ArrayList<String> workers = new ArrayList<String>();
+    private Button addFaultButton;
+    private ArrayList<String> cars = new ArrayList<String>();
     private boolean readData = true;
     private String orderNum;
     private ArrayList<Task> tasks;
-    private Spinner workersSpinner;
-    private Spinner customerSpinner;
-    private Spinner driverSpinner;
-    private TextView orderTV;
-    private TextView itemsTV;
-    private TextView describtion;
-    private TextView deadline;
+    private Spinner carsSpinner;
+    private EditText describtion;
 
     public DTFragment() {
         // Required empty public constructor
@@ -79,61 +75,33 @@ public class DTFragment extends Fragment implements View.OnClickListener {
         spec2.setContent(R.id.Add_new_item);
         tab.addTab(spec2);
 
+        describtion = (EditText) view.findViewById(R.id.describtion_text);
+        carsSpinner = (Spinner) view.findViewById(R.id.cars_spinner);
+        fillCars();
 
-        /*workersSpinner = (Spinner) view.findViewById(R.id.workersSpinner);
-        customerSpinner = (Spinner) view.findViewById(R.id.customerSpinner);
-        driverSpinner = (Spinner) view.findViewById(R.id.driverSpinner);
-        orderTV = (TextView) view.findViewById(R.id.orderNum);
-        itemsTV = (TextView) view.findViewById(R.id.itemsText);
-        describtion = (TextView) view.findViewById(R.id.describtionText);
-        deadline = (TextView) view.findViewById(R.id.deadlineText);
-        orderNum = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        orderTV.setText("Order no. #"+ orderNum);
-
-        fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
-
-
-        addTaskButton = (Button) view.findViewById(R.id.addTaskButton);
-        addTaskButton.setOnClickListener(new View.OnClickListener()
+        addFaultButton = (Button) view.findViewById(R.id.set_fault_button);
+        addFaultButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                String pesel = customerSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] customerInfo = DatabaseHandler.getWorkerDetails("klient", pesel);
-                Customer newCustomer = new Customer(customerInfo[0],customerInfo[1],customerInfo[2],customerInfo[3]);
-
-                pesel = workersSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] workerInfo = DatabaseHandler.getWorkerDetails("pracownik_magazynu", pesel);
-                WarehouseWorker newWorker = new WarehouseWorker(workerInfo[0],workerInfo[1],workerInfo[2]);
-
-                pesel = driverSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] driverInfo = DatabaseHandler.getWorkerDetails("kierowca", pesel);
-                Driver newDriver = new Driver(driverInfo[0],driverInfo[1],driverInfo[2]);
-
-                Task newTask = new Task(orderNum, itemsTV.getText().toString(),
-                        describtion.getText().toString(), deadline.getText().toString(), newCustomer, newWorker, newDriver);
-
                 try {
-                    SessionController.addTask(newTask);
+                    String[] parts = carsSpinner.getSelectedItem().toString().split(" ");
+                    DatabaseHandler.addCarFault(parts[2]+" "+parts[3], describtion.getText().toString());
+                    fillCars();
                 }
                 catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania taska do bazy " + ex.getMessage());
+                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
                 }
                 finally {
                     AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Task saved!");
-                    Message.setMessage("Task #"+orderNum+" has been saved!");
+                    Message.setTitle("Fault sent!");
+                    Message.setMessage("Car fault has been sent to the base!");
                     Message.show();
                 }
 
-                newTask.sendToDataBase();
-                clearForm();
             }
-        });*/
+        });
         return view;
     }
 
@@ -142,17 +110,6 @@ public class DTFragment extends Fragment implements View.OnClickListener {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
-
-    public void clearForm()
-    {
-        orderNum = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        orderTV.setText("Order no. #"+ orderNum);
-        itemsTV.setText("");
-        describtion.setText("");
-        deadline.setText("");
-
-        fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
     }
 
     @Override
@@ -178,20 +135,12 @@ public class DTFragment extends Fragment implements View.OnClickListener {
 
 
 
-    public void fillAvailableWorkers(Spinner workersSpinner, Spinner customerSpinner, Spinner driverSpinner)
+    public void fillCars()
     {
-        workers = DatabaseHandler.getInstance().getAvailableWorkers();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, workers);
+        cars = DatabaseHandler.getCars();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, cars);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        workersSpinner.setAdapter(adapter);
-
-        ArrayAdapter<String> customerAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, DatabaseHandler.getInstance().getCustomers());
-        customerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        customerSpinner.setAdapter(customerAdapter);
-
-        ArrayAdapter<String> driverAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, DatabaseHandler.getInstance().getAvailableDrivers());
-        driverAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        driverSpinner.setAdapter(driverAdapter);
+        carsSpinner.setAdapter(adapter);
     }
 
 }

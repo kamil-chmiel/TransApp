@@ -258,10 +258,10 @@ public class DatabaseHandler {
     {
         try{
         executeUpdate(s,"INSERT INTO `zamowienie`(`Numer_Zamowienia`, `Lista_Towarow`, `Opis`, " +
-                "`PESEL_Menadzera`, `PESEL_Klienta`, `Adres`, `peselMagazyniera`, `peselKierowcy`, `Stan`) " +
+                "`PESEL_Menadzera`, `PESEL_Klienta`, `Adres`, `peselMagazyniera`, `peselKierowcy`, `Stan`, `Deadline`) " +
                 "VALUES ('"+task.getOrderNumber()+"','"+task.getItems()+"','"+task.getDescribtion()+"','"+SessionController.getPeselNumber()+
                 "','"+ task.getCustomer().getPesel() +"','"+task.getCustomer().getAddress()+"','"+ task.getWorker().getPesel()
-                +"','"+ task.getDriver().getPesel()+"','Started')");
+                +"','"+ task.getDriver().getPesel()+"','Load preparing','"+ task.getDeadline()+"');");
         }
         catch (Exception e) {
             System.out.println("Bląd zapisu zadania do bazy! " + e.getMessage());
@@ -285,7 +285,7 @@ public class DatabaseHandler {
         {
             case "Manager":
             {
-                r = executeQuery(s, "Select * from zamowienie");
+                r = executeQuery(s, "Select * from zamowienie WHERE Stan!='Done';");
                 try {
                     while(r.next())
                     {
@@ -301,7 +301,7 @@ public class DatabaseHandler {
             }
             case "WarehouseWorker":
             {
-                r = executeQuery(s, "Select * from zamowienie where peselMagazyniera='"+pesel+"';");
+                r = executeQuery(s, "Select * from zamowienie where peselMagazyniera='"+pesel+"' AND Stan='Load preparing';");
                 try {
                     if(r.next())
                     {
@@ -318,13 +318,17 @@ public class DatabaseHandler {
                                 items += "\n" + (i+1)+") " + ri.getObject(1).toString()+"\n";
                         }
                         ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+customerPesel+"';");
+
                         if(ri.next())
                             customerName = ri.getObject(1).toString() + " " + ri.getObject(2).toString();
-                        data.add("Order #"+r.getObject(1).toString()+
+
+                        data.add("Order: "+r.getObject(1).toString()+" "+
                                 "\n\nItems: "+items+
                                 "\nDescribtion: "+r.getObject(3).toString()+
                                 "\nCustomer: "+ customerName+
-                                "\nState: "+ r.getObject(9));
+                                "\nDeadline: "+ r.getObject(10).toString()+
+                                "\n\nState: "+ r.getObject(9)+
+                                "\n\n*Click to see details*");
                     }
                 }
                 catch (SQLException e) {
@@ -334,13 +338,21 @@ public class DatabaseHandler {
             }
             case "Driver":
             {
-                r = executeQuery(s, "Select * from zamowienie where peselKierowcy='"+pesel+"';");
+                String customerName="";
+                ResultSet ri=null;
+                r = executeQuery(s, "Select * from zamowienie where peselKierowcy='"+pesel+"' AND Stan='Prepared';");
                 try {
                     while(r.next())
                     {
-                        data.add("#"+r.getObject(1).toString()+"\nCustomer: "+r.getObject(5).toString()+ "\nWarehouseWorker: "+
-                                r.getObject(7)+ "\nDriver: "+ r.getObject(8)+ "\nState: "+
-                                r.getObject(9));
+                        ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+r.getObject(5)+"';");
+
+                        if(ri.next())
+                            data.add("Order: "+r.getObject(1).toString()+" "+
+                                "\n\nCustomer: "+ri.getObject(1).toString()+" "+ri.getObject(2)+
+                                "\nDescribtion: "+r.getObject(3).toString()+
+                                "\nAddress: "+r.getObject(6).toString()+
+                                    "\nDeadline: "+ r.getObject(10).toString()+
+                                "\n\nState: "+ r.getObject(9));
                     }
                 }
                 catch (SQLException e) {
@@ -410,6 +422,35 @@ public class DatabaseHandler {
     public static void deleteItem(int id)
     {
         executeUpdate(s, "DELETE FROM towar WHERE ID_Towaru="+id+";");
+    }
+
+    public static ArrayList<String> getCars()
+    {
+        ArrayList<String> cars = new ArrayList<>();
+        ResultSet r = executeQuery(s, "Select * from samochod_dostawczy where Stan='Sprawny'");
+
+        try {
+            while(r.next())
+            {
+                cars.add(r.getObject(2).toString()+" "+r.getObject(3).toString()+" "+r.getObject(1).toString());
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        //closeConnection(connection, s);
+        return cars;
+    }
+
+    public static void addCarFault(String registrationNr, String describtion)
+    {
+        executeUpdate(s, "UPDATE samochod_dostawczy SET Stan = 'Niesprawny', Opis_Usterki='"+describtion+"' where Numer_Rejestracyjny='"+
+                registrationNr +"';");
+    }
+
+    public static void changeTaskState(String id, String toState)
+    {
+        executeUpdate(s, "UPDATE zamowienie SET Stan = 'Done' WHERE Numer_Zamowienia='"+ id +"';");
     }
 
     public DatabaseHandler() {

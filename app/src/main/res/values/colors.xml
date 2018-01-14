@@ -14,7 +14,7 @@
 
     <color name="dot_light_screen1">#d7cb89</color>
     <color name="dot_light_screen2">#6b93ba</color>
-    <color name="dot_light_screen3">#80CBC4</color>
+    <color name="dot_light_screen3">#80cbc4</color>
 
     <array name="dot_active">
         <item>@color/dot_light_screen1</item>

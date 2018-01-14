@@ -26,6 +26,8 @@
         <activity android:name=".ManagerMenu" />
         <activity android:name=".WarehouseMenu" />
         <activity android:name=".DriverMenu" />
+        <activity android:name=".Pop"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
     </application>
 
 </manifest>
