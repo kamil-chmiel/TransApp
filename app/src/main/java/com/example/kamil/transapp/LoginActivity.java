@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
         }
         else
-            Toast.makeText(this, "Couldn't Log In! Check your network connection!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Couldn't Connect to database!\nCheck your network connection!", Toast.LENGTH_LONG).show();
     }
 
     public void setSessionInfo(String login, String type){

@@ -4,24 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background = "#dfe3ee"
+    android:background="#FFFFFF"
     tools:context="com.example.kamil.transapp.LoginActivity">
 
     <TextView
         android:id="@+id/textID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign in to your account"
+        android:layout_width="289dp"
+        android:layout_height="32dp"
+        android:text="@string/login_sign_in_text"
         android:textAlignment="center"
-        android:textColor="#3b5998"
+        android:textColor="#23b9ff"
         android:textSize="25sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.534" />
+        app:layout_constraintVertical_bias="0.547" />
 
     <ImageView
         android:id="@+id/loading_background"
@@ -31,8 +32,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/screen_background_dark_transparent" />
 
     <ImageView
@@ -47,38 +50,42 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.546"
         app:srcCompat="@drawable/circle" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#3b5998"
-        android:onClick="OnLogin"
-        android:text="Sign in"
-        android:textColor="#dfe3ee"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText"
-        app:layout_constraintVertical_bias="1.0"
+        android:layout_width="340dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="100dp" />
+        android:background="@drawable/button_shape"
+        android:onClick="OnLogin"
+        android:text="@string/login_button"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/loginText"
-        android:layout_width="wrap_content"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:autoText="true"
         android:ems="10"
-        android:hint="Login"
+        android:hint="@string/login_hint_username"
         android:inputType="textPersonName"
-        android:text="kchmiel"
+        android:backgroundTint="#23b9ff"
+        android:text=""
+        android:textColorLink="#23b9ff"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/passwordText"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textID"
@@ -86,27 +93,31 @@
 
     <EditText
         android:id="@+id/passwordText"
-        android:layout_width="wrap_content"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/login_hint_password"
         android:inputType="textPassword"
-        android:text="atakchmielu"
+        android:backgroundTint="#23b9ff"
+        android:text=""
+        android:textColorLink="#23b9ff"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginText" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="384dp"
-        android:layout_height="178dp"
+        android:layout_width="337dp"
+        android:layout_height="224dp"
+        android:layout_marginBottom="8dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/tir"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/loading_circle"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textID"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/logo" />
 
 </android.support.constraint.ConstraintLayout>
