@@ -456,6 +456,39 @@ public class DatabaseHandler {
         return cars;
     }
 
+    public static ArrayList<String> getDoneTask()
+    {
+        ArrayList<String> doneTask = new ArrayList<>();
+        ResultSet r;
+        ResultSet ri;
+        String customerName="", warehouseName="", driverName="";
+
+        r = executeQuery(s, "Select * from zamowienie where Stan='Done'");
+        try {
+            while(r.next())
+            {
+                ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+r.getObject(5)+"';");
+                if(ri.next()) customerName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();
+                ri = executeQuery(s2, "Select Imie, Nazwisko from pracownik_magazynu where PESEL='"+r.getObject(7)+"';");
+                if(ri.next()) warehouseName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();
+                ri = executeQuery(s2, "Select Imie, Nazwisko from kierowca where PESEL='"+r.getObject(8)+"';");
+                if(ri.next()) driverName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();
+
+                doneTask.add("\nOrder: #"+r.getObject(1).toString()+
+                        "\n\nCustomer: "+customerName+
+                        "\nWarehouseWorker: "+ warehouseName+
+                        "\nDriver: "+ driverName+
+                        "\nAddress: "+ r.getObject(6)+
+                        "\nState: "+ r.getObject(9) +"\n");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        //closeConnection(connection, s);
+        return doneTask;
+    }
+
     public static ArrayList<String> getAvailableCars()
     {
         ArrayList<String> cars = new ArrayList<>();
@@ -553,4 +586,5 @@ public class DatabaseHandler {
         s = createStatement(connection);
         s2 = createStatement(connection);
     }
+
 }

@@ -27,13 +27,13 @@
 
 
     <string name="text_options">Options</string>
+    <string name="orderHistory">Order History</string>
 
     <!-- Driver view strings -->
     <string name="car">Car:</string>
 
     <!-- Pop Up -->
     <string name="button_popup"> Set as DONE</string>
-
 
 
 
@@ -46,6 +46,7 @@
     <!-- settings menu strings -->
     <string name="add_User">Add User</string>
     <string name="delete_User">Delete User</string>
+    <string name="order_History">Order History</string>
     <string name="Logout">Log out</string>
 
     <!-- add and remove user View strings -->

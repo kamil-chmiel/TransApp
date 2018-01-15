@@ -210,6 +210,10 @@ public class MFragment extends Fragment implements View.OnClickListener {
                         startActivity(deleteUserIntent);
                         break;
                     case R.id.menu3:
+                        Intent orderHistory = new Intent(getContext(), OrderHistory.class);
+                        startActivity(orderHistory);
+                        break;
+                    case R.id.menu4:
                         refreshing=false;
                         Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
                         logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
