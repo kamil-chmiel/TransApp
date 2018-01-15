@@ -5,14 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dot_light_screen2"
+    android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"
         android:layout_width="fill_parent"
-        android:layout_height="106dp"
-        android:background="@android:drawable/alert_light_frame"
+        android:layout_height="64dp"
+        android:background="@drawable/upper_menu_shape"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -20,139 +20,93 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/Orders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/warehouse_worker_curr_order_text"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="normal|bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="43dp"
+            android:layout_height="39dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.476">
+
+            <Button
+                android:id="@+id/settings_button_warehouse_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/settings_button" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/manager_text_user"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/warehouse_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name:"
-            android:textColor="#000000"
-            android:textSize="20sp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="#FFFFFF"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.015"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.068" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user" />
 
         <TextView
             android:id="@+id/warehouse_surname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Surname:"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.016"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.417" />
-
-        <TextView
-            android:id="@+id/account_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account:"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.017"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.797" />
-
-        <TextView
-            android:id="@+id/show_warehouse_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:textAlignment="textStart"
-            android:textColor="#000000"
-            android:textSize="20sp"
+            android:textColor="#FFFFFF"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/warehouse_name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.075" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/warehouse_name" />
 
-        <TextView
-            android:id="@+id/show_warehouse_surname"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textAlignment="textStart"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/warehouse_surname"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.417" />
-
-        <TextView
-            android:id="@+id/show_account_type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Warehouse Worker"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/account_type"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.797" />
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:background="#3b5998">
-
-        <ImageView
-            android:id="@+id/i_icon"
-            android:layout_width="56dp"
-            android:layout_height="48dp"
-            android:contentDescription="blue_I_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.125"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.47"
-            app:srcCompat="@drawable/ic_launcher" />
-
-        <TextView
-            android:id="@+id/info_Orders"
-            android:layout_width="187dp"
-            android:layout_height="30dp"
-            android:text="Orders to prepare:"
-            android:textColor="#dfe3ee"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.618"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.485" />
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/layout_tasks"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="fill_parent"
         android:orientation="vertical">
 
         <ListView
             android:id="@+id/tasks"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="fill_parent"
+            android:background="@drawable/list_backgground"
+            android:divider="#FFFFFF" />
     </LinearLayout>
 
 </LinearLayout>

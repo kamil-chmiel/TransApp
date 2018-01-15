@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -28,7 +29,7 @@ public class WSFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
-    private TextView scheduleTV, dateTV;
+    private TextView Monday,Tuesday,Wednesday,Thursday,Friday, dateTV;
 
     public WSFragment() {
         // Required empty public constructor
@@ -56,23 +57,33 @@ public class WSFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.w_s_fragment, container, false);
-        scheduleTV = (TextView)view.findViewById(R.id.scheduleText);
+
+        Monday = view.findViewById(R.id.monday_schedule);
+        Tuesday = view.findViewById(R.id.tuesday_schedule);
+        Wednesday = view.findViewById(R.id.wednesday_schedule);
+        Thursday = view.findViewById(R.id.thursday_schedule);
+        Friday = view.findViewById(R.id.friday_schedule);
+
         dateTV = (TextView)view.findViewById(R.id.dateText);
 
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
-        SimpleDateFormat df = new SimpleDateFormat("EEEE dd-MMM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("EEEE dd-MMM-yyyy", Locale.ENGLISH);
         String formattedDate = df.format(c.getTime());
         dateTV.setText(formattedDate);
-        fillSchedule(scheduleTV);
+        fillSchedule();
 
 
         return view;
     }
 
-    private void fillSchedule(TextView fieldToFill) {
+    private void fillSchedule() {
         String[] data = DatabaseHandler.getSchedule(SessionController.getPeselNumber());
-        fieldToFill.setText("Monday: "+data[0]+"\nTuesday: "+data[1]+"\nWednesday: "+data[2]+"\nThursday: "+data[3]+"\nFriday: "+data[4]);
+        Monday.setText(data[0]);
+        Tuesday.setText(data[1]);
+        Wednesday.setText(data[2]);
+        Thursday.setText(data[3]);
+        Friday.setText(data[4]);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

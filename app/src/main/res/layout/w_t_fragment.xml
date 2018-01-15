@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen3">
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="@drawable/upper_menu_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/text_options"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,14 +35,6 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add items"
-            android:textColor="@android:color/white"
-            android:textSize="40dp"
-            android:textStyle="bold" />
 
         <TabHost
             android:id="@+id/tabHost"
@@ -34,137 +49,14 @@
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:divider="#000000"
+                    android:dividerPadding="1sp" />
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:id="@+id/Delete_item"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <Space
-                            android:id="@+id/Space2"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp" />
-
-                        <TextView
-                            android:id="@+id/title"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Item to delete:"
-                            android:textAlignment="center"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp" />
-
-                        <Spinner
-                            android:id="@+id/delete_items_spinner"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp" />
-
-                        <Button
-                            android:id="@+id/delete_button"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Delete" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/Add_new_item"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:textAlignment="center">
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Set details:"
-                            android:textAlignment="center"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp" />
-
-                        <EditText
-                            android:id="@+id/name_text"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Name"
-                            android:inputType="textPersonName"
-                            android:textColor="#ffffff" />
-
-                        <EditText
-                            android:id="@+id/price_text"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Price"
-                            android:inputType="number|numberDecimal" />
-
-                        <EditText
-                            android:id="@+id/dimensions_text"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Dimensions"
-                            android:inputType="textPersonName" />
-
-                        <EditText
-                            android:id="@+id/weight_text"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Weight"
-                            android:inputType="number|numberDecimal" />
-
-                        <EditText
-                            android:id="@+id/new_amount_text"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Amount"
-                            android:inputType="number" />
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp" />
-
-                        <Button
-                            android:id="@+id/add_new_item_button"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Add" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/Add_amount"
@@ -184,29 +76,32 @@
                             android:layout_gravity="center_horizontal"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:text="Item:"
+                            android:text="@string/warehouse_tabs_Item"
                             android:textAlignment="center"
+                            android:textColor="#000000"
                             android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <Spinner
                             android:id="@+id/items_spinner"
                             android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/spinner_border" />
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="30dp" />
+                            android:layout_height="29dp" />
 
                         <EditText
                             android:id="@+id/amount_text"
                             android:layout_width="240dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:backgroundTint="#23b9ff"
                             android:ems="10"
-                            android:hint="Amount"
-                            android:inputType="number"/>
+                            android:hint="@string/warehouse_tabs_hint_amount"
+                            android:inputType="number" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -214,11 +109,147 @@
 
                         <Button
                             android:id="@+id/add_button"
-                            android:layout_width="100dp"
+                            android:layout_width="240dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Add" />
+                            android:background="@drawable/button_shape"
+                            android:text="@string/warehouse_tabs_button_Add" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/Delete_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <Space
+                            android:id="@+id/Space2"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp" />
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="240dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/warehouse_worker_Item_To_delete"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp" />
+
+                        <Spinner
+                            android:id="@+id/delete_items_spinner"
+                            android:layout_width="240dp"
+                            android:layout_height="33dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/spinner_border" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp" />
+
+                        <Button
+                            android:id="@+id/delete_button"
+                            android:layout_width="240dp"
+                            android:layout_height="58dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/button_shape"
+                            android:text="@string/warehouse_tabs__button_delete" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/Add_new_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:textAlignment="center">
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/warehouse_tabs_Set_Details"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp" />
+
+                        <EditText
+                            android:id="@+id/name_text"
+                            android:layout_width="240dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#23b9ff"
+                            android:ems="10"
+                            android:hint="@string/warehouse_tabs__hint_Name"
+                            android:inputType="textPersonName"
+                            android:textColor="#ffffff" />
+
+                        <EditText
+                            android:id="@+id/price_text"
+                            android:layout_width="240dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#23b9ff"
+                            android:ems="10"
+                            android:hint="@string/warehouse_tabs__hint_Price"
+                            android:inputType="number|numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/dimensions_text"
+                            android:layout_width="240dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#23b9ff"
+                            android:ems="10"
+                            android:hint="@string/warehouse_tabs__hint_Dimensions"
+                            android:inputType="textPersonName" />
+
+                        <EditText
+                            android:id="@+id/weight_text"
+                            android:layout_width="240dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#23b9ff"
+                            android:ems="10"
+                            android:hint="@string/warehouse_tabs__hint_Weight"
+                            android:inputType="number|numberDecimal" />
+
+                        <EditText
+                            android:id="@+id/new_amount_text"
+                            android:layout_width="240dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="#23b9ff"
+                            android:ems="10"
+                            android:hint="@string/warehouse_tabs_hint_amount"
+                            android:inputType="number" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp" />
+
+                        <Button
+                            android:id="@+id/add_new_item_button"
+                            android:layout_width="240dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/button_shape"
+                            android:text="@string/warehouse_tabs_button_Add" />
                     </LinearLayout>
 
                 </FrameLayout>
@@ -228,4 +259,4 @@
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

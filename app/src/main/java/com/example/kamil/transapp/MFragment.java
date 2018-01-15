@@ -193,7 +193,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
     private void showSettingsMenu(View v){
 
         settingsMenu = new PopupMenu(this.getContext(), v);
-        settingsMenu.getMenuInflater().inflate(R.menu.settings_menu, settingsMenu.getMenu());
+        settingsMenu.getMenuInflater().inflate(R.menu.settings_menu_manager, settingsMenu.getMenu());
 
         settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override

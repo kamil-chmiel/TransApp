@@ -8,11 +8,14 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ public class WFragment extends Fragment implements View.OnClickListener {
     private TextView nameToChange, surnameToChange;
     private ArrayList<String> orders;
     private static boolean refreshing = true;
+    private Button settingsButton;
+    private PopupMenu settingsMenu;
 
     final Handler wFragmentHandler = new Handler();
 
@@ -68,10 +73,20 @@ public class WFragment extends Fragment implements View.OnClickListener {
         listView = (ListView) view.findViewById(R.id.tasks);
 
         //UZUPELNIENIE DANYCH USERA
-        nameToChange = (TextView) view.findViewById(R.id.show_warehouse_name);
-        surnameToChange = (TextView) view.findViewById(R.id.show_warehouse_surname);
+        nameToChange = (TextView) view.findViewById(R.id.warehouse_name);
+        surnameToChange = (TextView) view.findViewById(R.id.warehouse_surname);
 
         setWarehouseInfo(login);
+
+        settingsButton = view.findViewById(R.id.settings_button_warehouse_main);
+        settingsButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v){
+                showSettingsMenu(v);
+            }
+        });
+
 
         // UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
@@ -167,6 +182,32 @@ public class WFragment extends Fragment implements View.OnClickListener {
             surnameToChange.setText(info[2]);
             //sessSessionController.setAccountType("Manager");
         }
+    }
+
+    private void showSettingsMenu(View v){
+
+        settingsMenu = new PopupMenu(this.getContext(), v);
+        settingsMenu.getMenuInflater().inflate(R.menu.settings_menu_warehouse, settingsMenu.getMenu());
+
+        settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.menu1:
+                        //handling logout
+                        break;
+
+                    default:
+                        break;
+
+                }
+                return true;
+            }
+        });
+
+        settingsMenu.show();
     }
 
 }

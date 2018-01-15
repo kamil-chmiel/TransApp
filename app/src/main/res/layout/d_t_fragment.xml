@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen3">
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="@drawable/upper_menu_shape">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/text_options"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,14 +35,6 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add items"
-            android:textColor="@android:color/white"
-            android:textSize="40dp"
-            android:textStyle="bold" />
 
         <TabHost
             android:id="@+id/tabHost"
@@ -34,7 +49,9 @@
                 <TabWidget
                     android:id="@android:id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:divider="#000000"
+                    android:dividerPadding="1sp" />
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
@@ -59,25 +76,29 @@
                             android:layout_gravity="center_horizontal"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:text="Car:"
+                            android:text="@string/car"
                             android:textAlignment="center"
+                            android:textColor="#000000"
                             android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <Spinner
                             android:id="@+id/cars_spinner"
                             android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/spinner_border" />
 
                         <EditText
-                            android:id="@+id/describtion_text"
+                            android:id="@+id/description_text"
                             android:layout_width="240dp"
                             android:layout_height="100dp"
                             android:layout_gravity="center"
+                            android:backgroundTint="#23b9ff"
                             android:ems="10"
-                            android:hint="Describtion"
+                            android:hint="@string/add_New_Order_Description"
                             android:inputType="text"
+                            android:scrollHorizontally="false"
                             android:textAlignment="textStart" />
 
                         <Space
@@ -86,9 +107,10 @@
 
                         <Button
                             android:id="@+id/set_fault_button"
-                            android:layout_width="100dp"
+                            android:layout_width="240dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:background="@drawable/button_shape"
                             android:text="Set" />
 
                     </LinearLayout>
@@ -181,4 +203,4 @@
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

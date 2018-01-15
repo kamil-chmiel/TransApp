@@ -9,11 +9,14 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class DFragment extends Fragment implements View.OnClickListener {
     private FloatingActionButton addUserButton;
     private FloatingActionButton removeUserButton;
     private String orderNum, customer, address;
+    private Button settingsButton;
+    private PopupMenu settingsMenu;
     ListView listView;
     ArrayAdapter<String> adapter;
     TextView nameToChange, surnameToChange;
@@ -66,11 +71,20 @@ public class DFragment extends Fragment implements View.OnClickListener {
 
 
         //UZUPELNIENIE DANYCH USERA
-        nameToChange = (TextView) view.findViewById(R.id.show_driver_name);
-        surnameToChange = (TextView) view.findViewById(R.id.show_driver_surname);
+        nameToChange = (TextView) view.findViewById(R.id.driver_name);
+        surnameToChange = (TextView) view.findViewById(R.id.driver_surname);
 
         setDriverInfo(login);
         fillActiveTasks();
+
+        settingsButton = (Button) view.findViewById(R.id.settings_button_manager_main);
+        settingsButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v){
+                showSettingsMenu(v);
+            }
+        });
 
         //klikanie tasku
 
@@ -166,6 +180,31 @@ public class DFragment extends Fragment implements View.OnClickListener {
             surnameToChange.setText(info[2]);
             //sessSessionController.setAccountType("Manager");
         }
+    }
+
+    private void showSettingsMenu(View v){
+
+        settingsMenu = new PopupMenu(this.getContext(), v);
+        settingsMenu.getMenuInflater().inflate(R.menu.settings_menu_driver, settingsMenu.getMenu());
+
+        settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.menu1:
+                        //handling logout
+                        break;
+                    default:
+                        break;
+
+                }
+                return true;
+            }
+        });
+
+        settingsMenu.show();
     }
 
 }

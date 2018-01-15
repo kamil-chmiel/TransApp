@@ -9,6 +9,33 @@
     <string name="manager_orders_text">Orders</string>
     <string name="manager_text_user">User:</string>
 
+    <!-- warehouse worker view strings -->
+    <string name="warehouse_worker_curr_order_text">Current Order</string>
+    <string name="warehouse_worker_Item_To_delete">Item to delete:</string>
+
+    <!-- tabs -->
+    <string name="warehouse_tabs_Item">Item:</string>
+    <string name="warehouse_tabs_hint_amount">Amount</string>
+    <string name="warehouse_tabs_button_Add">Add</string>
+    <string name="warehouse_tabs_Set_Details">Set Details:</string>
+    <string name="warehouse_tabs__hint_Name">Name</string>
+    <string name="warehouse_tabs__hint_Price">Price</string>
+    <string name="warehouse_tabs__hint_Dimensions">Dimensions</string>
+    <string name="warehouse_tabs__hint_Weight">Weight</string>
+    <string name="warehouse_tabs__Item_Delete">Item to delete:</string>
+    <string name="warehouse_tabs__button_delete">Delete</string>
+
+
+    <string name="text_options">Options</string>
+
+    <!-- Driver view strings -->
+    <string name="car">Car:</string>
+
+    <!-- Pop Up -->
+    <string name="button_popup"> Set as DONE</string>
+
+
+
 
     <!-- login strings -->
     <string name="login_button">Login</string>
@@ -35,7 +62,7 @@
     <string name="Thursday">Thursday:</string>
     <string name="Friday">Friday:</string>
 
-    <!-- add new order strings -->
+    <!-- manager add new order strings -->
     <string name="add_New_Order_Up">Add New Order</string>
     <string name="add_New_Order_Details">Details:</string>
     <string name="add_New_Order_Customer">Customer:</string>

@@ -13,11 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
-import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class DTFragment extends Fragment implements View.OnClickListener {
 
@@ -75,7 +72,7 @@ public class DTFragment extends Fragment implements View.OnClickListener {
         spec2.setContent(R.id.Add_new_item);
         tab.addTab(spec2);
 
-        describtion = (EditText) view.findViewById(R.id.describtion_text);
+        describtion = (EditText) view.findViewById(R.id.description_text);
         carsSpinner = (Spinner) view.findViewById(R.id.cars_spinner);
         fillCars();
 

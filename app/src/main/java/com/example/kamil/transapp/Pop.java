@@ -1,8 +1,6 @@
 package com.example.kamil.transapp;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -78,7 +76,7 @@ public class Pop extends Activity{
                 });
                 break;
         }
-        descTV = findViewById(R.id.describtion_text);
+        descTV = findViewById(R.id.description_text);
         descTV.setText(taskDetails);
     }
 
