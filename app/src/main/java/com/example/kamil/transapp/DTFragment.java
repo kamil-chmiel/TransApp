@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DTFragment extends Fragment implements View.OnClickListener {
 
@@ -68,9 +70,15 @@ public class DTFragment extends Fragment implements View.OnClickListener {
         tab.addTab(spec1);
 
         TabHost.TabSpec spec2 = tab.newTabSpec("Tab 2");
-        spec2.setIndicator("Add new item");
-        spec2.setContent(R.id.Add_new_item);
+        spec2.setIndicator("Available cars");
+        spec2.setContent(R.id.Show_cars);
         tab.addTab(spec2);
+
+        ListView carsLV = view.findViewById(R.id.cars_list);
+
+        ArrayList<String> cars = DatabaseHandler.getAvailableCars();
+        ArrayAdapter adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,cars);
+        carsLV.setAdapter(adapter);
 
         describtion = (EditText) view.findViewById(R.id.description_text);
         carsSpinner = (Spinner) view.findViewById(R.id.cars_spinner);

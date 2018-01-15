@@ -456,6 +456,25 @@ public class DatabaseHandler {
         return cars;
     }
 
+    public static ArrayList<String> getAvailableCars()
+    {
+        ArrayList<String> cars = new ArrayList<>();
+        ResultSet r = executeQuery(s, "Select * from samochod_dostawczy where Dostepnosc=1");
+
+        try {
+            while(r.next())
+            {
+                cars.add(r.getObject(1).toString()+" "+r.getObject(2).toString()+" "+r.getObject(3).toString()
+                        +" "+r.getObject(4).toString()+"kg");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        //closeConnection(connection, s);
+        return cars;
+    }
+
     public static void addCarFault(String registrationNr, String describtion)
     {
         executeUpdate(s, "UPDATE samochod_dostawczy SET Stan = 'Niesprawny', Opis_Usterki='"+describtion+"' where Numer_Rejestracyjny='"+

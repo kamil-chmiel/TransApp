@@ -116,7 +116,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/Add_new_item"
+                        android:id="@+id/Show_cars"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -127,9 +127,10 @@
                             android:layout_height="30dp" />
 
                         <TextView
+                            android:id="@+id/available_cars"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Set details:"
+                            android:text="Available cars:"
                             android:textAlignment="center"
                             android:textSize="24sp"
                             android:textStyle="bold" />
@@ -138,62 +139,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="30dp" />
 
-                        <EditText
-                            android:id="@+id/nameText"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Name"
-                            android:inputType="textPersonName"
-                            android:textColor="#ffffff" />
-
-                        <EditText
-                            android:id="@+id/priceText"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Price"
-                            android:inputType="number" />
-
-                        <EditText
-                            android:id="@+id/dimentionsText"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Dimensions"
-                            android:inputType="textPersonName" />
-
-                        <EditText
-                            android:id="@+id/weightText"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Weight"
-                            android:inputType="number" />
-
-                        <EditText
-                            android:id="@+id/amountText"
-                            android:layout_width="240dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:ems="10"
-                            android:hint="Amount"
-                            android:inputType="number" />
-
-                        <Space
+                        <ListView
+                            android:id="@+id/cars_list"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp" />
+                            android:layout_height="match_parent" />
 
-                        <Button
-                            android:id="@+id/addTaskButton"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Add" />
                     </LinearLayout>
 
                 </FrameLayout>
