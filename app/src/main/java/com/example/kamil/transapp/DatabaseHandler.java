@@ -354,7 +354,7 @@ public class DatabaseHandler {
             {
                 String customerName="";
                 ResultSet ri=null;
-                r = executeQuery(s, "Select * from zamowienie where peselKierowcy='"+pesel+"' AND Stan='Prepared';");
+                r = executeQuery(s, "Select * from zamowienie where peselKierowcy='"+pesel+"' AND Stan='Prepared' OR Stan='Under way';");
                 try {
                     while(r.next())
                     {
@@ -473,6 +473,23 @@ public class DatabaseHandler {
         }
         //closeConnection(connection, s);
         return cars;
+    }
+
+    public static String getTaskState(String id)
+    {
+        String state="";
+        ResultSet r = executeQuery(s, "Select Stan from zamowienie where Numer_Zamowienia='"+id+"';");
+
+        try {
+            while(r.next())
+            {
+                state = r.getObject(1).toString();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        return state;
     }
 
     public static void addCarFault(String registrationNr, String describtion)

@@ -95,10 +95,11 @@ public class DFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
                 Object o = listView.getItemAtPosition(position);
-
+                String[] parts = o.toString().split(" ");
                 Intent popUpIntent = new Intent(getActivity(), Pop.class);
                 popUpIntent.putExtra("Details", o.toString());
                 popUpIntent.putExtra("Type", "Driver");
+                popUpIntent.putExtra("State", DatabaseHandler.getTaskState(parts[1]));
                 startActivity(popUpIntent);
             }
         });

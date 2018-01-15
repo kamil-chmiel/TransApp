@@ -31,7 +31,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_shape"
-        android:text="Set as 'Done'"
+        android:text="@string/button_popup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_text" />

@@ -84,15 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         else
             Toast.makeText(this, "Couldn't Connect to database!\nCheck your network connection!", Toast.LENGTH_LONG).show();
     }
-    public void refreshData()
-    {
-        new Thread(new Runnable() {
-            public void run() {
 
-
-            }
-        }).start();
-    }
     public void setSessionInfo(String login, String type){
 
         String info[] = DatabaseHandler.getWorkerInfo(login, type);
