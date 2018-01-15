@@ -259,7 +259,7 @@ public class DatabaseHandler {
         try{
         executeUpdate(s,"INSERT INTO `zamowienie`(`Numer_Zamowienia`, `Lista_Towarow`, `Opis`, " +
                 "`PESEL_Menadzera`, `PESEL_Klienta`, `Adres`, `peselMagazyniera`, `peselKierowcy`, `Stan`, `Deadline`) " +
-                "VALUES ('"+task.getOrderNumber()+"','"+task.getItems()+"','"+task.getDescribtion()+"','"+SessionController.getPeselNumber()+
+                "VALUES ('"+task.getOrderNumber().substring(7)+"','"+task.getItems()+"','"+task.getDescribtion()+"','"+SessionController.getPeselNumber()+
                 "','"+ task.getCustomer().getPesel() +"','"+task.getCustomer().getAddress()+"','"+ task.getWorker().getPesel()
                 +"','"+ task.getDriver().getPesel()+"','Load preparing','"+ task.getDeadline()+"');");
         }
@@ -484,6 +484,32 @@ public class DatabaseHandler {
             default:
                 break;
         }
+    }
+
+    public static void updateSchedule(String pesel, String dayID, String hours)
+    {
+        executeUpdate(s, "UPDATE harmonogram SET "+dayID+" = '"+hours+"' WHERE PESEL='"+ pesel +"';");
+    }
+
+    public static ArrayList<String> getAllWorkers()
+    {
+        ArrayList<String> workers = new ArrayList<>();
+        ResultSet r, r2;
+
+        try {
+            r = executeQuery(s, "Select * from pracownik_magazynu;");
+            r2 = executeQuery(s2, "Select * from kierowca;");
+            while(r.next())
+                workers.add(r.getObject(1).toString()+" "+r.getObject(2).toString()+" "+r.getObject(3).toString());
+            while(r2.next())
+                workers.add(r2.getObject(1).toString()+" "+r2.getObject(2).toString()+" "+r2.getObject(3).toString());
+
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        for(int i=0; i<workers.size(); i++) System.out.println(workers.get(i));
+        return workers;
     }
 
     public DatabaseHandler() {

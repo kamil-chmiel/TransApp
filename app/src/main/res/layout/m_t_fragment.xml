@@ -94,7 +94,7 @@
             android:ems="10"
             android:hint="@string/add_New_Order_Description"
             android:inputType="textPersonName"
-            android:textColor="#ffffff" />
+            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/deadlineText"
@@ -104,7 +104,7 @@
             android:ems="10"
             android:hint="@string/add_New_Order_Button_Deadline"
             android:inputType="date"
-            android:textColor="#ffffff" />
+            android:textColor="#000000" />
 
         <Space
             android:layout_width="match_parent"

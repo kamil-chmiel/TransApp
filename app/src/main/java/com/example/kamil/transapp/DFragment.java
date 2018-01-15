@@ -194,7 +194,12 @@ public class DFragment extends Fragment implements View.OnClickListener {
                 switch (menuItem.getItemId()) {
 
                     case R.id.menu1:
-                        //handling logout
+                        refreshing=false;
+                        Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
+                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(logOutIntent);
                         break;
                     default:
                         break;
