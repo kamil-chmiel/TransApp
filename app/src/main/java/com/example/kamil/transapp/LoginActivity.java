@@ -55,6 +55,9 @@ public class LoginActivity extends AppCompatActivity {
                     case "Manager":
                         setSessionInfo(username, workerType);
                         Intent managerIntent = new Intent(LoginActivity.this, ManagerMenu.class);
+                        managerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        managerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        managerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         managerIntent.putExtra("login", username); //passing login to ManagerActivity
                         startActivity(managerIntent);
 
@@ -63,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
                     case "WarehouseWorker":
                         setSessionInfo(username, workerType);
                         Intent warehouseWorkerIntent = new Intent(LoginActivity.this, WarehouseMenu.class);
+                        warehouseWorkerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        warehouseWorkerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        warehouseWorkerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         warehouseWorkerIntent.putExtra("login", username); //passing login to WarehouseworkerActivity
                         startActivity(warehouseWorkerIntent);
 
@@ -71,6 +77,9 @@ public class LoginActivity extends AppCompatActivity {
                     case "Driver":
                         setSessionInfo(username, workerType);
                         Intent driverIntent = new Intent(LoginActivity.this, DriverMenu.class);
+                        driverIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        driverIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        driverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         driverIntent.putExtra("login", username); //passing login to DriverActivity
                         startActivity(driverIntent);
 

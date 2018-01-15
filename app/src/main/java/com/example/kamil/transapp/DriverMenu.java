@@ -21,7 +21,6 @@ public class DriverMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("Jestem w Driver");
         setContentView(R.layout.driver_menu_viewer);
 
         // Create the adapter that will return a fragment for each of the three
