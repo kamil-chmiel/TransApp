@@ -1,5 +1,6 @@
 package com.example.kamil.transapp;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,12 +9,14 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 public class MFragment extends Fragment implements View.OnClickListener {
@@ -24,11 +27,14 @@ public class MFragment extends Fragment implements View.OnClickListener {
     static String login;
     private FloatingActionButton addUserButton;
     private FloatingActionButton removeUserButton;
+    private Button settingsButton;
+    private static PopupMenu settingsMenu;
     ListView listView;
     ArrayAdapter<String> adapter;
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
     private static boolean refreshing = true;
+
 
     final Handler wFragmentHandler = new Handler();
 
@@ -68,15 +74,24 @@ public class MFragment extends Fragment implements View.OnClickListener {
 
 
         //UZUPELNIENIE DANYCH USERA
-        nameToChange = (TextView) view.findViewById(R.id.show_manager_name);
-        surnameToChange = (TextView) view.findViewById(R.id.show_manager_surname);
+        nameToChange = (TextView) view.findViewById(R.id.manager_name);
+        surnameToChange = (TextView) view.findViewById(R.id.manager_surname);
         setManagerInfo(login);
+
+        settingsButton = (Button) view.findViewById(R.id.settings_button_manager_main);
+        settingsButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v){
+                showSettingsMenu(v);
+            }
+        });
 
         // UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
 
         // PODPIECIE BUTTONOW
-        addUserButton = view.findViewById(R.id.addUserButton);
+       /* addUserButton = view.findViewById(R.id.addUserButton);
         addUserButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -95,7 +110,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
                 Intent myIntent = new Intent(getContext(), RemoveUser.class);
                 startActivity(myIntent);
             }
-        });
+        });*/
 
 
         return view;
@@ -141,7 +156,10 @@ public class MFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onAttach(Context context) {
+
+
         super.onAttach(context);
+
     }
 
     @Override
@@ -170,6 +188,39 @@ public class MFragment extends Fragment implements View.OnClickListener {
             nameToChange.setText(info[1]);
             surnameToChange.setText(info[2]);
         }
+    }
+
+    private void showSettingsMenu(View v){
+
+        settingsMenu = new PopupMenu(this.getContext(), v);
+        settingsMenu.getMenuInflater().inflate(R.menu.settings_menu, settingsMenu.getMenu());
+
+        settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.menu1:
+                        Intent addUserIntent = new Intent(getContext(), AddUser.class);
+                        startActivity(addUserIntent);
+                        break;
+                    case R.id.menu2:
+                        Intent deleteUserIntent = new Intent(getContext(), RemoveUser.class);
+                        startActivity(deleteUserIntent);
+                        break;
+                    case R.id.menu3:
+                       //handling logout
+                        break;
+                    default:
+                        break;
+
+                }
+                return true;
+            }
+        });
+
+        settingsMenu.show();
     }
 
 

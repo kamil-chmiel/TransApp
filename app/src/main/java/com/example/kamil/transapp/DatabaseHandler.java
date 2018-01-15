@@ -285,6 +285,7 @@ public class DatabaseHandler {
         {
             case "Manager":
             {
+
                 String customerName="", warehouseName="", driverName="";
                 ResultSet ri;
                 r = executeQuery(s, "Select * from zamowienie WHERE Stan!='Done';");
@@ -298,12 +299,12 @@ public class DatabaseHandler {
                         ri = executeQuery(s2, "Select Imie, Nazwisko from kierowca where PESEL='"+r.getObject(8)+"';");
                         if(ri.next()) driverName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();
 
-                        data.add("#"+r.getObject(1).toString()+
-                                "\nCustomer: "+customerName+
+                        data.add("\nOrder: #"+r.getObject(1).toString()+
+                                "\n\nCustomer: "+customerName+
                                 "\nWarehouseWorker: "+ warehouseName+
                                 "\nDriver: "+ driverName+
                                 "\nAddress: "+ r.getObject(6)+
-                                "\nState: "+ r.getObject(9));
+                                "\nState: "+ r.getObject(9) +"\n");
                     }
                 }
                 catch (SQLException e) {

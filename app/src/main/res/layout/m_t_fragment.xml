@@ -1,128 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen3">
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    tools:context="com.example.kamil.transapp.MTFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/upper_menu_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_new_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/add_New_Order_Up"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.285" />
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_height="fill_parent"
+        android:background="@drawable/list_backgground"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add new task"
-            android:textColor="@android:color/white"
-            android:textSize="40dp"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
 
         <TextView
             android:id="@+id/orderNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order no. #0000"
             android:textAlignment="center"
-            android:textColor="#ffffff"
+            android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
-            android:text="Details:"
+            android:text="@string/add_New_Order_Details"
             android:textAlignment="center"
+            android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
-            android:text="Customer:" />
+            android:text="@string/add_New_Order_Customer"
+            android:textColor="#000000" />
 
         <Spinner
             android:id="@+id/customerSpinner"
-            android:layout_width="260dp"
-            android:layout_height="35dp" />
+            android:layout_width="328dp"
+            android:layout_height="35dp"
+            android:background="@drawable/spinner_border" />
 
         <EditText
             android:id="@+id/itemsText"
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="#23b9ff"
             android:ems="10"
-            android:hint="ItemIDs"
+            android:hint="@string/add_New_Order_Hint_Item"
             android:inputType="textPersonName"
-            android:textColor="#ffffff" />
+            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/descriptionText"
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="70dp"
+            android:backgroundTint="#23b9ff"
             android:ems="10"
-            android:hint="Description"
+            android:hint="@string/add_New_Order_Description"
             android:inputType="textPersonName"
             android:textColor="#ffffff" />
 
         <EditText
             android:id="@+id/deadlineText"
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="#23b9ff"
             android:ems="10"
-            android:hint="Deadline"
+            android:hint="@string/add_New_Order_Button_Deadline"
             android:inputType="date"
             android:textColor="#ffffff" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="19dp" />
+            android:layout_height="2dp"
+             />
 
         <TextView
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
-            android:text="Workers:"
+            android:text="@string/add_New_Order_Workers"
             android:textAlignment="center"
+            android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+
         <TextView
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
-            android:text="Warehouse Worker:" />
+            android:text="@string/add_New_Order_Warehouse"
+            android:textColor="#000000" />
 
         <Spinner
             android:id="@+id/workersSpinner"
-            android:layout_width="260dp"
-            android:layout_height="35dp" />
+            android:layout_width="328dp"
+            android:layout_height="35dp"
+            android:background="@drawable/spinner_border" />
 
         <TextView
-            android:layout_width="260dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
-            android:text="Driver:" />
+            android:text="@string/add_New_Order_Driver"
+            android:textColor="#000000" />
 
         <Spinner
             android:id="@+id/driverSpinner"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="328dp"
+            android:layout_height="35dp"
+            android:background="@drawable/spinner_border" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="5dp" />
 
         <Button
             android:id="@+id/addTaskButton"
-            android:layout_width="100dp"
+            android:layout_width="328dp"
             android:layout_height="wrap_content"
-            android:text="Add" />
+            android:background="@drawable/button_shape"
+            android:text="@string/add_New_Order_Button_Add" />
 
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

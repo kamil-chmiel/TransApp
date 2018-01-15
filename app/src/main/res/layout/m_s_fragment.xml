@@ -1,62 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen1">
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    tools:context="com.example.kamil.transapp.MSFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/info"
+        android:layout_width="fill_parent"
+        android:layout_height="67dp"
+        android:background="@drawable/upper_menu_shape"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Schedule"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/Schedule"
             android:textColor="@android:color/white"
-            android:textSize="40dp"
-            android:textStyle="bold" />
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/dateText"
-            android:layout_width="match_parent"
+            android:layout_width="302dp"
             android:layout_height="wrap_content"
-            android:text="Monday 01.01.2018"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text=""
             android:textAlignment="center"
+            android:textColor="#FFFFFFFF"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/schedule"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="36dp" />
+            android:layout_height="14dp" />
 
         <TextView
+            android:id="@+id/text_Monday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your schedule:"
-            android:textAllCaps="false"
-            android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:text="@string/Monday"
+            android:textAlignment="center"
+            android:textColor="#23b9ff"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/scheduleText"
+            android:id="@+id/monday_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_Tuesday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lineSpacingExtra="18sp"
-            android:text="Monday: \nTuesday: \nTuesday: \nTuesday: \nTuesday:"
-            android:textColor="#ffffff"
-            android:textSize="24sp" />
+            android:text="@string/Tuesday"
+            android:textAlignment="center"
+            android:textColor="#23b9ff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tuesday_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_Wednesday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Wednesday"
+            android:textAlignment="center"
+            android:textColor="#23b9ff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/wednesday_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_Thursday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Thursday"
+            android:textAlignment="center"
+            android:textColor="#23b9ff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/thursday_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_Friday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Friday"
+            android:textAlignment="center"
+            android:textColor="#23b9ff"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/friday_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

@@ -1,12 +1,54 @@
 <resources>
 
-    <string name="login_button">Log In</string>
-    <string name="login_hint_username">Username</string>
-    <string name="login_hint_password">Password</string>
-    <string name="login_sign_in_text">Sign in to your account</string>
+
+    <string name="title_activity_cleaner">Cleaner</string>
     <string name="app_name">TransApp</string>
     <string name="title_activity_manager">ManagerActivity</string>
-    <string name="title_activity_cleaner">Cleaner</string>
+
+    <!-- manager main view strings -->
+    <string name="manager_orders_text">Orders</string>
+    <string name="manager_text_user">User:</string>
+
+
+    <!-- login strings -->
+    <string name="login_button">Login</string>
+    <string name="login_hint_username">Username</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_sign_in_text">Login to your account</string>
+
+    <!-- settings menu strings -->
+    <string name="add_User">Add User</string>
+    <string name="delete_User">Delete User</string>
+    <string name="Logout">Log out</string>
+
+    <!-- add and remove user View strings -->
+    <string name="add_User_View">Add New User</string>
+    <string name="add_User_View_Button">Add User</string>
+    <string name="remove_User_View">Remove User</string>
+    <string name="remove_User_View_Button">Remove User</string>
+
+    <!-- schedule strings -->
+    <string name="Schedule">Schedule</string>
+    <string name="Monday">Monday:</string>
+    <string name="Tuesday">Tuesday:</string>
+    <string name="Wednesday">Wednesday:</string>
+    <string name="Thursday">Thursday:</string>
+    <string name="Friday">Friday:</string>
+
+    <!-- add new order strings -->
+    <string name="add_New_Order_Up">Add New Order</string>
+    <string name="add_New_Order_Details">Details:</string>
+    <string name="add_New_Order_Customer">Customer:</string>
+    <string name="add_New_Order_Workers">Assign Workers:</string>
+    <string name="add_New_Order_Warehouse">Warehouse Worker</string>
+    <string name="add_New_Order_Driver">Driver</string>
+    <string name="add_New_Order_Button_Add">Add</string>
+    <string name="add_New_Order_Hint_Item">ItemIDs</string>
+    <string name="add_New_Order_Description">Description</string>
+    <string name="add_New_Order_Button_Deadline">Deadline</string>
+
+
+
     <string-array name="types">
         <item>Manager</item>
         <item>WarehouseWorker</item>

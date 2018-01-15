@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MTFragment extends Fragment implements View.OnClickListener {
 
@@ -35,7 +36,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
     private Spinner driverSpinner;
     private TextView orderTV;
     private TextView itemsTV;
-    private TextView describtion;
+    private TextView description;
     private TextView deadline;
 
     public MTFragment() {
@@ -69,10 +70,11 @@ public class MTFragment extends Fragment implements View.OnClickListener {
         driverSpinner = (Spinner) view.findViewById(R.id.driverSpinner);
         orderTV = (TextView) view.findViewById(R.id.orderNum);
         itemsTV = (TextView) view.findViewById(R.id.itemsText);
-        describtion = (TextView) view.findViewById(R.id.descriptionText);
+        description = (TextView) view.findViewById(R.id.descriptionText);
         deadline = (TextView) view.findViewById(R.id.deadlineText);
-        orderNum = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        orderTV.setText("Order no. #"+ orderNum);
+
+        orderNum = ("Order #"+(new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(Calendar.getInstance().getTime())));
+        orderTV.setText(orderNum);
 
         fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
 
@@ -99,7 +101,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
                 Driver newDriver = new Driver(driverInfo[0],driverInfo[1],driverInfo[2]);
 
                 Task newTask = new Task(orderNum, itemsTV.getText().toString(),
-                        describtion.getText().toString(), deadline.getText().toString(), newCustomer, newWorker, newDriver);
+                        description.getText().toString(), deadline.getText().toString(), newCustomer, newWorker, newDriver);
 
                 try {
                     SessionController.addTask(newTask);
@@ -130,10 +132,10 @@ public class MTFragment extends Fragment implements View.OnClickListener {
 
     public void clearForm()
     {
-        orderNum = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
-        orderTV.setText("Order no. #"+ orderNum);
+        orderNum = ("Order #"+(new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(Calendar.getInstance().getTime())));
+        orderTV.setText(orderNum);
         itemsTV.setText("");
-        describtion.setText("");
+        description.setText("");
         deadline.setText("");
 
         fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
