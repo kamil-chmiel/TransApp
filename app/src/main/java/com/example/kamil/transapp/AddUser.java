@@ -1,6 +1,7 @@
 package com.example.kamil.transapp;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -36,7 +37,13 @@ public class AddUser extends ManagerMenu {
         String _password = password.getText().toString();
         String worker_type = workerType.getSelectedItem().toString();
 
-
+        DatabaseHandler.addNewUser(user_name, _password, worker_type);
+        username.setText("");
+        password.setText("");
+        AlertDialog Message = new AlertDialog.Builder(this).create();
+        Message.setTitle("User added");
+        Message.setMessage("User has been added to the base!");
+        Message.show();
     }
 
 }

@@ -469,6 +469,16 @@ public class DatabaseHandler {
         executeUpdate(s, "UPDATE towar SET Ilosc_Sztuk = Ilosc_Sztuk + "+amount+" where ID_Towaru="+ id +";");
     }
 
+    public static void deleteUser(String username)
+    {
+        executeUpdate(s, "DELETE FROM `users` WHERE username='"+username+"';");
+    }
+
+    public static void addNewUser(String name, String surname, String type)
+    {
+        executeUpdate(s, "INSERT INTO `users`(`username`, `password`, `workerType`) VALUES ('"+name+"','"+surname+"','"+type+"')");
+    }
+
     public static void addNewItem(String name, float price, String dimensions, float weight, int amount)
     {
         executeUpdate(s, "INSERT INTO `towar`(`Nazwa`, `Cena(zl)`, `Wymiary`, `Waga(kg)`, `Ilosc_Sztuk`) " +

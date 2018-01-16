@@ -1,5 +1,6 @@
 package com.example.kamil.transapp;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -26,11 +27,12 @@ public class RemoveUser extends ManagerMenu {
     {
         String user_name = usernameToDelete.getText().toString();
 
-        String type = "unregister";
-
-
-       // DatabaseHandler.deleteUser(user_name);
-
+        DatabaseHandler.deleteUser(user_name);
+        AlertDialog Message = new AlertDialog.Builder(this).create();
+        Message.setTitle("User removed");
+        Message.setMessage("User has been removed from the base!");
+        Message.show();
+        usernameToDelete.setText("");
     }
 
 }
