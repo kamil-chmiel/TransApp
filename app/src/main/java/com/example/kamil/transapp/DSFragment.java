@@ -1,11 +1,13 @@
 package com.example.kamil.transapp;
 
+import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +32,7 @@ public class DSFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
+    private Button mondayUnavailable, tuesdayUnavailable, wednesdayUnavailable, thursdayUnavailable, fridayUnavailable;
     private TextView Monday,Tuesday,Wednesday,Thursday,Friday, dateTV;
 
     public DSFragment() {
@@ -73,6 +76,133 @@ public class DSFragment extends Fragment {
         String formattedDate = df.format(c.getTime());
         dateTV.setText(formattedDate);
         fillSchedule();
+
+        mondayUnavailable = (Button) view.findViewById(R.id.monday_unavailable);
+        if(mondayUnavailable.getText().equals("-"))
+            mondayUnavailable.setVisibility(View.INVISIBLE);
+        mondayUnavailable.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Poniedzialek","-");
+                    Monday.setText("-");
+                    mondayUnavailable.setVisibility(View.INVISIBLE);
+                }
+                catch (Exception ex){
+                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                }
+                finally {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Message sent!");
+                    Message.setMessage("Absence has been reported.");
+                    Message.show();
+                }
+
+            }
+        });
+
+        tuesdayUnavailable = (Button) view.findViewById(R.id.tuesday_unavailable);
+        if(tuesdayUnavailable.getText().equals("-"))
+            tuesdayUnavailable.setVisibility(View.INVISIBLE);
+        tuesdayUnavailable.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Wtorek","-");
+                    Tuesday.setText("-");
+                    tuesdayUnavailable.setVisibility(View.INVISIBLE);
+                }
+                catch (Exception ex){
+                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                }
+                finally {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Message sent!");
+                    Message.setMessage("Absence has been reported.");
+                    Message.show();
+                }
+
+            }
+        });
+        wednesdayUnavailable = (Button) view.findViewById(R.id.wednesday_unavailable);
+        if(wednesdayUnavailable.getText().equals("-"))
+            wednesdayUnavailable.setVisibility(View.INVISIBLE);
+        wednesdayUnavailable.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Sroda","-");
+                    Wednesday.setText("-");
+                    wednesdayUnavailable.setVisibility(View.INVISIBLE);
+                }
+                catch (Exception ex){
+                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                }
+                finally {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Message sent!");
+                    Message.setMessage("Absence has been reported.");
+                    Message.show();
+                }
+
+            }
+        });
+        thursdayUnavailable = (Button) view.findViewById(R.id.thursday_unavailable);
+        if(thursdayUnavailable.getText().equals("-"))
+            thursdayUnavailable.setVisibility(View.INVISIBLE);
+        thursdayUnavailable.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Czwartek","-");
+                    Thursday.setText("-");
+                    thursdayUnavailable.setVisibility(View.INVISIBLE);
+                }
+                catch (Exception ex){
+                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                }
+                finally {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Message sent!");
+                    Message.setMessage("Absence has been reported.");
+                    Message.show();
+                }
+
+            }
+        });
+        fridayUnavailable = (Button) view.findViewById(R.id.friday_unavailable);
+        if(fridayUnavailable.getText().equals("-"))
+            fridayUnavailable.setVisibility(View.INVISIBLE);
+        fridayUnavailable.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Piatek","-");
+                    Friday.setText("-");
+                    fridayUnavailable.setVisibility(View.INVISIBLE);
+                }
+                catch (Exception ex){
+                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                }
+                finally {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Message sent!");
+                    Message.setMessage("Absence has been reported.");
+                    Message.show();
+                }
+
+            }
+        });
 
         return view;
     }

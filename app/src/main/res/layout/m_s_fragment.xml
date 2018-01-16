@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Schedule of user:"
             android:textAlignment="center"
+            android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
 

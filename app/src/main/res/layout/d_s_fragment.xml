@@ -76,10 +76,18 @@
         <TextView
             android:id="@+id/monday_schedule"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical|center_horizontal|center"
             android:textColor="#000000"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/monday_unavailable"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_shape"
+            android:text="Set as unavailable"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/text_Tuesday"
@@ -93,10 +101,18 @@
         <TextView
             android:id="@+id/tuesday_schedule"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical|center_horizontal|center"
             android:textColor="#000000"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/tuesday_unavailable"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_shape"
+            android:text="Set as unavailable"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/text_Wednesday"
@@ -110,10 +126,18 @@
         <TextView
             android:id="@+id/wednesday_schedule"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical|center_horizontal|center"
             android:textColor="#000000"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/wednesday_unavailable"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_shape"
+            android:text="Set as unavailable"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/text_Thursday"
@@ -127,10 +151,18 @@
         <TextView
             android:id="@+id/thursday_schedule"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical|center_horizontal|center"
             android:textColor="#000000"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/thursday_unavailable"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_shape"
+            android:text="Set as unavailable"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/text_Friday"
@@ -144,10 +176,18 @@
         <TextView
             android:id="@+id/friday_schedule"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="40dp"
             android:gravity="center_vertical|center_horizontal|center"
             android:textColor="#000000"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/friday_unavailable"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_shape"
+            android:text="Set as unavailable"
+            android:textSize="12sp" />
 
 
     </LinearLayout>
