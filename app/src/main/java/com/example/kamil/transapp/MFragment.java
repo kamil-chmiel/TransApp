@@ -118,8 +118,10 @@ public class MFragment extends Fragment implements View.OnClickListener {
 
     private void fillActiveTasks() {
         orders = DatabaseHandler.getActiveTasks(SessionController.getAccountType(), SessionController.getPeselNumber());
-        adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,orders);
-        listView.setAdapter(adapter);
+        if(orders!=null) {
+            adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, orders);
+            listView.setAdapter(adapter);
+        }
     }
 
     public void refreshData()

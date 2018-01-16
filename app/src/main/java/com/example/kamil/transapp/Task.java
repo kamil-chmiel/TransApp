@@ -1,5 +1,7 @@
 package com.example.kamil.transapp;
 
+import java.sql.SQLException;
+
 public class Task {
 
     private String orderNumber, items, describtion, deadline;
@@ -17,9 +19,8 @@ public class Task {
         this.driver = driver;
     }
 
-    public void sendToDataBase()
-    {
-        DatabaseHandler.sendTask(this);
+    public String sendToDataBase() throws SQLException {
+        return DatabaseHandler.sendTask(this);
     }
 
 

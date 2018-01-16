@@ -78,46 +78,54 @@ public class MTFragment extends Fragment implements View.OnClickListener {
 
         fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
 
-
         addTaskButton = (Button) view.findViewById(R.id.addTaskButton);
         addTaskButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                String pesel = customerSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] customerInfo = DatabaseHandler.getWorkerDetails("klient", pesel);
-                Customer newCustomer = new Customer(customerInfo[0],customerInfo[1],customerInfo[2],customerInfo[3]);
 
-                pesel = workersSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] workerInfo = DatabaseHandler.getWorkerDetails("pracownik_magazynu", pesel);
-                WarehouseWorker newWorker = new WarehouseWorker(workerInfo[0],workerInfo[1],workerInfo[2]);
+                if(workersSpinner.getSelectedItem()!=null && customerSpinner.getSelectedItem()!=null && driverSpinner.getSelectedItem()!=null
+                        & orderTV.getText()!=null & itemsTV.getText()!=null & description.getText()!=null & deadline.getText()!=null) {
+                    String pesel = customerSpinner.getSelectedItem().toString();
+                    pesel = pesel.substring(0, pesel.indexOf(" "));
+                    String[] customerInfo = DatabaseHandler.getWorkerDetails("klient", pesel);
+                    Customer newCustomer = new Customer(customerInfo[0], customerInfo[1], customerInfo[2], customerInfo[3]);
 
-                pesel = driverSpinner.getSelectedItem().toString();
-                pesel = pesel.substring(0, pesel.indexOf(" "));
-                String[] driverInfo = DatabaseHandler.getWorkerDetails("kierowca", pesel);
-                Driver newDriver = new Driver(driverInfo[0],driverInfo[1],driverInfo[2]);
+                    pesel = workersSpinner.getSelectedItem().toString();
+                    pesel = pesel.substring(0, pesel.indexOf(" "));
+                    String[] workerInfo = DatabaseHandler.getWorkerDetails("pracownik_magazynu", pesel);
+                    WarehouseWorker newWorker = new WarehouseWorker(workerInfo[0], workerInfo[1], workerInfo[2]);
 
-                Task newTask = new Task(orderNum, itemsTV.getText().toString(),
-                        description.getText().toString(), deadline.getText().toString(), newCustomer, newWorker, newDriver);
+                    pesel = driverSpinner.getSelectedItem().toString();
+                    pesel = pesel.substring(0, pesel.indexOf(" "));
+                    String[] driverInfo = DatabaseHandler.getWorkerDetails("kierowca", pesel);
+                    Driver newDriver = new Driver(driverInfo[0], driverInfo[1], driverInfo[2]);
 
-                try {
-                    SessionController.addTask(newTask);
+                    Task newTask = new Task(orderNum, itemsTV.getText().toString(),
+                            description.getText().toString(), deadline.getText().toString(), newCustomer, newWorker, newDriver);
+
+                    String messageFromBase = "";
+                    try {
+                        messageFromBase = newTask.sendToDataBase();
+                    } catch (Exception ex) {
+                        System.out.println("Bląd podczas wysylania taska do bazy " + ex.getMessage());
+                    }
+
+                    if (messageFromBase.equals("")) {
+                        SessionController.addTask(newTask);
+                        AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                        Message.setTitle("Task saved!");
+                        Message.setMessage("Task #" + orderNum + " has been saved!");
+                        Message.show();
+                        clearForm();
+                    } else {
+                        AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                        Message.setTitle("Fail!");
+                        Message.setMessage(messageFromBase);
+                        Message.show();
+                    }
                 }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania taska do bazy " + ex.getMessage());
-                }
-                finally {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Task saved!");
-                    Message.setMessage("Task #"+orderNum+" has been saved!");
-                    Message.show();
-                }
-
-                newTask.sendToDataBase();
-                clearForm();
             }
         });
         return view;

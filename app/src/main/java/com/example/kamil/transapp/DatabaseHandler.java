@@ -1,5 +1,6 @@
 package com.example.kamil.transapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.StrictMode;
 import android.widget.Toast;
@@ -254,8 +255,9 @@ public class DatabaseHandler {
         return data;
     }
 
-    public static void sendTask(Task task)
-    {
+    public static String sendTask(Task task) throws SQLException {
+        boolean success = true;
+        String failText="";
         try{
         executeUpdate(s,"INSERT INTO `zamowienie`(`Numer_Zamowienia`, `Lista_Towarow`, `Opis`, " +
                 "`PESEL_Menadzera`, `PESEL_Klienta`, `Adres`, `peselMagazyniera`, `peselKierowcy`, `Stan`, `Deadline`) " +
@@ -267,13 +269,43 @@ public class DatabaseHandler {
             System.out.println("Bląd zapisu zadania do bazy! " + e.getMessage());
         }
         finally {
-            executeUpdate(s,"UPDATE pracownik_magazynu SET Dostepny=0 WHERE PESEL='"+task.getWorker().getPesel()+"';");
-            executeUpdate(s,"UPDATE kierowca SET Dostepny=0 WHERE PESEL='"+task.getDriver().getPesel()+"';");
 
             String[] items = task.getItems().split(",");
+
             for(int i=0; i<items.length; i++)
-                executeUpdate(s,"UPDATE towar SET Ilosc_Sztuk=Ilosc_Sztuk-1 WHERE ID_Towaru='"+items[i]+"';");
+            {
+                String[] parts = items[i].split("x");
+                int item, amount=1;
+                item=Integer.parseInt(parts[0]);
+                if(parts.length>1)
+                    amount = Integer.parseInt(parts[1]);
+
+                ResultSet r = executeQuery(s, "Select Ilosc_Sztuk from towar where ID_Towaru='"+item+"'");
+                if(r.next())
+                    if(Integer.parseInt(r.getObject(1).toString())<amount)
+                    {
+                        success=false;
+                        failText+="There are not enough items #"+item+"\n";
+                    }
+            }
+
+            if(success) {
+                for (int i = 0; i < items.length; i++) {
+                    String[] parts = items[i].split("x");
+                    int item, amount = 1;
+                    item = Integer.parseInt(parts[0]);
+                    if (parts.length > 1)
+                        amount = Integer.parseInt(parts[1]);
+
+                    executeUpdate(s, "UPDATE towar SET Ilosc_Sztuk=Ilosc_Sztuk-" + amount + " WHERE ID_Towaru='" + item + "';");
+
+                }
+
+                executeUpdate(s, "UPDATE pracownik_magazynu SET Dostepny=0 WHERE PESEL='" + task.getWorker().getPesel() + "';");
+                executeUpdate(s, "UPDATE kierowca SET Dostepny=0 WHERE PESEL='" + task.getDriver().getPesel() + "';");
+            }
         }
+        return failText;
     }
 
     public static ArrayList<String> getActiveTasks(String type, String pesel)
@@ -324,13 +356,23 @@ public class DatabaseHandler {
                         String customerPesel = r.getObject(5).toString();
                         String customerName="";
                         String items="";
+
                         ResultSet ri;
 
                         for(int i=0; i<parts.length; i++)
                         {
-                            ri = executeQuery(s2, "Select Nazwa from towar where ID_Towaru="+parts[i].toString()+";");
+                            String[] details = parts[i].split("x");
+
+                            ri = executeQuery(s2, "Select Nazwa from towar where ID_Towaru="+details[0].toString()+";");
                             if(ri.next())
-                                items += "\n" + (i+1)+") " + ri.getObject(1).toString();
+                            {
+                                if(details.length>1)
+                                {
+                                    items += "\n" + (i+1)+") " + ri.getObject(1).toString()+" x"+details[1];
+                                }
+                                else
+                                    items += "\n" + (i+1)+") " + ri.getObject(1).toString()+" x1";
+                            }
                         }
                         ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+customerPesel+"';");
 
