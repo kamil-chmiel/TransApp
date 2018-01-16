@@ -37,6 +37,7 @@ public class WFragment extends Fragment implements View.OnClickListener {
     private static boolean refreshing = true;
     private Button settingsButton;
     private PopupMenu settingsMenu;
+    AlertDialog message;
 
     final Handler wFragmentHandler = new Handler();
 
@@ -164,27 +165,32 @@ public class WFragment extends Fragment implements View.OnClickListener {
 
                 while(refreshing)
                 {
-                    if(isNetworkAvailable()) {
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-                        wFragmentHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
+                    wFragmentHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+
+                            if(isNetworkAvailable()) {
                                 fillActiveTasks();
                             }
-                        });
-                    }
-                    else
-                    {
-                        AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                        Message.setTitle("Connection fail");
-                        Message.setMessage("Internet connection fail! Check your connection.");
-                        Message.show();
-                    }
+                            else
+                            {
+                                message = new AlertDialog.Builder(getContext()).create();
+                                message.setTitle("Connection fail");
+                                message.setMessage("Internet connection fail! Check your connection.");
+                                message.show();
+                            }
+
+                        }
+                    });
+
+
                 }
 
             }
