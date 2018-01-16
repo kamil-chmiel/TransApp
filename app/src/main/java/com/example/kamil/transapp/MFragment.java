@@ -1,8 +1,11 @@
 package com.example.kamil.transapp;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +37,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
     private static boolean refreshing = true;
+    AlertDialog message;
 
 
     final Handler wFragmentHandler = new Handler();
@@ -124,6 +128,14 @@ public class MFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void refreshData()
     {
         new Thread(new Runnable() {
@@ -137,12 +149,26 @@ public class MFragment extends Fragment implements View.OnClickListener {
                         e.printStackTrace();
                     }
 
-                    wFragmentHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            fillActiveTasks();
-                        }
-                    });
+                        wFragmentHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+
+                                if(isNetworkAvailable()) {
+                                    fillActiveTasks();
+                                }
+                                else
+                                {
+                                    message = new AlertDialog.Builder(getContext()).create();
+                                    message.setTitle("Connection fail");
+                                    message.setMessage("Internet connection fail! Check your connection.");
+                                    message.show();
+                                }
+
+                            }
+                        });
+
+
                 }
 
             }

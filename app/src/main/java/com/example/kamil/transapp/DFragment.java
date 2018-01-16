@@ -3,6 +3,8 @@ package com.example.kamil.transapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -146,6 +148,14 @@ public class DFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private boolean isNetworkAvailable() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void refreshData()
     {
         new Thread(new Runnable() {
@@ -153,18 +163,27 @@ public class DFragment extends Fragment implements View.OnClickListener {
 
                 while(refreshing)
                 {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    wFragmentHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            fillActiveTasks();
+                    if(isNetworkAvailable()) {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    });
+
+                        wFragmentHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                fillActiveTasks();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                        Message.setTitle("Connection fail");
+                        Message.setMessage("Internet connection fail! Check your connection.");
+                        Message.show();
+                    }
                 }
 
             }

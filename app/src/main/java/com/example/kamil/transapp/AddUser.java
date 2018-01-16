@@ -37,17 +37,6 @@ public class AddUser extends ManagerMenu {
         String worker_type = workerType.getSelectedItem().toString();
 
 
-
-        String type = "register";
-        UserLogin userLogin = new UserLogin(this,new AsyncResponse() {
-            @Override
-            public void returnResult(String result) {
-                username.setText("");
-                password.setText("");
-            }
-        });
-
-        userLogin.execute(type, user_name, _password, worker_type);
     }
 
 }

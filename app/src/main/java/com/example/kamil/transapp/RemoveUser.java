@@ -28,14 +28,9 @@ public class RemoveUser extends ManagerMenu {
 
         String type = "unregister";
 
-        UserLogin userLogin = new UserLogin(this, new AsyncResponse() {
-            @Override
-            public void returnResult(String result) {
-                usernameToDelete.setText("");
-            }
-        });
 
-        userLogin.execute(type, user_name);
+       // DatabaseHandler.deleteUser(user_name);
+
     }
 
 }
