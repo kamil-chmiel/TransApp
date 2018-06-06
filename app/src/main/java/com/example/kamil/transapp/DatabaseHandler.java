@@ -39,12 +39,11 @@ public class DatabaseHandler {
         }
     }
 
-    public static Connection connectToDatabase(String kindOfDatabase, String adress,
-                                               String dataBaseName, String userName, String password) throws SQLException {
+    public static Connection connectToDatabase(String kindOfDatabase, String adress, String dataBaseName, String userName, String password) throws SQLException {
         String base = kindOfDatabase + adress + "/" + dataBaseName;
         java.sql.Connection connection = null;
-            connection = DriverManager.getConnection(base, userName, password);
-         return connection;
+        connection = DriverManager.getConnection("jdbc:mysql://10.0.2.2:3306/SOB","root", "");
+        return connection;
     }
 
     private static Statement createStatement(Connection connection) {
@@ -644,7 +643,7 @@ public class DatabaseHandler {
             System.exit(1);
         //*** ustanowienie polaczenia
         try {
-            connection = connectToDatabase("jdbc:mysql://", "limitlessgames.pl", "limitlessgames", "limitlessgames", "toniehaslo765");
+            connection = connectToDatabase("jdbc:mysql://", "localhost", "limitlessgames", "limitlessgames", "toniehaslo765");
         } catch (SQLException e) {
             e.printStackTrace();
         }
