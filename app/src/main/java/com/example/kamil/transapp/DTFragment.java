@@ -1,9 +1,9 @@
 package com.example.kamil.transapp;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +14,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DTFragment extends Fragment implements View.OnClickListener {
 
@@ -28,11 +28,13 @@ public class DTFragment extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
     private Button addFaultButton;
     private ArrayList<String> cars = new ArrayList<String>();
+    private ArrayList<String> cars2 = new ArrayList<String>();
     private boolean readData = true;
     private String orderNum;
     private ArrayList<Task> tasks;
+    private ListView carsLV;
     private Spinner carsSpinner;
-    private EditText describtion;
+    private EditText description;
 
     public DTFragment() {
         // Required empty public constructor
@@ -74,38 +76,28 @@ public class DTFragment extends Fragment implements View.OnClickListener {
         spec2.setContent(R.id.Show_cars);
         tab.addTab(spec2);
 
-        ListView carsLV = view.findViewById(R.id.cars_list);
+        carsLV = view.findViewById(R.id.cars_list);
+        description = view.findViewById(R.id.description_text);
+        carsSpinner = view.findViewById(R.id.cars_spinner);
 
-        ArrayList<String> cars = DatabaseHandler.getAvailableCars();
-        ArrayAdapter adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,cars);
-        carsLV.setAdapter(adapter);
-
-        describtion = (EditText) view.findViewById(R.id.description_text);
-        carsSpinner = (Spinner) view.findViewById(R.id.cars_spinner);
         fillCars();
 
-        addFaultButton = (Button) view.findViewById(R.id.set_fault_button);
-        addFaultButton.setOnClickListener(new View.OnClickListener()
+        addFaultButton = view.findViewById(R.id.set_fault_button);
+        addFaultButton.setOnClickListener((View v) ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    String[] parts = carsSpinner.getSelectedItem().toString().split(" ");
-                    DatabaseHandler.addCarFault(parts[2]+" "+parts[3], describtion.getText().toString());
-                    fillCars();
-                }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                }
-                finally {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Fault sent!");
-                    Message.setMessage("Car fault has been sent to the base!");
-                    Message.show();
-                }
+            if(description.getText().toString().matches("|0"))
+                Toast.makeText(this.getContext(), "Please describe the fault !", Toast.LENGTH_LONG).show();
+            else {
+                String[] parts = carsSpinner.getSelectedItem().toString().split(" ");
+                DatabaseHandler.addCarFault(parts[2] + " " + parts[3], description.getText().toString());
 
+                showSuccesSnackbar("The fault for: " + carsSpinner.getSelectedItem().toString() + " has been added !");
+
+                fillCars();
+                fillAvailableCars();
             }
+
+
         });
         return view;
     }
@@ -143,9 +135,37 @@ public class DTFragment extends Fragment implements View.OnClickListener {
     public void fillCars()
     {
         cars = DatabaseHandler.getCars();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, cars);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        carsSpinner.setAdapter(adapter);
+
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, cars);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        carsSpinner.setAdapter(adapterSpinner);
+
+    }
+
+    public void fillAvailableCars()
+    {
+        cars2 = DatabaseHandler.getAvailableCars();
+        ArrayAdapter adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,cars2);
+        carsLV.setAdapter(adapter);
+
+    }
+
+    private void showSuccesSnackbar(String snackText){
+
+        Snackbar successSnackbar = Snackbar.make(getActivity().findViewById(R.id.d_t_linearlayout),snackText, Snackbar.LENGTH_LONG);
+
+
+        View viewS = successSnackbar.getView();
+        android.widget.TextView tv = viewS.findViewById(android.support.design.R.id.snackbar_text);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
+        } else {
+            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
+        }
+
+        successSnackbar.show();
+
     }
 
 }

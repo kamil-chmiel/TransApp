@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,29 +15,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class WTFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
 
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
     private Button addItemButton, addNewItemButton, deleteItemButton;
     private ArrayList<String> items = new ArrayList<String>();
-    private boolean readData = true;
-    private String orderNum;
-    private ArrayList<Task> tasks;
     private Spinner itemsSpinner, deleteItemsSpinner;
     private EditText amountText, nameText, priceText, dimensionsText, weightText, newAmountText;
-    private int itemToChange;
-    private int amount;
+
+    private enum States {
+        NAME,PRICE,PRICEWRONGFORMAT,DIMENSIONS,DIMENSIONSWRONGFORMAT,WEIGHT,WEIGHTWRONGFORMAT,AMOUNT,OK
+    }
 
     public WTFragment() {
         // Required empty public constructor
@@ -52,9 +49,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-        }
+
 
     }
 
@@ -63,12 +58,12 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.w_t_fragment, container, false);
-        addItemButton = (Button) view.findViewById(R.id.add_button);
-        addNewItemButton = (Button) view.findViewById(R.id.add_new_item_button);
-        deleteItemButton = (Button) view.findViewById(R.id.delete_button);
-        itemsSpinner = (Spinner) view.findViewById(R.id.items_spinner);
-        deleteItemsSpinner = (Spinner) view.findViewById(R.id.delete_items_spinner);
-        TabHost tab = (TabHost) view.findViewById(R.id.tabHost);
+        addItemButton =  view.findViewById(R.id.add_button);
+        addNewItemButton = view.findViewById(R.id.add_new_item_button);
+        deleteItemButton =  view.findViewById(R.id.delete_button);
+        itemsSpinner =  view.findViewById(R.id.items_spinner);
+        deleteItemsSpinner =  view.findViewById(R.id.delete_items_spinner);
+        TabHost tab =  view.findViewById(R.id.tabHost);
         tab.setup();
 
         TabHost.TabSpec spec1 = tab.newTabSpec("Tab 1");
@@ -87,111 +82,127 @@ public class WTFragment extends Fragment implements View.OnClickListener {
         tab.addTab(spec3);
 
 
-        amountText = (EditText) view.findViewById(R.id.amount_text);
+        // DODAWANIE ILOŚĆI PRZEDMIOTÓW DO BAZY
+
+        amountText = view.findViewById(R.id.amount_text);
         fillAvailableItems();
 
-        addItemButton.setOnClickListener(new View.OnClickListener()
+        addItemButton.setOnClickListener((View v) ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                try
-                {
-                    String temp = itemsSpinner.getSelectedItem().toString();
-                    String arr[] = temp.split(" ");
-                    if(amountText.getText()!=null)
-                        DatabaseHandler.addItem(Integer.parseInt(arr[0]) ,Integer.parseInt(amountText.getText().toString()));
-                    amountText.setText("");
-                }
-                catch(Exception e)
-                {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Error");
-                    Message.setMessage("Amount '"+nameText.getText()+"' hasn't been added.");
-                    Message.show();
-                }
-                finally
-                {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Amount added!");
-                    Message.setMessage("Amount has been added to the base!");
-                    Message.show();
-                }
-            }
+
+            String temp = itemsSpinner.getSelectedItem().toString();
+            String arr[] = temp.split(" ");
+
+           if(amountText.getText().toString().matches("|0"))
+               Toast.makeText(this.getContext(), "Please state the amount !", Toast.LENGTH_LONG).show();
+           else {
+
+               DatabaseHandler.addItem(Integer.parseInt(arr[0]), Integer.parseInt(amountText.getText().toString()));
+
+               String product = temp.replaceAll("Ilosc:\\s?([-])?\\d+","")
+                                    .replaceAll("\\d+\\s?[)]\\s?","");
+
+               showSuccesSnackbar(product + ": amount increased by: " + amountText.getText().toString());
+
+               amountText.setText("");
+               fillAvailableItems();
+           }
+
+
         });
 
 
         // OBSLUGA DODANIA NOWEGO TOWARU
 
-        nameText = (EditText) view.findViewById(R.id.name_text);
-        priceText = (EditText) view.findViewById(R.id.price_text);
-        dimensionsText = (EditText) view.findViewById(R.id.dimensions_text);
-        weightText = (EditText) view.findViewById(R.id.weight_text);
-        newAmountText = (EditText) view.findViewById(R.id.new_amount_text);
+        nameText =  view.findViewById(R.id.name_text);
+        priceText =  view.findViewById(R.id.price_text);
+        dimensionsText =  view.findViewById(R.id.dimensions_text);
+        weightText =  view.findViewById(R.id.weight_text);
+        newAmountText = view.findViewById(R.id.new_amount_text);
 
-        addNewItemButton.setOnClickListener(new View.OnClickListener()
+
+        addNewItemButton.setOnClickListener((View v) ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    if (nameText.getText() != null && priceText != null && dimensionsText != null && weightText != null && newAmountText != null) {
-                        DatabaseHandler.addNewItem(nameText.getText().toString(), Float.parseFloat(priceText.getText().toString()),
-                                dimensionsText.getText().toString(), Float.parseFloat(weightText.getText().toString()),
+            States state = checkFieldStatesAddItem();
+
+            switch(state){
+
+                case NAME:
+                    Toast.makeText(this.getContext(), "Please state the name of product!", Toast.LENGTH_LONG).show();
+                    break;
+
+                case PRICE:
+                    Toast.makeText(this.getContext(), "Please state the price of product!", Toast.LENGTH_LONG).show();
+                    break;
+
+                case PRICEWRONGFORMAT:
+                    Toast.makeText(this.getContext(), "Price of product must be in (numbers).xx format !", Toast.LENGTH_LONG).show();
+                    break;
+
+                case DIMENSIONS:
+                    Toast.makeText(this.getContext(), "Please state the dimensions of product!", Toast.LENGTH_LONG).show();
+                    break;
+
+                case DIMENSIONSWRONGFORMAT:
+                    Toast.makeText(this.getContext(), "Dimensions of product must be in (numbers)x(numbers)x(numbers) format !", Toast.LENGTH_LONG).show();
+                    break;
+
+                case WEIGHT:
+                    Toast.makeText(this.getContext(), "Please state the weight of product!", Toast.LENGTH_LONG).show();
+                    break;
+
+                case WEIGHTWRONGFORMAT:
+                    Toast.makeText(this.getContext(), "Weight of product must be in (numbers).xx format !", Toast.LENGTH_LONG).show();
+                    break;
+
+                case AMOUNT:
+                    Toast.makeText(this.getContext(), "Please state the amount of product!", Toast.LENGTH_LONG).show();
+                    break;
+
+                case OK:
+
+                    if(!isInDatabase(nameText.getText().toString().trim())) {
+
+                        DatabaseHandler.addNewItem(nameText.getText().toString(),
+                                Float.parseFloat(priceText.getText().toString()),
+                                dimensionsText.getText().toString(),
+                                Float.parseFloat(weightText.getText().toString()),
                                 Integer.parseInt(newAmountText.getText().toString()));
+
+                        showSuccesSnackbar(nameText.getText().toString() + " added to database !");
 
                         nameText.setText("");
                         priceText.setText("");
                         dimensionsText.setText("");
                         weightText.setText("");
                         newAmountText.setText("");
+                        fillAvailableItems();
                     }
-                }
-                catch(Exception e)
-                {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Error");
-                    Message.setMessage("Item '"+nameText.getText()+"' hasn't been added.");
-                    Message.show();
-                }
-                finally
-                {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("New item added!");
-                    Message.setMessage("Item '"+nameText.getText()+"' has been added to the base!");
-                    Message.show();
-                }
+                    else
+                        Toast.makeText(this.getContext(), "Item is already existing in the database !", Toast.LENGTH_LONG).show();
+
+                    break;
+
             }
+
         });
 
         // USUNIECIE TOWARU
 
-        deleteItemButton.setOnClickListener(new View.OnClickListener()
+        deleteItemButton.setOnClickListener((View v) ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                try {
                     String temp = deleteItemsSpinner.getSelectedItem().toString();
                     String arr[] = temp.split(" ");
                     DatabaseHandler.deleteItem(Integer.parseInt(arr[0]));
+
+                    String product = temp.replaceAll("Ilosc:\\s?([-])?\\d+","")
+                                         .replaceAll("\\d+\\s?[)]\\s?","");
+
+                    showSuccesSnackbar(product + ": deleted from database !");
+
                     fillAvailableItems();
-                }
-                catch(Exception e)
-                {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Error");
-                    Message.setMessage("Item hasn't been deleted.");
-                    Message.show();
-                }
-                finally
-                {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Item deleted!");
-                    Message.setMessage("Item has been deleted from the base!");
-                    Message.show();
-                }
-            }
+
+
         });
 
         return view;
@@ -235,6 +246,71 @@ public class WTFragment extends Fragment implements View.OnClickListener {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         itemsSpinner.setAdapter(adapter);
         deleteItemsSpinner.setAdapter(adapter);
+    }
+
+    private States checkFieldStatesAddItem(){
+
+        States state = States.OK;
+
+
+        if(newAmountText.getText().toString().matches(""))
+            state = States.AMOUNT;
+
+        if(weightText.getText().toString().matches(""))
+            state = States.WEIGHT;
+        else if(!weightText.getText().toString().matches("\\d+\\.\\d{2}\\s*"))
+            state = States.WEIGHTWRONGFORMAT;
+
+        if(dimensionsText.getText().toString().matches(""))
+            state = States.DIMENSIONS;
+        else if(!dimensionsText.getText().toString().matches("\\d+[x]\\d+[x]\\d+\\s*"))
+            state = States.DIMENSIONSWRONGFORMAT;
+
+        if(priceText.getText().toString().matches(""))
+            state = States.PRICE;
+        else if(!priceText.getText().toString().matches("\\d+\\.\\d{2}\\s*"))
+            state = States.PRICEWRONGFORMAT;
+
+        if(nameText.getText().toString().matches(""))
+            state = States.NAME;
+
+
+        return state;
+    }
+
+    private void showSuccesSnackbar(String snackText){
+
+        Snackbar successSnackbar = Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),snackText, Snackbar.LENGTH_LONG);
+
+
+        View viewS = successSnackbar.getView();
+        android.widget.TextView tv = viewS.findViewById(android.support.design.R.id.snackbar_text);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
+        } else {
+            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
+        }
+
+        successSnackbar.show();
+
+    }
+
+    private boolean isInDatabase(String name){
+
+        String itemChecked;
+
+        for(String item: items) {
+
+            itemChecked = item.replaceAll("Ilosc:\\s?([-])?\\d+", "")
+                    .replaceAll("\\d+\\s?[)]\\s?", "")
+                    .trim();
+
+            if(itemChecked.equals(name))
+                return true;
+        }
+
+        return  false;
     }
 
 }

@@ -215,9 +215,7 @@ public class WFragment extends Fragment implements View.OnClickListener {
         settingsMenu = new PopupMenu(this.getContext(), v);
         settingsMenu.getMenuInflater().inflate(R.menu.settings_menu_warehouse, settingsMenu.getMenu());
 
-        settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
+        settingsMenu.setOnMenuItemClickListener((MenuItem menuItem) -> {
 
                 switch (menuItem.getItemId()) {
 
@@ -235,7 +233,7 @@ public class WFragment extends Fragment implements View.OnClickListener {
 
                 }
                 return true;
-            }
+
         });
 
         settingsMenu.show();
