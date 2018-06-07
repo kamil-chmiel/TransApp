@@ -29,9 +29,6 @@ public class DTFragment extends Fragment implements View.OnClickListener {
     private Button addFaultButton;
     private ArrayList<String> cars = new ArrayList<String>();
     private ArrayList<String> cars2 = new ArrayList<String>();
-    private boolean readData = true;
-    private String orderNum;
-    private ArrayList<Task> tasks;
     private ListView carsLV;
     private Spinner carsSpinner;
     private EditText description;
@@ -51,9 +48,7 @@ public class DTFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-        }
+
 
     }
 
@@ -63,7 +58,7 @@ public class DTFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.d_t_fragment, container, false);
 
-        TabHost tab = (TabHost) view.findViewById(R.id.tabHost);
+        TabHost tab = view.findViewById(R.id.tabHost);
         tab.setup();
 
         TabHost.TabSpec spec1 = tab.newTabSpec("Tab 1");
@@ -91,7 +86,7 @@ public class DTFragment extends Fragment implements View.OnClickListener {
                 String[] parts = carsSpinner.getSelectedItem().toString().split(" ");
                 DatabaseHandler.addCarFault(parts[2] + " " + parts[3], description.getText().toString());
 
-                showSuccesSnackbar("The fault for: " + carsSpinner.getSelectedItem().toString() + " has been added !");
+                Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),"The fault for: " + carsSpinner.getSelectedItem().toString() + " has been added !", Snackbar.LENGTH_LONG);
 
                 fillCars();
                 fillAvailableCars();
@@ -150,22 +145,5 @@ public class DTFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void showSuccesSnackbar(String snackText){
-
-        Snackbar successSnackbar = Snackbar.make(getActivity().findViewById(R.id.d_t_linearlayout),snackText, Snackbar.LENGTH_LONG);
-
-
-        View viewS = successSnackbar.getView();
-        android.widget.TextView tv = viewS.findViewById(android.support.design.R.id.snackbar_text);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
-        } else {
-            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
-        }
-
-        successSnackbar.show();
-
-    }
 
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -32,7 +31,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -91,6 +89,7 @@
                             android:backgroundTint="#23b9ff"
                             android:ems="10"
                             android:hint="@string/warehouse_tabs__hint_Name"
+                            android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:textColor="@android:color/black" />
 
@@ -102,6 +101,7 @@
                             android:backgroundTint="#23b9ff"
                             android:ems="10"
                             android:hint="@string/warehouse_tabs__hint_Price"
+                            android:imeOptions="actionNext"
                             android:inputType="number|numberDecimal" />
 
                         <EditText
@@ -112,6 +112,7 @@
                             android:backgroundTint="#23b9ff"
                             android:ems="10"
                             android:hint="@string/warehouse_tabs__hint_Dimensions"
+                            android:imeOptions="actionNext"
                             android:inputType="textPersonName" />
 
                         <EditText
@@ -122,6 +123,7 @@
                             android:backgroundTint="#23b9ff"
                             android:ems="10"
                             android:hint="@string/warehouse_tabs__hint_Weight"
+                            android:imeOptions="actionNext"
                             android:inputType="number|numberDecimal" />
 
                         <EditText
@@ -132,6 +134,7 @@
                             android:backgroundTint="#23b9ff"
                             android:ems="10"
                             android:hint="@string/warehouse_tabs_hint_amount"
+                            android:imeOptions="actionDone"
                             android:inputType="number" />
 
                         <Space

@@ -3,6 +3,7 @@ package com.example.kamil.transapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.StrictMode;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.sql.Connection;
@@ -42,7 +43,7 @@ public class DatabaseHandler {
     public static Connection connectToDatabase(String kindOfDatabase, String adress, String dataBaseName, String userName, String password) throws SQLException {
         String base = kindOfDatabase + adress + "/" + dataBaseName;
         java.sql.Connection connection = null;
-        connection = DriverManager.getConnection("jdbc:mysql://10.0.2.2:3306/SOB","root", "");
+        connection = DriverManager.getConnection("jdbc:mysql://192.168.0.20:3306/limitlessgames","root", "");
         return connection;
     }
 
@@ -62,7 +63,7 @@ public class DatabaseHandler {
             connection.close();
         } catch (SQLException e) {
             System.out
-                    .println("Bląd przy zamykaniu polączenia z bazą! " + e.getMessage() + ": " + e.getErrorCode());;
+                    .println("Bląd przy zamykaniu polączenia z bazą! " + e.getMessage() + ": " + e.getErrorCode());
             System.exit(4);
         }
         //System.out.print(" zamknięcie OK");
@@ -136,6 +137,30 @@ public class DatabaseHandler {
         }
         //closeConnection(connection, s);
         return type;
+    }
+
+    public static boolean isExisitingUser(String username){
+
+        String user = "";
+        ResultSet r = executeQuery(s, "Select username from users;");
+
+        try{
+            while(r.next()) {
+
+                Object obj = r.getObject(1);
+                if (obj != null)
+                    user = obj.toString().trim();
+
+                if (user.equals(username))
+                    return true;
+            }
+
+        }
+        catch (SQLException e){
+            System.out.println("Błąd odczytu username z bazy!" + e.getMessage() + ": " + e.getErrorCode());
+        }
+
+        return false;
     }
 
     public static String[] getWorkerInfo(String login, String type)

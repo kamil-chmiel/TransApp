@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/removeuser_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.kamil.transapp.RemoveUser">
@@ -52,7 +53,6 @@
         android:layout_height="42dp"
         android:layout_marginTop="188dp"
         android:background="@drawable/button_shape"
-        android:onClick="OnRemove"
         android:text="@string/remove_User_View_Button"
         android:textColor="#000000"
         app:layout_constraintHorizontal_bias="0.501"

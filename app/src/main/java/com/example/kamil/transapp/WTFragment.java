@@ -1,12 +1,10 @@
 package com.example.kamil.transapp;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +29,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
     private EditText amountText, nameText, priceText, dimensionsText, weightText, newAmountText;
 
     private enum States {
-        NAME,PRICE,PRICEWRONGFORMAT,DIMENSIONS,DIMENSIONSWRONGFORMAT,WEIGHT,WEIGHTWRONGFORMAT,AMOUNT,OK
+        NAME,PRICE, PRICE_WRONG_FORMAT,DIMENSIONS, DIMENSIONS_WRONG_FORMAT,WEIGHT, WEIGHT_WRONG_FORMAT,AMOUNT,OK
     }
 
     public WTFragment() {
@@ -102,7 +100,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                String product = temp.replaceAll("Ilosc:\\s?([-])?\\d+","")
                                     .replaceAll("\\d+\\s?[)]\\s?","");
 
-               showSuccesSnackbar(product + ": amount increased by: " + amountText.getText().toString());
+               Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),product + ": amount increased by: " + amountText.getText().toString(), Snackbar.LENGTH_LONG);
 
                amountText.setText("");
                fillAvailableItems();
@@ -135,7 +133,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(this.getContext(), "Please state the price of product!", Toast.LENGTH_LONG).show();
                     break;
 
-                case PRICEWRONGFORMAT:
+                case PRICE_WRONG_FORMAT:
                     Toast.makeText(this.getContext(), "Price of product must be in (numbers).xx format !", Toast.LENGTH_LONG).show();
                     break;
 
@@ -143,7 +141,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(this.getContext(), "Please state the dimensions of product!", Toast.LENGTH_LONG).show();
                     break;
 
-                case DIMENSIONSWRONGFORMAT:
+                case DIMENSIONS_WRONG_FORMAT:
                     Toast.makeText(this.getContext(), "Dimensions of product must be in (numbers)x(numbers)x(numbers) format !", Toast.LENGTH_LONG).show();
                     break;
 
@@ -151,7 +149,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(this.getContext(), "Please state the weight of product!", Toast.LENGTH_LONG).show();
                     break;
 
-                case WEIGHTWRONGFORMAT:
+                case WEIGHT_WRONG_FORMAT:
                     Toast.makeText(this.getContext(), "Weight of product must be in (numbers).xx format !", Toast.LENGTH_LONG).show();
                     break;
 
@@ -169,7 +167,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                                 Float.parseFloat(weightText.getText().toString()),
                                 Integer.parseInt(newAmountText.getText().toString()));
 
-                        showSuccesSnackbar(nameText.getText().toString() + " added to database !");
+                        Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),nameText.getText().toString() + " added to database !", Snackbar.LENGTH_LONG);
 
                         nameText.setText("");
                         priceText.setText("");
@@ -198,7 +196,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                     String product = temp.replaceAll("Ilosc:\\s?([-])?\\d+","")
                                          .replaceAll("\\d+\\s?[)]\\s?","");
 
-                    showSuccesSnackbar(product + ": deleted from database !");
+                    Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),product + ": deleted from database !", Snackbar.LENGTH_LONG);
 
                     fillAvailableItems();
 
@@ -259,41 +257,23 @@ public class WTFragment extends Fragment implements View.OnClickListener {
         if(weightText.getText().toString().matches(""))
             state = States.WEIGHT;
         else if(!weightText.getText().toString().matches("\\d+\\.\\d{2}\\s*"))
-            state = States.WEIGHTWRONGFORMAT;
+            state = States.WEIGHT_WRONG_FORMAT;
 
         if(dimensionsText.getText().toString().matches(""))
             state = States.DIMENSIONS;
         else if(!dimensionsText.getText().toString().matches("\\d+[x]\\d+[x]\\d+\\s*"))
-            state = States.DIMENSIONSWRONGFORMAT;
+            state = States.DIMENSIONS_WRONG_FORMAT;
 
         if(priceText.getText().toString().matches(""))
             state = States.PRICE;
         else if(!priceText.getText().toString().matches("\\d+\\.\\d{2}\\s*"))
-            state = States.PRICEWRONGFORMAT;
+            state = States.PRICE_WRONG_FORMAT;
 
         if(nameText.getText().toString().matches(""))
             state = States.NAME;
 
 
         return state;
-    }
-
-    private void showSuccesSnackbar(String snackText){
-
-        Snackbar successSnackbar = Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),snackText, Snackbar.LENGTH_LONG);
-
-
-        View viewS = successSnackbar.getView();
-        android.widget.TextView tv = viewS.findViewById(android.support.design.R.id.snackbar_text);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
-        } else {
-            tv.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
-        }
-
-        successSnackbar.show();
-
     }
 
     private boolean isInDatabase(String name){
