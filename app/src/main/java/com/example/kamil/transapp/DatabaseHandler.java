@@ -43,7 +43,7 @@ public class DatabaseHandler {
     public static Connection connectToDatabase(String kindOfDatabase, String adress, String dataBaseName, String userName, String password) throws SQLException {
         String base = kindOfDatabase + adress + "/" + dataBaseName;
         java.sql.Connection connection = null;
-        connection = DriverManager.getConnection("jdbc:mysql://192.168.0.20:3306/limitlessgames","root", "");
+        connection = DriverManager.getConnection("jdbc:mysql://10.0.2.2:3306/SOB","root", "");
         return connection;
     }
 
@@ -470,6 +470,42 @@ public class DatabaseHandler {
         return schedule;
     }
 
+    public static ArrayList<String> getAvailableItems()
+    {
+        ArrayList<String> items = new ArrayList<>();
+        ResultSet r = executeQuery(s, "Select * from towar");
+
+        try {
+            while(r.next())
+            {
+                items.add(r.getObject(2).toString());
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        //closeConnection(connection, s);
+        return items;
+    }
+
+    public static ArrayList<Integer> getAvailableItemsAmount()
+    {
+        ArrayList<Integer> items = new ArrayList<>();
+        ResultSet r = executeQuery(s, "Select * from towar");
+
+        try {
+            while(r.next())
+            {
+                items.add((Integer)r.getObject(6));
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Bląd odczytu z bazy! " + e.getMessage() + ": " + e.getErrorCode());
+        }
+        //closeConnection(connection, s);
+        return items;
+    }
+
     public static ArrayList<String> getItems()
     {
         ArrayList<String> items = new ArrayList<>();
@@ -491,6 +527,11 @@ public class DatabaseHandler {
     public static void addItem(int id, int amount)
     {
         executeUpdate(s, "UPDATE towar SET Ilosc_Sztuk = Ilosc_Sztuk + "+amount+" where ID_Towaru="+ id +";");
+    }
+
+    public static void setItemAmount(String itemName, int amount)
+    {
+        executeUpdate(s, "UPDATE towar SET Ilosc_Sztuk = Ilosc_Sztuk + "+amount+" where Nazwa="+ itemName +";");
     }
 
     public static void deleteUser(String username)

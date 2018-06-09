@@ -100,7 +100,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                String product = temp.replaceAll("Ilosc:\\s?([-])?\\d+","")
                                     .replaceAll("\\d+\\s?[)]\\s?","");
 
-               Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),product + ": amount increased by: " + amountText.getText().toString(), Snackbar.LENGTH_LONG);
+               Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),product + ": amount increased by: " + amountText.getText().toString(), Snackbar.LENGTH_LONG).show();
 
                amountText.setText("");
                fillAvailableItems();
@@ -167,7 +167,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                                 Float.parseFloat(weightText.getText().toString()),
                                 Integer.parseInt(newAmountText.getText().toString()));
 
-                        Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),nameText.getText().toString() + " added to database !", Snackbar.LENGTH_LONG);
+                        Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),nameText.getText().toString() + " added to database !", Snackbar.LENGTH_LONG).show();
 
                         nameText.setText("");
                         priceText.setText("");
@@ -196,7 +196,7 @@ public class WTFragment extends Fragment implements View.OnClickListener {
                     String product = temp.replaceAll("Ilosc:\\s?([-])?\\d+","")
                                          .replaceAll("\\d+\\s?[)]\\s?","");
 
-                    Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),product + ": deleted from database !", Snackbar.LENGTH_LONG);
+                    Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),product + ": deleted from database !", Snackbar.LENGTH_LONG).show();
 
                     fillAvailableItems();
 

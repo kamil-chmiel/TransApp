@@ -5,18 +5,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class MTFragment extends Fragment implements View.OnClickListener {
 
@@ -28,6 +33,9 @@ public class MTFragment extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
     private Button addTaskButton;
     private ArrayList<String> workers = new ArrayList<String>();
+    private ArrayList<String> items = new ArrayList<String>();
+    private ArrayList<Integer> itemsAmount = new ArrayList<>();
+    private ArrayList<Item> itemsAmountAboveZero = new ArrayList<>();
     private boolean readData = true;
     private String orderNum;
     private ArrayList<Task> tasks;
@@ -35,9 +43,12 @@ public class MTFragment extends Fragment implements View.OnClickListener {
     private Spinner customerSpinner;
     private Spinner driverSpinner;
     private TextView orderTV;
+    private Spinner itemsSpinner;
     private TextView itemsTV;
     private TextView description;
     private TextView deadline;
+    private Button addItemButton;
+    private EditText addItemAmount;
 
     public MTFragment() {
         // Required empty public constructor
@@ -69,14 +80,46 @@ public class MTFragment extends Fragment implements View.OnClickListener {
         customerSpinner = (Spinner) view.findViewById(R.id.customerSpinner);
         driverSpinner = (Spinner) view.findViewById(R.id.driverSpinner);
         orderTV = (TextView) view.findViewById(R.id.orderNum);
-        itemsTV = (TextView) view.findViewById(R.id.itemsText);
+        itemsSpinner = (Spinner) view.findViewById(R.id.items_to_add_spinner);
         description = (TextView) view.findViewById(R.id.descriptionText);
         deadline = (TextView) view.findViewById(R.id.deadlineText);
+        itemsTV = (TextView) view.findViewById(R.id.items_text);
+        addItemButton = (Button) view.findViewById(R.id.add_item_button);
+        addItemAmount = (EditText) view.findViewById(R.id.itemsAmount);
 
         orderNum = ("Order #"+(new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(Calendar.getInstance().getTime())));
         orderTV.setText(orderNum);
 
         fillAvailableWorkers(workersSpinner, customerSpinner, driverSpinner);
+        fillAvailableItems(itemsSpinner);
+
+
+        addItemButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Integer amount = itemsAmountAboveZero.get(itemsSpinner.getSelectedItemPosition()).amount;
+
+                if(Integer.parseInt(addItemAmount.getText().toString()) <= amount ) {
+                    itemsTV.append(" " +itemsAmountAboveZero.get(itemsSpinner.getSelectedItemPosition()).name + " x" + Integer.parseInt(addItemAmount.getText().toString()) + "; ");
+
+                    // decrease item amount
+
+                    itemsAmountAboveZero.get(itemsSpinner.getSelectedItemPosition()).amount = amount - Integer.parseInt(addItemAmount.getText().toString());
+
+                    // reload spinner
+                    refreshItems(itemsSpinner);
+
+                }
+                else {
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Out of items!");
+                    Message.setMessage("Out of items amount in storage.");
+                    Message.show();
+                }
+            }
+        });
 
         addTaskButton = (Button) view.findViewById(R.id.addTaskButton);
         addTaskButton.setOnClickListener(new View.OnClickListener()
@@ -86,7 +129,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
             {
 
                 if(workersSpinner.getSelectedItem()!=null && customerSpinner.getSelectedItem()!=null && driverSpinner.getSelectedItem()!=null
-                        & orderTV.getText()!=null & itemsTV.getText()!=null & description.getText()!=null & deadline.getText()!=null) {
+                        & orderTV.getText()!=null & description.getText()!=null & deadline.getText()!=null) {
                     String pesel = customerSpinner.getSelectedItem().toString();
                     pesel = pesel.substring(0, pesel.indexOf(" "));
                     String[] customerInfo = DatabaseHandler.getWorkerDetails("klient", pesel);
@@ -114,6 +157,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
 
                     if (messageFromBase.equals("")) {
                         SessionController.addTask(newTask);
+                        updateDatabase();
                         AlertDialog Message = new AlertDialog.Builder(getContext()).create();
                         Message.setTitle("Task saved!");
                         Message.setMessage("Task #" + orderNum + " has been saved!");
@@ -136,6 +180,10 @@ public class MTFragment extends Fragment implements View.OnClickListener {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public void updateDatabase() {
+
     }
 
     public void clearForm()
@@ -170,7 +218,34 @@ public class MTFragment extends Fragment implements View.OnClickListener {
         void onFragmentInteraction(Uri uri);
     }
 
+    public void refreshItems(Spinner itemsSpinner) {
+        ArrayList<String> itemLabels = new ArrayList<>();
 
+        for (int i=0; i<itemsAmountAboveZero.size(); i++) {
+            if(itemsAmountAboveZero.get(i).amount > 0) {
+                itemLabels.add(itemsAmountAboveZero.get(i).name + " " + itemsAmountAboveZero.get(i).amount);
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, itemLabels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        itemsSpinner.setAdapter(adapter);
+    }
+
+    public void fillAvailableItems(Spinner itemsSpinner)
+    {
+        items = DatabaseHandler.getInstance().getAvailableItems();
+        itemsAmount = DatabaseHandler.getInstance().getAvailableItemsAmount();
+        ArrayList<String> itemLabels = new ArrayList<>();
+        for (int i=0; i<items.size(); i++) {
+            if(itemsAmount.get(i)>0) {
+                itemsAmountAboveZero.add( new Item(items.get(i), itemsAmount.get(i)) );
+                itemLabels.add(items.get(i) + " " + itemsAmount.get(i));
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, itemLabels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        itemsSpinner.setAdapter(adapter);
+    }
 
     public void fillAvailableWorkers(Spinner workersSpinner, Spinner customerSpinner, Spinner driverSpinner)
     {
