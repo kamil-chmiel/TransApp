@@ -4,13 +4,15 @@ package com.example.kamil.transapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,27 +22,32 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import com.transapp.broadcastreceiver.*;
+
 import java.util.ArrayList;
 
-public class MFragment extends Fragment implements View.OnClickListener {
+
+public class MFragment extends Fragment implements View.OnClickListener , NetworkConnectionReceiver.NetworkListener {
 
     private static final String ARG_PARAM1 = "param1";
     private String mParam1;
     private OnFragmentInteractionListener mListener;
     static String login;
-    private FloatingActionButton addUserButton;
-    private FloatingActionButton removeUserButton;
     private Button settingsButton;
     private static PopupMenu settingsMenu;
+    private static ConstraintLayout popUpLayout;
     ListView listView;
     ArrayAdapter<String> adapter;
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
-    private static boolean refreshing = true;
+    private boolean isRestartRequired = false;
     AlertDialog message;
-
+    Handler handler = new Handler();
+    NetworkConnectionReceiver ncr;
 
     final Handler wFragmentHandler = new Handler();
+
 
     public MFragment() {
         // Required empty public constructor
@@ -72,10 +79,10 @@ public class MFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.m_fragment, container, false);
-        refreshData();
-        listView = (ListView) view.findViewById(R.id.tasks);
 
+        View view = inflater.inflate(R.layout.m_fragment, container, false);
+        ncr = new NetworkConnectionReceiver();
+        listView = (ListView) view.findViewById(R.id.tasks);
 
         //UZUPELNIENIE DANYCH USERA
         nameToChange = (TextView) view.findViewById(R.id.manager_name);
@@ -93,28 +100,7 @@ public class MFragment extends Fragment implements View.OnClickListener {
 
         // UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
-
-        // PODPIECIE BUTTONOW
-       /* addUserButton = view.findViewById(R.id.addUserButton);
-        addUserButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent myIntent = new Intent(getContext(), AddUser.class);
-                startActivity(myIntent);
-            }
-        });
-        removeUserButton = view.findViewById(R.id.removeUserButton);
-        removeUserButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent myIntent = new Intent(getContext(), RemoveUser.class);
-                startActivity(myIntent);
-            }
-        });*/
+        //refreshData();
 
 
         return view;
@@ -128,52 +114,15 @@ public class MFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private boolean isNetworkAvailable() {
+  /*  private boolean isNetworkAvailable() {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    public void refreshData()
-    {
-        new Thread(new Runnable() {
-            public void run() {
-
-                while(refreshing)
-                {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                        wFragmentHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
+    }*/
 
 
-                                if(isNetworkAvailable()) {
-                                    fillActiveTasks();
-                                }
-                                else
-                                {
-                                    message = new AlertDialog.Builder(getContext()).create();
-                                    message.setTitle("Connection fail");
-                                    message.setMessage("Internet connection fail! Check your connection.");
-                                    message.show();
-                                }
-
-                            }
-                        });
-
-
-                }
-
-            }
-        }).start();
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -242,7 +191,8 @@ public class MFragment extends Fragment implements View.OnClickListener {
                         startActivity(orderHistory);
                         break;
                     case R.id.menu4:
-                        refreshing=false;
+                        handler.removeCallbacks(refreshData);
+                        getContext().unregisterReceiver(ncr);
                         Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
                         logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -260,5 +210,77 @@ public class MFragment extends Fragment implements View.OnClickListener {
         settingsMenu.show();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(this);
+        getContext().registerReceiver(ncr, new android.content.IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // unregister connection status listener
+        MyApplication.getInstance().setConnectivityListener(null);
+        getContext().unregisterReceiver(ncr);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        getContext().unregisterReceiver(ncr);
+        handler.removeCallbacks(refreshData);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+      //  showSnack(isConnected);
+        Log.d("onC","iam here!");
+        showPopNoInternet(isConnected);
+        handleDataRefreshing(isConnected);
+
+    }
+
+    private void showPopNoInternet(boolean isConnected){
+
+         if(isConnected){
+
+        }
+        else{
+             Intent noNetworkPop = new Intent(getActivity(), NoNetworkPop.class);
+             startActivity(noNetworkPop);
+        }
+
+    }
+
+    private void handleDataRefreshing(boolean isConnected){
+
+        if(isConnected){
+            handler.post(refreshData);
+        }
+
+        else{
+            handler.removeCallbacks(refreshData);
+            isRestartRequired = true;
+        }
+
+    }
+
+
+    private Runnable refreshData = new Runnable() {
+        @Override
+        public void run() {
+            if(isRestartRequired) {
+                DatabaseHandler DB = new DatabaseHandler();
+                isRestartRequired = false;
+            }
+            fillActiveTasks();
+
+            handler.postDelayed(refreshData, 5000);
+        }
+    };
 
 }

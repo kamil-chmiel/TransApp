@@ -346,7 +346,7 @@ public class DatabaseHandler {
                 ResultSet ri;
                 r = executeQuery(s, "Select * from zamowienie WHERE Stan!='Done';");
                 try {
-                    while(r.next())
+                    while(r != null && r.next() )
                     {
                         ri = executeQuery(s2, "Select Imie, Nazwisko from klient where PESEL='"+r.getObject(5)+"';");
                         if(ri.next()) customerName = ri.getObject(1).toString()+" "+ri.getObject(2).toString();

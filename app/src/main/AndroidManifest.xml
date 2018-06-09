@@ -6,9 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:label="Transapp"
+        android:name="com.transapp.broadcastreceiver.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:label="Transapp"
         android:roundIcon="@mipmap/tir_driver"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -25,9 +26,19 @@
         <activity android:name=".ManagerMenu" />
         <activity android:name=".WarehouseMenu" />
         <activity android:name=".DriverMenu" />
-        <activity android:name=".Pop"
-            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity
+            android:name=".Pop"
+            android:theme="@style/AppTheme.CustomTheme" />
 
+        <receiver
+            android:name="com.transapp.broadcastreceiver.NetworkConnectionReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".NoNetworkPop"></activity>
     </application>
 
 </manifest>

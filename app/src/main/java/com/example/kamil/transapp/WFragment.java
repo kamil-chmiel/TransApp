@@ -72,7 +72,7 @@ public class WFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.w_fragment, container, false);
-        refreshData();
+        //refreshData();
 
         listView = (ListView) view.findViewById(R.id.tasks);
 
@@ -150,15 +150,15 @@ public class WFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private boolean isNetworkAvailable() {
+   /* private boolean isNetworkAvailable() {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+    }*/
 
-    public void refreshData()
+   /* public void refreshData()
     {
         new Thread(new Runnable() {
             public void run() {
@@ -196,7 +196,7 @@ public class WFragment extends Fragment implements View.OnClickListener {
             }
         }).start();
     }
-
+*/
 
     public void setWarehouseInfo(String login){
 

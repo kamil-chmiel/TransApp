@@ -36,7 +36,6 @@
     <string name="button_popup"> Set as DONE</string>
 
 
-
     <!-- login strings -->
     <string name="login_button">Login</string>
     <string name="login_hint_username">Username</string>
@@ -74,7 +73,6 @@
     <string name="add_New_Order_Hint_Item">ItemIDs</string>
     <string name="add_New_Order_Description">Description</string>
     <string name="add_New_Order_Button_Deadline">Deadline</string>
-
 
 
     <string-array name="types">
