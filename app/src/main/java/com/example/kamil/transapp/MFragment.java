@@ -4,17 +4,12 @@ package com.example.kamil.transapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,17 +31,15 @@ public class MFragment extends Fragment implements View.OnClickListener , Networ
     static String login;
     private Button settingsButton;
     private static PopupMenu settingsMenu;
-    private static ConstraintLayout popUpLayout;
     ListView listView;
     ArrayAdapter<String> adapter;
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
-    private boolean isRestartRequired = false;
     AlertDialog message;
     Handler handler = new Handler();
     NetworkConnectionReceiver ncr;
+    private boolean isRestartRequired = false;
 
-    final Handler wFragmentHandler = new Handler();
 
 
     public MFragment() {
@@ -69,11 +62,6 @@ public class MFragment extends Fragment implements View.OnClickListener , Networ
 
     }
 
-    /*public void OnResume(){
-        listView = (ListView) view.findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,orders);
-        listView.setAdapter(adapter);
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,25 +70,18 @@ public class MFragment extends Fragment implements View.OnClickListener , Networ
 
         View view = inflater.inflate(R.layout.m_fragment, container, false);
         ncr = new NetworkConnectionReceiver();
-        listView = (ListView) view.findViewById(R.id.tasks);
+        listView = view.findViewById(R.id.tasks);
 
         //UZUPELNIENIE DANYCH USERA
-        nameToChange = (TextView) view.findViewById(R.id.manager_name);
-        surnameToChange = (TextView) view.findViewById(R.id.manager_surname);
+        nameToChange =  view.findViewById(R.id.manager_name);
+        surnameToChange =  view.findViewById(R.id.manager_surname);
         setManagerInfo(login);
 
-        settingsButton = (Button) view.findViewById(R.id.settings_button_manager_main);
-        settingsButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v){
-                showSettingsMenu(v);
-            }
-        });
+        settingsButton = view.findViewById(R.id.settings_button_manager_main);
+        settingsButton.setOnClickListener(this::showSettingsMenu);
 
         // UZUPELNIENIE LISTY TASKOW
         fillActiveTasks();
-        //refreshData();
 
 
         return view;
@@ -113,15 +94,6 @@ public class MFragment extends Fragment implements View.OnClickListener , Networ
             listView.setAdapter(adapter);
         }
     }
-
-  /*  private boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }*/
-
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -172,39 +144,36 @@ public class MFragment extends Fragment implements View.OnClickListener , Networ
         settingsMenu = new PopupMenu(this.getContext(), v);
         settingsMenu.getMenuInflater().inflate(R.menu.settings_menu_manager, settingsMenu.getMenu());
 
-        settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
+        settingsMenu.setOnMenuItemClickListener(menuItem -> {
 
-                switch (menuItem.getItemId()) {
+            switch (menuItem.getItemId()) {
 
-                    case R.id.menu1:
-                        Intent addUserIntent = new Intent(getContext(), AddUser.class);
-                        startActivity(addUserIntent);
-                        break;
-                    case R.id.menu2:
-                        Intent deleteUserIntent = new Intent(getContext(), RemoveUser.class);
-                        startActivity(deleteUserIntent);
-                        break;
-                    case R.id.menu3:
-                        Intent orderHistory = new Intent(getContext(), OrderHistory.class);
-                        startActivity(orderHistory);
-                        break;
-                    case R.id.menu4:
-                        handler.removeCallbacks(refreshData);
-                        getContext().unregisterReceiver(ncr);
-                        Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
-                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(logOutIntent);
-                        break;
-                    default:
-                        break;
+                case R.id.menu1:
+                    Intent addUserIntent = new Intent(getContext(), AddUser.class);
+                    startActivity(addUserIntent);
+                    break;
+                case R.id.menu2:
+                    Intent deleteUserIntent = new Intent(getContext(), RemoveUser.class);
+                    startActivity(deleteUserIntent);
+                    break;
+                case R.id.menu3:
+                    Intent orderHistory = new Intent(getContext(), OrderHistory.class);
+                    startActivity(orderHistory);
+                    break;
+                case R.id.menu4:
+                    handler.removeCallbacks(refreshData);
+                    getContext().unregisterReceiver(ncr);
+                    Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
+                    logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    logOutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(logOutIntent);
+                    break;
+                default:
+                    break;
 
-                }
-                return true;
             }
+            return true;
         });
 
         settingsMenu.show();
@@ -231,7 +200,6 @@ public class MFragment extends Fragment implements View.OnClickListener , Networ
     @Override
     public void onDestroy(){
         super.onDestroy();
-        getContext().unregisterReceiver(ncr);
         handler.removeCallbacks(refreshData);
     }
 
@@ -246,10 +214,7 @@ public class MFragment extends Fragment implements View.OnClickListener , Networ
 
     private void showPopNoInternet(boolean isConnected){
 
-         if(isConnected){
-
-        }
-        else{
+         if(!isConnected){
              Intent noNetworkPop = new Intent(getActivity(), NoNetworkPop.class);
              startActivity(noNetworkPop);
         }

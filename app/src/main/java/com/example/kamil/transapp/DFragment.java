@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,17 +22,18 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.transapp.broadcastreceiver.MyApplication;
+import com.transapp.broadcastreceiver.NetworkConnectionReceiver;
+
 import java.util.ArrayList;
 
-public class DFragment extends Fragment implements View.OnClickListener {
+public class DFragment extends Fragment implements View.OnClickListener  , NetworkConnectionReceiver.NetworkListener {
 
     private static final String ARG_PARAM1 = "param1";
     private String mParam1;
     private OnFragmentInteractionListener mListener;
     static String login;
-    private FloatingActionButton addUserButton;
-    private FloatingActionButton removeUserButton;
-    private String orderNum, customer, address;
+    private String orderNum ;
     private Button settingsButton;
     private PopupMenu settingsMenu;
     ListView listView;
@@ -39,10 +41,9 @@ public class DFragment extends Fragment implements View.OnClickListener {
     TextView nameToChange, surnameToChange;
     ArrayList<String> orders;
     AlertDialog message;
-
-    private static boolean refreshing = true;
-
-    final Handler wFragmentHandler = new Handler();
+    Handler handler = new Handler();
+    NetworkConnectionReceiver ncr;
+    private boolean isRestartRequired = false;
 
     public DFragment() {
         // Required empty public constructor
@@ -69,42 +70,32 @@ public class DFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.d_fragment, container, false);
-        //refreshData();
-        listView = (ListView) view.findViewById(R.id.tasks);
+        ncr = new NetworkConnectionReceiver();
+        listView = view.findViewById(R.id.tasks);
 
 
         //UZUPELNIENIE DANYCH USERA
-        nameToChange = (TextView) view.findViewById(R.id.driver_name);
-        surnameToChange = (TextView) view.findViewById(R.id.driver_surname);
+        nameToChange =  view.findViewById(R.id.driver_name);
+        surnameToChange =  view.findViewById(R.id.driver_surname);
 
         setDriverInfo(login);
         fillActiveTasks();
 
-        settingsButton = (Button) view.findViewById(R.id.settings_button_manager_main);
-        settingsButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v){
-                showSettingsMenu(v);
-            }
-        });
+        settingsButton = view.findViewById(R.id.settings_button_manager_main);
+        settingsButton.setOnClickListener(this::showSettingsMenu);
 
         //klikanie tasku
 
         listView.setClickable(true);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener((arg0, arg1, position, arg3) -> {
 
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
-                Object o = listView.getItemAtPosition(position);
-                String[] parts = o.toString().split(" ");
-                Intent popUpIntent = new Intent(getActivity(), Pop.class);
-                popUpIntent.putExtra("Details", o.toString());
-                popUpIntent.putExtra("Type", "Driver");
-                popUpIntent.putExtra("State", DatabaseHandler.getTaskState(parts[1]));
-                startActivity(popUpIntent);
-            }
+            Object o = listView.getItemAtPosition(position);
+            String[] parts = o.toString().split(" ");
+            Intent popUpIntent = new Intent(getActivity(), Pop.class);
+            popUpIntent.putExtra("Details", o.toString());
+            popUpIntent.putExtra("Type", "Driver");
+            popUpIntent.putExtra("State", DatabaseHandler.getTaskState(parts[1]));
+            startActivity(popUpIntent);
         });
 
         return view;
@@ -149,62 +140,15 @@ public class DFragment extends Fragment implements View.OnClickListener {
 
     }
 
-   /* private boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }*/
-
-   /* public void refreshData()
-    {
-        new Thread(new Runnable() {
-            public void run() {
-
-                while(refreshing)
-                {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    wFragmentHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            if(isNetworkAvailable()) {
-                                fillActiveTasks();
-                            }
-                            else
-                            {
-                                message = new AlertDialog.Builder(getContext()).create();
-                                message.setTitle("Connection fail");
-                                message.setMessage("Internet connection fail! Check your connection.");
-                                message.show();
-                            }
-
-                        }
-                    });
-
-
-                }
-
-            }
-        }).start();
-    }*/
 
     public void setDriverInfo(String login){
 
         String info[] = DatabaseHandler.getWorkerInfo(login,"Driver");
         if(info.length>0)
         {
-            //SessionController.setPeselNumber(info[0]);
             nameToChange.setText(info[1]);
             surnameToChange.setText(info[2]);
-            //sessSessionController.setAccountType("Manager");
+
         }
     }
 
@@ -213,29 +157,96 @@ public class DFragment extends Fragment implements View.OnClickListener {
         settingsMenu = new PopupMenu(this.getContext(), v);
         settingsMenu.getMenuInflater().inflate(R.menu.settings_menu_driver, settingsMenu.getMenu());
 
-        settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
+        settingsMenu.setOnMenuItemClickListener(menuItem -> {
 
-                switch (menuItem.getItemId()) {
+            switch (menuItem.getItemId()) {
 
-                    case R.id.menu1:
-                        refreshing=false;
-                        Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
-                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        logOutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(logOutIntent);
-                        break;
-                    default:
-                        break;
+                case R.id.menu1:
+                    handler.removeCallbacks(refreshData);
+                    getContext().unregisterReceiver(ncr);
+                    Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
+                    logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    logOutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(logOutIntent);
+                    break;
+                default:
+                    break;
 
-                }
-                return true;
             }
+            return true;
         });
 
         settingsMenu.show();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(this);
+        getContext().registerReceiver(ncr, new android.content.IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // unregister connection status listener
+        MyApplication.getInstance().setConnectivityListener(null);
+        getContext().unregisterReceiver(ncr);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        handler.removeCallbacks(refreshData);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        //  showSnack(isConnected);
+        Log.d("onC","iam here!");
+        showPopNoInternet(isConnected);
+        handleDataRefreshing(isConnected);
+
+    }
+
+    private void showPopNoInternet(boolean isConnected){
+
+        if(!isConnected){
+            Intent noNetworkPop = new Intent(getActivity(), NoNetworkPop.class);
+            startActivity(noNetworkPop);
+        }
+
+    }
+
+    private void handleDataRefreshing(boolean isConnected){
+
+        if(isConnected){
+            handler.post(refreshData);
+        }
+
+        else{
+            handler.removeCallbacks(refreshData);
+            isRestartRequired = true;
+        }
+
+    }
+
+
+    private Runnable refreshData = new Runnable() {
+        @Override
+        public void run() {
+            if(isRestartRequired) {
+                DatabaseHandler DB = new DatabaseHandler();
+                isRestartRequired = false;
+            }
+            fillActiveTasks();
+
+            handler.postDelayed(refreshData, 5000);
+        }
+    };
 
 }

@@ -29,9 +29,8 @@ public class DSFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private OnFragmentInteractionListener mListener;
+    private String mParam1;
     private Button mondayUnavailable, tuesdayUnavailable, wednesdayUnavailable, thursdayUnavailable, fridayUnavailable;
     private TextView Monday,Tuesday,Wednesday,Thursday,Friday, dateTV;
 
@@ -62,7 +61,7 @@ public class DSFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.d_s_fragment, container, false);
 
-        dateTV = (TextView)view.findViewById(R.id.dateText);
+        dateTV = view.findViewById(R.id.dateText);
 
         Monday = view.findViewById(R.id.monday_schedule);
         Tuesday = view.findViewById(R.id.tuesday_schedule);
@@ -77,131 +76,106 @@ public class DSFragment extends Fragment {
         dateTV.setText(formattedDate);
         fillSchedule();
 
-        mondayUnavailable = (Button) view.findViewById(R.id.monday_unavailable);
+        mondayUnavailable = view.findViewById(R.id.monday_unavailable);
         if(mondayUnavailable.getText().equals("-"))
             mondayUnavailable.setVisibility(View.INVISIBLE);
-        mondayUnavailable.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Poniedzialek","-");
-                    Monday.setText("-");
-                    mondayUnavailable.setVisibility(View.INVISIBLE);
-                }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                }
-                finally {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Message sent!");
-                    Message.setMessage("Absence has been reported.");
-                    Message.show();
-                }
-
+        mondayUnavailable.setOnClickListener((View v) -> {
+            try {
+                DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Poniedzialek","-");
+                Monday.setText("-");
+                mondayUnavailable.setVisibility(View.INVISIBLE);
             }
+            catch (Exception ex){
+                System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+            }
+            finally {
+                AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                Message.setTitle("Message sent!");
+                Message.setMessage("Absence has been reported.");
+                Message.show();
+            }
+
         });
 
-        tuesdayUnavailable = (Button) view.findViewById(R.id.tuesday_unavailable);
+        tuesdayUnavailable =  view.findViewById(R.id.tuesday_unavailable);
         if(tuesdayUnavailable.getText().equals("-"))
             tuesdayUnavailable.setVisibility(View.INVISIBLE);
-        tuesdayUnavailable.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Wtorek","-");
-                    Tuesday.setText("-");
-                    tuesdayUnavailable.setVisibility(View.INVISIBLE);
-                }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                }
-                finally {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Message sent!");
-                    Message.setMessage("Absence has been reported.");
-                    Message.show();
-                }
-
+        tuesdayUnavailable.setOnClickListener((View v) -> {
+            try {
+                DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Wtorek","-");
+                Tuesday.setText("-");
+                tuesdayUnavailable.setVisibility(View.INVISIBLE);
             }
+            catch (Exception ex){
+                System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+            }
+            finally {
+                AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                Message.setTitle("Message sent!");
+                Message.setMessage("Absence has been reported.");
+                Message.show();
+            }
+
         });
-        wednesdayUnavailable = (Button) view.findViewById(R.id.wednesday_unavailable);
+        wednesdayUnavailable =  view.findViewById(R.id.wednesday_unavailable);
         if(wednesdayUnavailable.getText().equals("-"))
             wednesdayUnavailable.setVisibility(View.INVISIBLE);
-        wednesdayUnavailable.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Sroda","-");
-                    Wednesday.setText("-");
-                    wednesdayUnavailable.setVisibility(View.INVISIBLE);
-                }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                }
-                finally {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Message sent!");
-                    Message.setMessage("Absence has been reported.");
-                    Message.show();
-                }
-
+        wednesdayUnavailable.setOnClickListener((View v) -> {
+            try {
+                DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Sroda","-");
+                Wednesday.setText("-");
+                wednesdayUnavailable.setVisibility(View.INVISIBLE);
             }
+            catch (Exception ex){
+                System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+            }
+            finally {
+                AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                Message.setTitle("Message sent!");
+                Message.setMessage("Absence has been reported.");
+                Message.show();
+            }
+
         });
-        thursdayUnavailable = (Button) view.findViewById(R.id.thursday_unavailable);
+        thursdayUnavailable = view.findViewById(R.id.thursday_unavailable);
         if(thursdayUnavailable.getText().equals("-"))
             thursdayUnavailable.setVisibility(View.INVISIBLE);
-        thursdayUnavailable.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Czwartek","-");
-                    Thursday.setText("-");
-                    thursdayUnavailable.setVisibility(View.INVISIBLE);
-                }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                }
-                finally {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Message sent!");
-                    Message.setMessage("Absence has been reported.");
-                    Message.show();
-                }
-
+        thursdayUnavailable.setOnClickListener((View v) -> {
+            try {
+                DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Czwartek","-");
+                Thursday.setText("-");
+                thursdayUnavailable.setVisibility(View.INVISIBLE);
             }
+            catch (Exception ex){
+                System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+            }
+            finally {
+                AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                Message.setTitle("Message sent!");
+                Message.setMessage("Absence has been reported.");
+                Message.show();
+            }
+
         });
-        fridayUnavailable = (Button) view.findViewById(R.id.friday_unavailable);
+        fridayUnavailable =  view.findViewById(R.id.friday_unavailable);
         if(fridayUnavailable.getText().equals("-"))
             fridayUnavailable.setVisibility(View.INVISIBLE);
-        fridayUnavailable.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                try {
-                    DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Piatek","-");
-                    Friday.setText("-");
-                    fridayUnavailable.setVisibility(View.INVISIBLE);
-                }
-                catch (Exception ex){
-                    System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                }
-                finally {
-                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
-                    Message.setTitle("Message sent!");
-                    Message.setMessage("Absence has been reported.");
-                    Message.show();
-                }
-
+        fridayUnavailable.setOnClickListener((View v) -> {
+            try {
+                DatabaseHandler.updateSchedule(SessionController.getPeselNumber(),"Piatek","-");
+                Friday.setText("-");
+                fridayUnavailable.setVisibility(View.INVISIBLE);
             }
+            catch (Exception ex){
+                System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+            }
+            finally {
+                AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                Message.setTitle("Message sent!");
+                Message.setMessage("Absence has been reported.");
+                Message.show();
+            }
+
         });
 
         return view;

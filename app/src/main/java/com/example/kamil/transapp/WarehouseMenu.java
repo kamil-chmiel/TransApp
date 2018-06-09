@@ -1,8 +1,7 @@
 package com.example.kamil.transapp;
 
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+
 
 public class WarehouseMenu extends AppCompatActivity {
 

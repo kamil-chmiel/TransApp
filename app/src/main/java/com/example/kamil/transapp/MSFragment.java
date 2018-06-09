@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,7 @@ public class MSFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.m_s_fragment, container, false);
 
-        dateTV = (TextView)view.findViewById(R.id.dateText);
+        dateTV = view.findViewById(R.id.dateText);
 
         userSpinner = view.findViewById(R.id.user_spinner);
         //uzueplenienie spinnera uzytkownikami
@@ -111,163 +112,178 @@ public class MSFragment extends Fragment {
 
         // ZMIANA HARMONOGRAMU
 
-        mondaySwitcher = (ViewSwitcher) view.findViewById(R.id.monday_switcher);
-        tuesdaySwitcher = (ViewSwitcher) view.findViewById(R.id.tuesday_switcher);
-        wednesdaySwitcher = (ViewSwitcher) view.findViewById(R.id.wednesday_switcher);
-        thursdaySwitcher = (ViewSwitcher) view.findViewById(R.id.thursday_switcher);
-        fridaySwitcher = (ViewSwitcher) view.findViewById(R.id.friday_switcher);
+        mondaySwitcher =  view.findViewById(R.id.monday_switcher);
+        tuesdaySwitcher = view.findViewById(R.id.tuesday_switcher);
+        wednesdaySwitcher =  view.findViewById(R.id.wednesday_switcher);
+        thursdaySwitcher =  view.findViewById(R.id.thursday_switcher);
+        fridaySwitcher =  view.findViewById(R.id.friday_switcher);
 
         Monday = view.findViewById(R.id.monday_schedule);
         MondayEdit = view.findViewById(R.id.hidden_monday_edit_text);
-        Monday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mondaySwitcher.showNext();
-                MondayEdit.setText(schedule[0]);
+        Monday.setOnClickListener((View v) -> {
+            mondaySwitcher.showNext();
+            MondayEdit.setText(schedule[0]);
 
-                MondayEdit.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        // If the event is a key-down event on the "enter" button
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                                (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            // Perform action on key press
-                            Monday.setText(MondayEdit.getText());
-                            schedule[0] = MondayEdit.getText().toString();
-                            mondaySwitcher.showPrevious();
-                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            MondayEdit.setOnKeyListener((View v1, int keyCode, KeyEvent event) -> {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    if(checkFormat(MondayEdit.getText().toString().trim())){
+                    Monday.setText(MondayEdit.getText());
+                    schedule[0] = MondayEdit.getText().toString();
+                    mondaySwitcher.showPrevious();
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-                            String[] parts = userSpinner.getSelectedItem().toString().split(" ");
-                            DatabaseHandler.updateSchedule(parts[0],"Poniedzialek", MondayEdit.getText().toString());
-                            Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
-                            return true;
-                        }
+                    Log.d("sch",schedule[0]);
+
+
+                        String[] parts = userSpinner.getSelectedItem().toString().split(" ");
+                        DatabaseHandler.updateSchedule(parts[0],"Poniedzialek", MondayEdit.getText().toString());
+                        Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                    else{
+                        Toast.makeText(getContext(),"Wrong format!",Toast.LENGTH_LONG).show();
                         return false;
                     }
-                });
-            }
+                }
+                return false;
+            });
         });
 
         Tuesday = view.findViewById(R.id.tuesday_schedule);
         TuesdayEdit = view.findViewById(R.id.hidden_tuesday_edit_text);
-        Tuesday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tuesdaySwitcher.showNext();
-                TuesdayEdit.setText(schedule[1]);
+        Tuesday.setOnClickListener((View v) -> {
+            tuesdaySwitcher.showNext();
+            TuesdayEdit.setText(schedule[1]);
 
-                TuesdayEdit.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        // If the event is a key-down event on the "enter" button
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                                (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            // Perform action on key press
-                            Tuesday.setText(TuesdayEdit.getText());
-                            schedule[1] = TuesdayEdit.getText().toString();
-                            tuesdaySwitcher.showPrevious();
-                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            TuesdayEdit.setOnKeyListener((View v12, int keyCode, KeyEvent event) -> {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    Tuesday.setText(TuesdayEdit.getText());
+                    schedule[1] = TuesdayEdit.getText().toString();
+                    tuesdaySwitcher.showPrevious();
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-                            String[] parts = userSpinner.getSelectedItem().toString().split(" ");
-                            DatabaseHandler.updateSchedule(parts[0],"Wtorek", TuesdayEdit.getText().toString());
-                            Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
-                            return true;
-                        }
+                    if(checkFormat(TuesdayEdit.getText().toString().trim())){
+
+                        String[] parts = userSpinner.getSelectedItem().toString().split(" ");
+                        DatabaseHandler.updateSchedule(parts[0],"Wtorek", TuesdayEdit.getText().toString());
+                        Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                    else{
+                        Toast.makeText(getContext(),"Wrong format!",Toast.LENGTH_LONG).show();
                         return false;
                     }
-                });
-            }
+                }
+                return false;
+            });
         });
         Wednesday = view.findViewById(R.id.wednesday_schedule);
         WednesdayEdit = view.findViewById(R.id.hidden_wednesday_edit_text);
-        Wednesday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wednesdaySwitcher.showNext();
-                WednesdayEdit.setText(schedule[2]);
+        Wednesday.setOnClickListener((View v) -> {
+            wednesdaySwitcher.showNext();
+            WednesdayEdit.setText(schedule[2]);
 
-                WednesdayEdit.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        // If the event is a key-down event on the "enter" button
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                                (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            // Perform action on key press
-                            Wednesday.setText(WednesdayEdit.getText());
-                            schedule[2] = WednesdayEdit.getText().toString();
-                            wednesdaySwitcher.showPrevious();
+            WednesdayEdit.setOnKeyListener((View v13, int keyCode, KeyEvent event) -> {
+                // If the event is a key-down event on the "enter" button
 
-                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    Wednesday.setText(WednesdayEdit.getText());
+                    schedule[2] = WednesdayEdit.getText().toString();
+                    wednesdaySwitcher.showPrevious();
 
-                            String[] parts = userSpinner.getSelectedItem().toString().split(" ");
-                            DatabaseHandler.updateSchedule(parts[0],"Sroda", WednesdayEdit.getText().toString());
-                            Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
-                            return true;
-                        }
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+                    if(checkFormat(WednesdayEdit.getText().toString().trim())){
+
+                        String[] parts = userSpinner.getSelectedItem().toString().split(" ");
+                        DatabaseHandler.updateSchedule(parts[0],"Sroda", WednesdayEdit.getText().toString());
+                        Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                    else{
+                        Toast.makeText(getContext(),"Wrong format!",Toast.LENGTH_LONG).show();
                         return false;
                     }
-                });
-            }
+                }
+                return false;
+            });
         });
         Thursday = view.findViewById(R.id.thursday_schedule);
         ThursdayEdit = view.findViewById(R.id.hidden_thursday_edit_text);
-        Thursday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                thursdaySwitcher.showNext();
-                ThursdayEdit.setText(schedule[3]);
+        Thursday.setOnClickListener((View v) -> {
 
-                ThursdayEdit.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        // If the event is a key-down event on the "enter" button
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                                (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            // Perform action on key press
-                            Thursday.setText(ThursdayEdit.getText());
-                            schedule[3] = ThursdayEdit.getText().toString();
-                            thursdaySwitcher.showPrevious();
-                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            thursdaySwitcher.showNext();
+            ThursdayEdit.setText(schedule[3]);
+
+            ThursdayEdit.setOnKeyListener((View v14, int keyCode, KeyEvent event) -> {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    Thursday.setText(ThursdayEdit.getText());
+                    schedule[3] = ThursdayEdit.getText().toString();
+                    thursdaySwitcher.showPrevious();
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+                    if(checkFormat(ThursdayEdit.getText().toString().trim())){
 
                             String[] parts = userSpinner.getSelectedItem().toString().split(" ");
                             DatabaseHandler.updateSchedule(parts[0],"Czwartek", ThursdayEdit.getText().toString());
                             Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
                             return true;
-                        }
+                    }
+                    else{
+                        Toast.makeText(getContext(),"Wrong format!",Toast.LENGTH_LONG).show();
                         return false;
                     }
-                });
-            }
+                }
+                return false;
+            });
         });
         Friday = view.findViewById(R.id.friday_schedule);
         FridayEdit = view.findViewById(R.id.hidden_friday_edit_text);
-        Friday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fridaySwitcher.showNext();
-                FridayEdit.setText(schedule[4]);
+        Friday.setOnClickListener((View v) -> {
+            fridaySwitcher.showNext();
+            FridayEdit.setText(schedule[4]);
 
-                FridayEdit.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        // If the event is a key-down event on the "enter" button
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                                (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            // Perform action on key press
-                            Friday.setText(FridayEdit.getText());
-                            schedule[4] = FridayEdit.getText().toString();
-                            fridaySwitcher.showPrevious();
-                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            FridayEdit.setOnKeyListener((View v15, int keyCode, KeyEvent event) -> {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    Friday.setText(FridayEdit.getText());
+                    schedule[4] = FridayEdit.getText().toString();
+                    fridaySwitcher.showPrevious();
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-                            String[] parts = userSpinner.getSelectedItem().toString().split(" ");
-                            DatabaseHandler.updateSchedule(parts[0],"Piatek", FridayEdit.getText().toString());
-                            Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
-                            return true;
-                        }
+                    if(checkFormat(FridayEdit.getText().toString().trim())){
+
+                        String[] parts = userSpinner.getSelectedItem().toString().split(" ");
+                        DatabaseHandler.updateSchedule(parts[0],"Piatek", FridayEdit.getText().toString());
+                        Toast.makeText(getContext(),"Schedule saved!", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                    else{
+                        Toast.makeText(getContext(),"Wrong format!",Toast.LENGTH_LONG).show();
                         return false;
                     }
-                });
-            }
+
+                }
+                return false;
+            });
         });
 
         Calendar c = Calendar.getInstance();
@@ -280,13 +296,7 @@ public class MSFragment extends Fragment {
 
         return view;
     }
-
-
-
-
-    public void mondayTextClicked(View v) {
-        mondaySwitcher.showNext(); //or mondaySwitcher.showPrevious();
-    }
+    
 
 
     private void fillSchedule() {
@@ -328,5 +338,12 @@ public class MSFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private boolean checkFormat(String field){
+
+        Log.d("date",field);
+        return field.matches("^([0-1][0-9]|[2][0-3]):([0-5][0-9])-([0-1][0-9]|[2][0-3]):([0-5][0-9])");
+
     }
 }

@@ -26,26 +26,12 @@
         <activity android:name=".ManagerMenu" />
         <activity android:name=".WarehouseMenu" />
         <activity android:name=".DriverMenu" />
+        <activity android:name=".NoNetworkPop"/>
         <activity
             android:name=".Pop"
             android:theme="@style/AppTheme.CustomTheme" />
 
-        <receiver
-            android:name="com.transapp.broadcastreceiver.NetworkConnectionReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
 
-        <activity android:name=".NoNetworkPop"></activity>
-        <activity
-            android:name=".Pop"
-            android:theme="@style/AppTheme.CustomTheme" />
-        <activity
-            android:name=".AddItemsActivity"
-            android:label="@string/title_activity_add_items"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

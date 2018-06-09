@@ -1,6 +1,6 @@
 package com.example.kamil.transapp;
 
-import android.os.AsyncTask;
+
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+
 
 public class DriverMenu extends AppCompatActivity {
 
@@ -34,7 +34,7 @@ public class DriverMenu extends AppCompatActivity {
 
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.driver_container);
+        mViewPager = findViewById(R.id.driver_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
     }

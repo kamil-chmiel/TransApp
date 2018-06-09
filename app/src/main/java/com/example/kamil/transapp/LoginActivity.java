@@ -7,37 +7,21 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText UsernameET, PasswordET;
-    private ImageView bg, circle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        UsernameET = (EditText) findViewById(R.id.loginText);
-        PasswordET = (EditText) findViewById(R.id.passwordText);
+        UsernameET = findViewById(R.id.loginText);
+        PasswordET = findViewById(R.id.passwordText);
 
-        bg = findViewById(R.id.loading_background);
-        circle = findViewById(R.id.loading_circle);
 
-        RotateAnimation rotateAnimation = new RotateAnimation(0, 360f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-
-        rotateAnimation.setInterpolator(new LinearInterpolator());
-        rotateAnimation.setDuration(1800);
-        rotateAnimation.setRepeatCount(Animation.INFINITE);
-
-        findViewById(R.id.loading_circle).startAnimation(rotateAnimation);
     }
     public void OnLogin(View view){
 

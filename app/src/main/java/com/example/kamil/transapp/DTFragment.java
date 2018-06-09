@@ -22,9 +22,6 @@ public class DTFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
 
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
     private Button addFaultButton;
     private ArrayList<String> cars = new ArrayList<String>();

@@ -4,15 +4,15 @@ import java.sql.SQLException;
 
 public class Task {
 
-    private String orderNumber, items, describtion, deadline;
+    private String orderNumber, items, description, deadline;
     private Customer customer;
     private WarehouseWorker warehouseWorker;
     private Driver driver;
 
-    public Task(String orderNumber, String items, String describtion, String deadline, Customer customer, WarehouseWorker worker, Driver driver) {
+    public Task(String orderNumber, String items, String description, String deadline, Customer customer, WarehouseWorker worker, Driver driver) {
         this.orderNumber = orderNumber;
         this.items = items;
-        this.describtion = describtion;
+        this.description = description;
         this.deadline = deadline;
         this.customer = customer;
         this.warehouseWorker = worker;
@@ -36,8 +36,8 @@ public class Task {
         return items;
     }
 
-    public String getDescribtion() {
-        return describtion;
+    public String getDescription() {
+        return description;
     }
 
     public String getDeadline() {

@@ -47,35 +47,29 @@ public class Pop extends Activity{
                 if(state.equals("Prepared"))
                 {
                     setButton.setText("Set as 'Under way'");
-                    setButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                String[] detailsParts = taskDetails.split(" ");
-                                DatabaseHandler.changeTaskState(detailsParts[1], "Under way");
-                            } catch (Exception ex) {
-                                System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                            } finally {
-                                Pop.super.onBackPressed();
-                            }
+                    setButton.setOnClickListener((View v) -> {
+                        try {
+                            String[] detailsParts = taskDetails.split(" ");
+                            DatabaseHandler.changeTaskState(detailsParts[1], "Under way");
+                        } catch (Exception ex) {
+                            System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                        } finally {
+                            Pop.super.onBackPressed();
                         }
                     });
                 }
                 if(state.equals("Under way"))
                 {
                     setButton.setText("Set as 'Done'");
-                    setButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                String[] detailsParts = taskDetails.split(" ");
-                                DatabaseHandler.changeTaskState(detailsParts[1], "Done");
-                                DatabaseHandler.changeDriverAvability(SessionController.getAccountType(),SessionController.getPeselNumber(),1);
-                            } catch (Exception ex) {
-                                System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                            } finally {
-                                Pop.super.onBackPressed();
-                            }
+                    setButton.setOnClickListener((View v) -> {
+                        try {
+                            String[] detailsParts = taskDetails.split(" ");
+                            DatabaseHandler.changeTaskState(detailsParts[1], "Done");
+                            DatabaseHandler.changeDriverAvability(SessionController.getAccountType(),SessionController.getPeselNumber(),1);
+                        } catch (Exception ex) {
+                            System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                        } finally {
+                            Pop.super.onBackPressed();
                         }
                     });
                 }
@@ -84,18 +78,15 @@ public class Pop extends Activity{
                 break;
             case "Warehouse":
                 setButton.setText("Set as 'Prepared'");
-                setButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            String[] detailsParts = taskDetails.split(" ");
-                            DatabaseHandler.changeTaskState(detailsParts[1], "Prepared");
-                            DatabaseHandler.changeDriverAvability(SessionController.getAccountType(),SessionController.getPeselNumber(),1);
-                        } catch (Exception ex) {
-                            System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
-                        } finally {
-                            Pop.super.onBackPressed();
-                        }
+                setButton.setOnClickListener((View v) -> {
+                    try {
+                        String[] detailsParts = taskDetails.split(" ");
+                        DatabaseHandler.changeTaskState(detailsParts[1], "Prepared");
+                        DatabaseHandler.changeDriverAvability(SessionController.getAccountType(),SessionController.getPeselNumber(),1);
+                    } catch (Exception ex) {
+                        System.out.println("Bląd podczas wysylania usterki do bazy " + ex.getMessage());
+                    } finally {
+                        Pop.super.onBackPressed();
                     }
                 });
                 break;

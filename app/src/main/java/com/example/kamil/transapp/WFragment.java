@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,25 +22,27 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.transapp.broadcastreceiver.MyApplication;
+import com.transapp.broadcastreceiver.NetworkConnectionReceiver;
+
 import java.util.ArrayList;
 
-public class WFragment extends Fragment implements View.OnClickListener {
+public class WFragment extends Fragment implements View.OnClickListener , NetworkConnectionReceiver.NetworkListener {
 
     private static final String ARG_PARAM1 = "param1";
     private String mParam1;
     private OnFragmentInteractionListener mListener;
     static String login;
-    private FloatingActionButton addUserButton;
-    private FloatingActionButton removeUserButton;
     private ListView listView;
     private TextView nameToChange, surnameToChange;
     private ArrayList<String> orders;
-    private static boolean refreshing = true;
     private Button settingsButton;
     private PopupMenu settingsMenu;
     AlertDialog message;
+    Handler handler = new Handler();
+    NetworkConnectionReceiver ncr;
+    private boolean isRestartRequired = false;
 
-    final Handler wFragmentHandler = new Handler();
 
     public WFragment() {
         // Required empty public constructor
@@ -61,35 +64,24 @@ public class WFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    /*public void OnResume(){
-        listView = (ListView) view.findViewById(R.id.tasks);
-        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,orders);
-        listView.setAdapter(adapter);
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.w_fragment, container, false);
-        //refreshData();
+        ncr = new NetworkConnectionReceiver();
 
-        listView = (ListView) view.findViewById(R.id.tasks);
+        listView =  view.findViewById(R.id.tasks);
 
         //UZUPELNIENIE DANYCH USERA
-        nameToChange = (TextView) view.findViewById(R.id.warehouse_name);
-        surnameToChange = (TextView) view.findViewById(R.id.warehouse_surname);
+        nameToChange =  view.findViewById(R.id.warehouse_name);
+        surnameToChange =  view.findViewById(R.id.warehouse_surname);
 
         setWarehouseInfo(login);
 
         settingsButton = view.findViewById(R.id.settings_button_warehouse_main);
-        settingsButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v){
-                showSettingsMenu(v);
-            }
-        });
+        settingsButton.setOnClickListener(this::showSettingsMenu);
 
 
         // UZUPELNIENIE LISTY TASKOW
@@ -150,63 +142,15 @@ public class WFragment extends Fragment implements View.OnClickListener {
 
     }
 
-   /* private boolean isNetworkAvailable() {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }*/
-
-   /* public void refreshData()
-    {
-        new Thread(new Runnable() {
-            public void run() {
-
-                while(refreshing)
-                {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    wFragmentHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            if(isNetworkAvailable()) {
-                                fillActiveTasks();
-                            }
-                            else
-                            {
-                                message = new AlertDialog.Builder(getContext()).create();
-                                message.setTitle("Connection fail");
-                                message.setMessage("Internet connection fail! Check your connection.");
-                                message.show();
-                            }
-
-                        }
-                    });
-
-
-                }
-
-            }
-        }).start();
-    }
-*/
 
     public void setWarehouseInfo(String login){
 
         String info[] = DatabaseHandler.getWorkerInfo(login,"WarehouseWorker");
         if(info.length>0)
         {
-            //SessionController.setPeselNumber(info[0]);
             nameToChange.setText(info[1]);
             surnameToChange.setText(info[2]);
-            //sessSessionController.setAccountType("Manager");
+
         }
     }
 
@@ -220,7 +164,8 @@ public class WFragment extends Fragment implements View.OnClickListener {
                 switch (menuItem.getItemId()) {
 
                     case R.id.menu1:
-                        refreshing=false;
+                        handler.removeCallbacks(refreshData);
+                        getContext().unregisterReceiver(ncr);
                         Intent logOutIntent = new Intent(getContext(), LoginActivity.class);
                         logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         logOutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -238,5 +183,75 @@ public class WFragment extends Fragment implements View.OnClickListener {
 
         settingsMenu.show();
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(this);
+        getContext().registerReceiver(ncr, new android.content.IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // unregister connection status listener
+        MyApplication.getInstance().setConnectivityListener(null);
+        getContext().unregisterReceiver(ncr);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        handler.removeCallbacks(refreshData);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        //  showSnack(isConnected);
+        Log.d("onC","iam here!");
+        showPopNoInternet(isConnected);
+        handleDataRefreshing(isConnected);
+
+    }
+
+    private void showPopNoInternet(boolean isConnected){
+
+        if(!isConnected){
+            Intent noNetworkPop = new Intent(getActivity(), NoNetworkPop.class);
+            startActivity(noNetworkPop);
+        }
+
+    }
+
+    private void handleDataRefreshing(boolean isConnected){
+
+        if(isConnected){
+            handler.post(refreshData);
+        }
+
+        else{
+            handler.removeCallbacks(refreshData);
+            isRestartRequired = true;
+        }
+
+    }
+
+
+    private Runnable refreshData = new Runnable() {
+        @Override
+        public void run() {
+            if(isRestartRequired) {
+                DatabaseHandler DB = new DatabaseHandler();
+                isRestartRequired = false;
+            }
+            fillActiveTasks();
+
+            handler.postDelayed(refreshData, 5000);
+        }
+    };
 
 }

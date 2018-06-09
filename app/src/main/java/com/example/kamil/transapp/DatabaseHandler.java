@@ -1,10 +1,6 @@
 package com.example.kamil.transapp;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.StrictMode;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,7 +39,7 @@ public class DatabaseHandler {
     public static Connection connectToDatabase(String kindOfDatabase, String adress, String dataBaseName, String userName, String password) throws SQLException {
         String base = kindOfDatabase + adress + "/" + dataBaseName;
         java.sql.Connection connection = null;
-        connection = DriverManager.getConnection("jdbc:mysql://10.0.2.2:3306/SOB","root", "");
+        connection = DriverManager.getConnection("jdbc:mysql://192.168.0.20/limitlessgames","root", "");
         return connection;
     }
 
@@ -285,7 +281,7 @@ public class DatabaseHandler {
         try{
         executeUpdate(s,"INSERT INTO `zamowienie`(`Numer_Zamowienia`, `Lista_Towarow`, `Opis`, " +
                 "`PESEL_Menadzera`, `PESEL_Klienta`, `Adres`, `peselMagazyniera`, `peselKierowcy`, `Stan`, `Deadline`) " +
-                "VALUES ('"+task.getOrderNumber().substring(7)+"','"+task.getItems()+"','"+task.getDescribtion()+"','"+SessionController.getPeselNumber()+
+                "VALUES ('"+task.getOrderNumber().substring(7)+"','"+task.getItems()+"','"+task.getDescription()+"','"+SessionController.getPeselNumber()+
                 "','"+ task.getCustomer().getPesel() +"','"+task.getCustomer().getAddress()+"','"+ task.getWorker().getPesel()
                 +"','"+ task.getDriver().getPesel()+"','Load preparing','"+ task.getDeadline()+"');");
         }
