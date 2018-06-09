@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    tools:context="com.example.kamil.transapp.MTFragment">
+    tools:context="com.transapp.accountManager.MTFragment">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/info"

@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kamil.transapp">
+    package="com.transapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.transapp.broadcastreceiver.MyApplication"
+        android:name="com.networkConnectivityHandler.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Transapp"
         android:roundIcon="@mipmap/tir_driver"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".LoginActivity">
+        <activity android:name="com.transapp.loginHandler.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddUser" />
-        <activity android:name=".OrderHistory" />
-        <activity android:name=".RemoveUser" />
-        <activity android:name=".ManagerMenu" />
-        <activity android:name=".WarehouseMenu" />
-        <activity android:name=".DriverMenu" />
-        <activity android:name=".NoNetworkPop"/>
+        <activity android:name="com.transapp.accountManager.AddUser" />
+        <activity android:name=".models.OrderHistory" />
+        <activity android:name="com.transapp.accountManager.RemoveUser" />
+        <activity android:name="com.transapp.accountManager.ManagerMenu" />
+        <activity android:name="com.transapp.accountWarehouseworker.WarehouseMenu" />
+        <activity android:name="com.transapp.accountDriver.DriverMenu" />
+        <activity android:name="com.networkConnectivityHandler.NoNetworkPop"/>
         <activity
-            android:name=".Pop"
+            android:name="com.transapp.utilities.Pop"
             android:theme="@style/AppTheme.CustomTheme" />
 
 
