@@ -86,7 +86,7 @@ public class DTFragment extends Fragment implements View.OnClickListener {
                 String[] parts = carsSpinner.getSelectedItem().toString().split(" ");
                 DatabaseHandler.addCarFault(parts[2] + " " + parts[3], description.getText().toString());
 
-                Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),"The fault for: " + carsSpinner.getSelectedItem().toString() + " has been added !", Snackbar.LENGTH_LONG);
+                Snackbar.make(getActivity().findViewById(R.id.w_t_linearlayout),"The fault for: " + carsSpinner.getSelectedItem().toString() + " has been added !", Snackbar.LENGTH_LONG).show();
 
                 fillCars();
                 fillAvailableCars();

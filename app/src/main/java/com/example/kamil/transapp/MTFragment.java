@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class MTFragment extends Fragment implements View.OnClickListener {
 
@@ -32,7 +35,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
     private ArrayList<String> workers = new ArrayList<String>();
     private ArrayList<String> items = new ArrayList<String>();
     private ArrayList<Integer> itemsAmount = new ArrayList<>();
-    private ArrayList<Integer> itemsAmountAboveZero = new ArrayList<>();
+    private ArrayList<Item> itemsAmountAboveZero = new ArrayList<>();
     private boolean readData = true;
     private String orderNum;
     private ArrayList<Task> tasks;
@@ -96,18 +99,24 @@ public class MTFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v)
             {
-                Integer amount = itemsAmountAboveZero.get( itemsSpinner.getSelectedItemPosition() );
-                if(Integer.parseInt(addItemAmount.getText().toString()) < amount ) {
-                    itemsTV.append(" " +items.get(itemsSpinner.getSelectedItemPosition()) + " x" + Integer.parseInt(addItemAmount.getText().toString()) + "; ");
+                Integer amount = itemsAmountAboveZero.get(itemsSpinner.getSelectedItemPosition()).amount;
+
+                if(Integer.parseInt(addItemAmount.getText().toString()) <= amount ) {
+                    itemsTV.append(" " +itemsAmountAboveZero.get(itemsSpinner.getSelectedItemPosition()).name + " x" + Integer.parseInt(addItemAmount.getText().toString()) + "; ");
 
                     // decrease item amount
-                    itemsAmountAboveZero.set( itemsSpinner.getSelectedItemPosition(), itemsAmountAboveZero.get(itemsSpinner.getSelectedItemPosition()) - Integer.parseInt(addItemAmount.getText().toString()) );
+
+                    itemsAmountAboveZero.get(itemsSpinner.getSelectedItemPosition()).amount = amount - Integer.parseInt(addItemAmount.getText().toString());
+
                     // reload spinner
                     refreshItems(itemsSpinner);
 
                 }
                 else {
-                    Toast.makeText(getContext(),"Out of items amount in storage.", Toast.LENGTH_LONG).show();
+                    AlertDialog Message = new AlertDialog.Builder(getContext()).create();
+                    Message.setTitle("Out of items!");
+                    Message.setMessage("Out of items amount in storage.");
+                    Message.show();
                 }
             }
         });
@@ -148,6 +157,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
 
                     if (messageFromBase.equals("")) {
                         SessionController.addTask(newTask);
+                        updateDatabase();
                         AlertDialog Message = new AlertDialog.Builder(getContext()).create();
                         Message.setTitle("Task saved!");
                         Message.setMessage("Task #" + orderNum + " has been saved!");
@@ -170,6 +180,10 @@ public class MTFragment extends Fragment implements View.OnClickListener {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public void updateDatabase() {
+
     }
 
     public void clearForm()
@@ -206,10 +220,10 @@ public class MTFragment extends Fragment implements View.OnClickListener {
 
     public void refreshItems(Spinner itemsSpinner) {
         ArrayList<String> itemLabels = new ArrayList<>();
-        for (int i=0; i<items.size(); i++) {
-            if(itemsAmount.get(i)>0) {
-                itemsAmountAboveZero.add(itemsAmount.get(i));
-                itemLabels.add(items.get(i) + " " + itemsAmountAboveZero.get(i));
+
+        for (int i=0; i<itemsAmountAboveZero.size(); i++) {
+            if(itemsAmountAboveZero.get(i).amount > 0) {
+                itemLabels.add(itemsAmountAboveZero.get(i).name + " " + itemsAmountAboveZero.get(i).amount);
             }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, itemLabels);
@@ -224,7 +238,7 @@ public class MTFragment extends Fragment implements View.OnClickListener {
         ArrayList<String> itemLabels = new ArrayList<>();
         for (int i=0; i<items.size(); i++) {
             if(itemsAmount.get(i)>0) {
-                itemsAmountAboveZero.add(itemsAmount.get(i));
+                itemsAmountAboveZero.add( new Item(items.get(i), itemsAmount.get(i)) );
                 itemLabels.add(items.get(i) + " " + itemsAmount.get(i));
             }
         }
